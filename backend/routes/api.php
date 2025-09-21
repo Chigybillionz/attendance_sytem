@@ -1,3 +1,4 @@
+
 <?php
 // File: backend/routes/api.php
 // Location: backend/routes/api.php
@@ -8,6 +9,12 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\DashboardController;
+
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+*/
 
 // Test route to check if API is working
 Route::get('/test', function () {

@@ -69,7 +69,7 @@ export const useAuthStore = defineStore("auth", {
       this.loading = true;
 
       try {
-        await authService.logout();
+          await authService.logout();
       } catch (error) {
         console.error("Logout error:", error);
       } finally {

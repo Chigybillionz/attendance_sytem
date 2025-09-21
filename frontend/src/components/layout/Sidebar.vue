@@ -1,5 +1,6 @@
 <!-- File: frontend/src/components/layout/Sidebar.vue -->
 <!-- Location: frontend/src/components/layout/Sidebar.vue -->
+<!-- UPDATED WITH LOGOUT BUTTON -->
 
 <template>
   <aside class="bg-white shadow-lg border-r border-gray-200 w-64 fixed left-0 top-20 h-full overflow-y-auto z-30">
@@ -107,7 +108,7 @@
       </div>
 
       <!-- Common Navigation -->
-      <div class="border-t border-gray-200 pt-4">
+      <div class="border-t border-gray-200 pt-4 mb-6">
         <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
           Account
         </h3>
@@ -125,11 +126,29 @@
               My Profile
             </router-link>
           </li>
+          
+          <!-- LOGOUT BUTTON IN SIDEBAR -->
+          <li>
+            <button
+              @click="handleLogout"
+              :disabled="loggingOut"
+              class="nav-link w-full text-left text-red-600 hover:bg-red-50 hover:text-red-700 disabled:opacity-50"
+            >
+              <svg v-if="!loggingOut" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              <svg v-else class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              {{ loggingOut ? 'Signing out...' : 'Sign Out' }}
+            </button>
+          </li>
         </ul>
       </div>
 
       <!-- Quick Stats (for workers) -->
-      <div v-if="authStore.isWorker && dashboardStore.workerDashboard" class="mt-6 pt-4 border-t border-gray-200">
+      <div v-if="authStore.isWorker && dashboardStore.workerDashboard" class="pt-4 border-t border-gray-200">
         <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-3">
           Quick Stats
         </h3>
@@ -155,18 +174,52 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { computed, onMounted, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useDashboardStore } from '@/stores/dashboard'
 
 const route = useRoute()
+const router = useRouter()
 const authStore = useAuthStore()
 const dashboardStore = useDashboardStore()
+
+// Component state
+const loggingOut = ref(false)
 
 // Check if route is active
 const isActiveRoute = (path) => {
   return route.path === path || route.path.startsWith(path + '/')
+}
+
+// Handle logout
+const handleLogout = async () => {
+  if (loggingOut.value) return
+  
+  // Confirm logout
+  if (!confirm('Are you sure you want to sign out?')) {
+    return
+  }
+
+  loggingOut.value = true
+  
+  try {
+    await authStore.logout()
+    
+    // Show success message
+    window.showNotification?.('Logged out successfully', 'success')
+    
+    // Redirect to login page
+    router.push('/login')
+  } catch (error) {
+    console.error('Logout error:', error)
+    window.showNotification?.('Logout failed, but you have been signed out locally', 'error')
+    
+    // Still redirect to login even if server logout fails
+    router.push('/login')
+  } finally {
+    loggingOut.value = false
+  }
 }
 
 onMounted(async () => {
@@ -174,3 +227,4 @@ onMounted(async () => {
     await dashboardStore.fetchWorkerDashboard()
   }
 })
+</script>

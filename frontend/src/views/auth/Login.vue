@@ -1,5 +1,6 @@
 <!-- File: frontend/src/views/auth/Login.vue -->
 <!-- Location: frontend/src/views/auth/Login.vue -->
+<!-- ENHANCED FOR EASY TESTING -->
 
 <template>
   <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -7,10 +8,17 @@
       <!-- Header -->
       <div class="text-center">
         <div class="mx-auto h-16 w-16 bg-blue-600 rounded-full flex items-center justify-center mb-6">
-          <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <!-- <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </div>
+          </svg> -->
+<!-- <img src="/infoassure.png" alt="" style="border-radius: 50%;">  -->
+<!-- <div class="mx-auto h-16 w-16 bg-blue-600 rounded-full flex items-center justify-center mb-6"> -->
+<div>  <img src="/infoassure.png" alt="" style="height: 48px; width: 48px; border-radius: 50%; object-fit: cover;">
+ </div>
+<!-- </div> -->
+
+
+</div>
         <h2 class="text-3xl font-bold text-gray-900">Attendance System</h2>
         <p class="mt-2 text-sm text-gray-600">Sign in to your account</p>
       </div>
@@ -85,12 +93,44 @@
         </div>
       </form>
 
-      <!-- Demo Credentials -->
-      <div class="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <h3 class="text-sm font-medium text-blue-800 mb-2">Demo Credentials:</h3>
-        <div class="space-y-1 text-xs text-blue-700">
-          <p><strong>Admin:</strong> admin@attendance.com / admin123</p>
-          <p><strong>Worker:</strong> john@attendance.com / worker123</p>
+      <!-- Quick Login Buttons for Testing -->
+      <div class="mt-8 space-y-4">
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <h3 class="text-sm font-medium text-blue-800 mb-3">Quick Login (Testing)</h3>
+          <div class="space-y-2">
+            <button
+              @click="quickLoginAdmin"
+              :disabled="loading"
+              class="w-full flex items-center justify-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-50"
+            >
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+              Login as Admin
+            </button>
+            
+            <button
+              @click="quickLoginWorker"
+              :disabled="loading"
+              class="w-full flex items-center justify-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-50"
+            >
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              Login as Worker (John)
+            </button>
+          </div>
+        </div>
+
+        <!-- Demo Credentials Info -->
+        <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+          <h3 class="text-sm font-medium text-gray-800 mb-2">Demo Credentials:</h3>
+          <div class="space-y-1 text-xs text-gray-600">
+            <p><strong>Admin:</strong> admin@attendance.com / admin123</p>
+            <p><strong>Worker:</strong> john@attendance.com / worker123</p>
+            <p><strong>Worker:</strong> jane@attendance.com / worker123</p>
+            <p><strong>Worker:</strong> mike@attendance.com / worker123</p>
+          </div>
         </div>
       </div>
     </div>
@@ -98,7 +138,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
@@ -114,6 +154,26 @@ const form = reactive({
 const errors = reactive({
   email: '',
   password: ''
+})
+
+// Check for test credentials from account switching
+onMounted(() => {
+  const testEmail = localStorage.getItem('test_email')
+  const testPassword = localStorage.getItem('test_password')
+  
+  if (testEmail && testPassword) {
+    form.email = testEmail
+    form.password = testPassword
+    
+    // Clear test credentials
+    localStorage.removeItem('test_email')
+    localStorage.removeItem('test_password')
+    
+    // Auto-login after short delay
+    setTimeout(() => {
+      handleLogin()
+    }, 500)
+  }
 })
 
 const clearErrors = () => {
@@ -156,6 +216,9 @@ const handleLogin = async () => {
       password: form.password
     })
 
+    // Show success message
+    window.showNotification?.(`Welcome ${authStore.userName}!`, 'success')
+
     // Redirect based on role
     if (authStore.isAdmin) {
       router.push('/admin/dashboard')
@@ -164,8 +227,22 @@ const handleLogin = async () => {
     }
   } catch (error) {
     console.error('Login failed:', error)
+    // Error is handled by the auth store
   } finally {
     loading.value = false
   }
+}
+
+// Quick login functions for testing
+const quickLoginAdmin = () => {
+  form.email = 'admin@attendance.com'
+  form.password = 'admin123'
+  handleLogin()
+}
+
+const quickLoginWorker = () => {
+  form.email = 'john@attendance.com'
+  form.password = 'worker123'
+  handleLogin()
 }
 </script>

@@ -11,6 +11,7 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
+   
     public function login(Request $request)
     {
         $request->validate([
@@ -21,9 +22,10 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
+            return response()->json([
+                'message' => 'The provided credentials are incorrect.',
+            'errors' => ['email' => ['Invalid credentials']]
+            ], 422);
         }
 
         if ($user->status !== 'active') {
@@ -32,8 +34,11 @@ class AuthController extends Controller
             ], 403);
         }
 
-        // Create token
-        $token = $user->createToken('auth_token')->plainTextToken;
+    // Delete old tokens for this user
+        $user->tokens()->delete();
+
+    // Create token (this bypasses CSRF completely)
+    $token = $user->createToken('auth_token', ['*'], now()->addDays(30))->plainTextToken;
 
         return response()->json([
             'message' => 'Login successful',
@@ -44,6 +49,8 @@ class AuthController extends Controller
                 'role' => $user->role,
                 'employee_id' => $user->employee_id,
                 'department' => $user->department,
+                'phone' => $user->phone,
+                'status' => $user->status,
             ],
             'token' => $token,
         ]);
@@ -67,11 +74,13 @@ class AuthController extends Controller
             'employee_id' => $request->employee_id,
             'department' => $request->department,
             'phone' => $request->phone,
-            'role' => 'worker', // Default role
+        'role' => 'worker', // Default role
             'status' => 'active',
+        'email_verified_at' => now(), // Auto-verify for simplicity
         ]);
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+    // Create token immediately
+    $token = $user->createToken('auth_token', ['*'], now()->addDays(30))->plainTextToken;
 
         return response()->json([
             'message' => 'Registration successful',
@@ -86,7 +95,6 @@ class AuthController extends Controller
             'token' => $token,
         ], 201);
     }
-
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
