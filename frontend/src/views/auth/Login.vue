@@ -78,7 +78,7 @@
             </svg>
           </span>
           <span :class="{ 'ml-6': loading }">
-            {{ loading ? 'Signing in...' : 'Sign In' }}
+            {{ loading ? 'Signing in....' : 'Sign In' }}
           </span>
         </button>
 

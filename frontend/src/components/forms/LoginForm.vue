@@ -56,7 +56,7 @@
           ></path>
         </svg>
       </span>
-      {{ loading ? "Signing in..." : "Sign In" }}
+      {{ loading ? "Signing in...." : "Sign In" }}
     </button>
   </form>
 </template>

@@ -50,7 +50,7 @@ const props = defineProps({
   },
   loadingText: {
     type: String,
-    default: 'Signing out...'
+    default: 'Signing out....'
   }
 })
 

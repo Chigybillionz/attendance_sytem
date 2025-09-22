@@ -7,15 +7,16 @@ import { RouterLink, RouterView } from "vue-router";
     <!-- <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" /> -->
 
     <div class="wrapper">
-      <!-- <HelloWorld msg="You did it!" /> -->
+      <HelloWorld msg="You did it!" />
 
       <nav>
-        <RouterLink to="/" class="home">Home</RouterLink>
-        <RouterLink to="/about" class="about">About</RouterLink>
+        <RouterLink to="/" class="home  bg-blue-700 border border-blue-200 rounded-lg p-4 hover:bg-green-600">Home</RouterLink>
+
+        <RouterLink to="/about" class="about bg-blue-50 border border-blue-200 rounded-lg p-4  hover:bg-green-600">About</RouterLink>
       </nav>
     </div>
   </header>
-
+<!-- this connect my whole appliaction to show on the web browser -->
   <RouterView />
 </template>
 
@@ -36,14 +37,14 @@ nav {
   text-align: center;
   margin-top: 2rem;
 }
-nav .home {
+/* nav .home {
   font-weight: bold;
   background: blue;
-}
-nav .about {
+} */
+/* nav .about {
   font-weight: bold;
   background: rgb(36, 30, 80);
-}
+} */
 
 nav a.router-link-exact-active {
   color: var(--color-text);
