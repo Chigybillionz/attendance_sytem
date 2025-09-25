@@ -46,9 +46,9 @@ const routes = [
     component: () => {
       const authStore = useAuthStore()
       if (authStore.isAdmin) {
-        return AdminDashboard
+        return AdminDashboard()
       } else {
-        return WorkerDashboard
+        return WorkerDashboard()
       }
     },
     meta: { 

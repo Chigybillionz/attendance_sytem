@@ -1,6 +1,6 @@
 <!-- File: frontend/src/views/admin/Dashboard.vue -->
 <!-- Location: frontend/src/views/admin/Dashboard.vue -->
-<!-- UPDATED WITH LOGOUT BUTTON -->
+<!-- UPDATED WITH USER MANAGEMENT INTEGRATION -->
 
 <template>
   <div class="space-y-6">
@@ -18,27 +18,44 @@
             <p class="text-lg font-semibold text-gray-900">{{ todayDate }}</p>
           </div>
           
-          <!-- Quick Logout Button -->
+          <!-- Quick Actions -->
           <div class="flex items-center space-x-3">
-            <div class="text-right">
-              <p class="text-sm text-gray-500">Logged in as</p>
-              <p class="text-sm font-semibold text-blue-600">{{ authStore.userName }} (Admin)</p>
-            </div>
-            
+            <!-- User Management Button -->
             <button
-              @click="handleLogout"
-              :disabled="loggingOut"
-              class="flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50"
+              @click="showUserManagement = true"
+              class="flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
             >
-              <svg v-if="!loggingOut" class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
               </svg>
-              <svg v-else class="animate-spin w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-              {{ loggingOut ? 'Signing out....' : 'Switch Account' }}
+              <!-- View Details -->
+                          Manage Users
+
+
             </button>
+            
+            <!-- User Info and Logout -->
+            <div class="flex items-center space-x-3">
+              <div class="text-right">
+                <p class="text-sm text-gray-500">Logged in as</p>
+                <p class="text-sm font-semibold text-blue-600">{{ authStore.userName }} (Admin)</p>
+              </div>
+              
+              <button
+                @click="handleLogout"
+                :disabled="loggingOut"
+                class="flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50"
+              >
+                <svg v-if="!loggingOut" class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+                <svg v-else class="animate-spin w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                {{ loggingOut ? 'Signing out....' : 'Switch Account' }}
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -53,23 +70,31 @@
           </svg>
           <div>
             <p class="text-sm font-medium text-blue-800">Testing Mode</p>
-            <p class="text-xs text-blue-700">Quick switch to test worker account</p>
+            <p class="text-xs text-blue-700">Quick switch to test worker account or manage users</p>
           </div>
         </div>
         
-        <button
-          @click="quickSwitchToWorker"
-          :disabled="switchingAccount"
-          class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-50"
-        >
-          {{ switchingAccount ? 'Switching...' : 'Test Worker Account' }}
-        </button>
+        <div class="flex space-x-2">
+          <!-- <button
+            @click="showUserManagement = true"
+            class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors"
+          >
+            Manage Users
+          </button> -->
+          <button
+            @click="quickSwitchToWorker"
+            :disabled="switchingAccount"
+            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors disabled:opacity-50"
+          >
+            {{ switchingAccount ? 'Switching...' : 'Test Worker Account' }}
+          </button>
+        </div>
       </div>
     </div>
 
     <!-- Overview Stats -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-      <div class="stat-card">
+      <div class="stat-card cursor-pointer hover:shadow-md transition-shadow" @click="showUserManagement = true">
         <div class="flex items-center">
           <div class="p-3 bg-blue-100 rounded-lg">
             <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -79,6 +104,7 @@
           <div class="ml-4">
             <p class="text-sm text-gray-600">Total Employees</p>
             <p class="text-2xl font-bold text-gray-900">{{ overview.total_employees || 0 }}</p>
+            <p class="text-xs text-blue-600 font-medium mt-1">Click to manage →</p>
           </div>
         </div>
       </div>
@@ -126,11 +152,12 @@
       </div>
     </div>
 
+    <!-- Main Dashboard Content (existing charts and data) -->
     <!-- Charts and Recent Activity -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <!-- Weekly Chart -->
       <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h2 class="text-lg font-semibold text-gray-900 mb-4">Weekly Attendance</h2>
+        <h2 class="text-lg font-semibold text-gray-900 mb-4 bg-green-100">Weekly Attendance</h2>
         
         <div v-if="weeklyChart && weeklyChart.length" class="space-y-3">
           <div 
@@ -157,7 +184,7 @@
 
       <!-- Recent Attendance -->
       <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h2 class="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h2>
+        <h2 class="text-lg font-semibold text-gray-900 mb-4 bg-green-100">Recent Activity</h2>
         
         <div v-if="recentAttendance && recentAttendance.length" class="space-y-3">
           <div 
@@ -224,6 +251,30 @@
         </table>
       </div>
     </div>
+
+    <!-- User Management Modal -->
+    <div v-if="showUserManagement" class="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center p-4 z-50 overflow-y-auto">
+      <div class="bg-white rounded-lg w-full max-w-7xl my-8 max-h-[calc(100vh-4rem)] overflow-hidden">
+        <div class="p-6 border-b border-gray-200">
+          <div class="flex justify-between items-center">
+            <h3 class="text-xl font-semibold text-gray-900">User Management System</h3>
+            <button 
+              @click="showUserManagement = false" 
+              class="text-gray-500 hover:text-gray-700"
+            >
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <p class="text-gray-600 mt-1">Create, read, update, and delete user accounts</p>
+        </div>
+
+        <div class="overflow-y-auto max-h-[calc(100vh-12rem)]">
+          <UserManagement />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -233,6 +284,7 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useDashboardStore } from '@/stores/dashboard'
 import { formatDate, formatTime, getStatusColor, capitalize } from '@/utils/helpers'
+import UserManagement from '@/views/admin/UserManagement.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -241,6 +293,7 @@ const dashboardStore = useDashboardStore()
 // Component state
 const loggingOut = ref(false)
 const switchingAccount = ref(false)
+const showUserManagement = ref(false)
 
 // Computed properties
 const todayDate = computed(() => formatDate(new Date()))
@@ -305,3 +358,29 @@ onMounted(async () => {
   await dashboardStore.fetchAdminDashboard()
 })
 </script>
+
+<style scoped>
+.stat-card {
+  @apply bg-white rounded-lg shadow-sm border border-gray-200 p-6 transition-all duration-200;
+}
+
+.stat-card:hover {
+  @apply transform -translate-y-1;
+}
+
+.table {
+  @apply min-w-full divide-y divide-gray-200;
+}
+
+.table th {
+  @apply px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+}
+
+.table td {
+  @apply px-6 py-4 whitespace-nowrap text-sm text-gray-900;
+}
+
+.table tbody tr:hover {
+  @apply bg-gray-50;
+}
+</style>

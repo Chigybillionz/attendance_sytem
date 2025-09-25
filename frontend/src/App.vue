@@ -12,12 +12,13 @@ import { RouterLink, RouterView } from "vue-router";
       <nav>
         <RouterLink to="/" class="home  bg-blue-700 border border-blue-200 rounded-lg p-4 hover:bg-green-600">Home</RouterLink>
 
-        <RouterLink to="/about" class="about bg-blue-50 border border-blue-200 rounded-lg p-4  hover:bg-green-600">About</RouterLink>
+        <RouterLink to="/about" class="about bg-blue-50 border border-blue-200 rounded-lg p-4  hover:bg-green-600 text-blue-900">About</RouterLink>
       </nav>
     </div>
   </header>
 <!-- this connect my whole appliaction to show on the web browser -->
   <RouterView />
+
 </template>
 
 <style scoped>

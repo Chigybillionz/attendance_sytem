@@ -6,9 +6,9 @@
 <template>
   <div class="space-y-6">
     <!-- Page Header -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <div class="rounded-lg shadow-sm border border-gray-200 p-6 bg-green-200">
       <h1 class="text-2xl font-bold text-gray-900">Attendance Reports</h1>
-      <p class="text-gray-600 mt-1">Detailed attendance analysis and reports</p>
+      <p class="text-gray-600 mt-1 bg-green-100">Detailed attendance analysis and reports</p>
     </div>
 
     <!-- Filters -->
@@ -121,12 +121,12 @@
     </div>
 
     <!-- Attendance Records -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+    <div class="bg-green-200 rounded-lg shadow-sm border border-gray-200">
       <div class="p-6 border-b border-gray-200">
-        <h2 class="text-lg font-semibold text-gray-900">Attendance Records</h2>
+        <h2 class="text-lg font-semibold text-gray-900 bg-green-100">Attendance Records</h2>
       </div>
 
-      <div v-if="loading" class="p-6 text-center">
+      <div v-if="loading" class="p-6 text-center bg-green-200 ">
         <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
         <p class="mt-2 text-gray-500">Loading...</p>
       </div>
@@ -196,8 +196,7 @@
               @click="changePage(pagination.current_page + 1)"
               :disabled="pagination.current_page >= pagination.last_page"
               class="btn-secondary text-sm"
-              :class="{ 'opacity-50 cursor-not-allowed': pagination.current_page >= pagination.last_page }"
-            >
+              :class="{ 'opacity-50 cursor-not-allowed': pagination.current_page >= pagination.last_page }">
               Next
             </button>
           </div>

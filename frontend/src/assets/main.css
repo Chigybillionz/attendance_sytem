@@ -1,73 +1,263 @@
+/* File: frontend/src/assets/main.css */
+/* Location: frontend/src/assets/main.css */
+/* UPDATED WITH DARK MODE SUPPORT */
+
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
 @layer base {
+
+  /* Light mode base styles */
   body {
-    @apply bg-gray-50 text-gray-900 font-sans;
+    @apply bg-gray-50 text-gray-900 font-sans transition-colors duration-200;
+  }
+
+  /* Dark mode base styles */
+  .dark body {
+    @apply bg-gray-900 text-gray-100;
   }
 
   * {
     @apply box-border;
   }
+
+  /* Smooth transitions for theme changes */
+  * {
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+
+  /* Custom scrollbar for dark mode */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-100 dark:bg-gray-800;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 dark:bg-gray-600 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400 dark:bg-gray-500;
+  }
 }
 
 @layer components {
+
+  /* Button Components */
   .btn-primary {
     @apply bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+  }
+
+  .dark .btn-primary {
+    @apply focus:ring-offset-gray-800;
   }
 
   .btn-secondary {
     @apply bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2;
   }
 
+  .dark .btn-secondary {
+    @apply bg-gray-700 hover:bg-gray-600 text-gray-300 focus:ring-offset-gray-800;
+  }
+
   .btn-danger {
     @apply bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2;
   }
 
+  .dark .btn-danger {
+    @apply focus:ring-offset-gray-800;
+  }
+
+  /* Input Components */
   .input-field {
     @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200;
   }
 
-  .card {
-    @apply bg-white rounded-lg shadow-md p-6 border border-gray-200;
+  .dark .input-field {
+    @apply bg-gray-700 border-gray-600 text-gray-100 placeholder-gray-400 focus:ring-blue-400;
   }
 
+  /* Card Components */
+  .card {
+    @apply bg-white rounded-lg shadow-md p-6 border border-gray-200 transition-colors;
+  }
+
+  .dark .card {
+    @apply bg-gray-800 border-gray-700 shadow-xl shadow-gray-900/20;
+  }
+
+  /* Navigation Components */
   .nav-link {
     @apply flex items-center space-x-3 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors duration-200;
+  }
+
+  .dark .nav-link {
+    @apply text-gray-300 hover:bg-gray-700;
   }
 
   .nav-link-active {
     @apply bg-blue-100 text-blue-700 font-medium;
   }
 
-  .stat-card {
-    @apply bg-white rounded-lg p-6 shadow-sm border border-gray-200;
+  .dark .nav-link-active {
+    @apply bg-blue-900/30 text-blue-300;
   }
 
+  /* Stat Card Components */
+  .stat-card {
+    @apply bg-white rounded-lg p-6 shadow-sm border border-gray-200 transition-colors hover:shadow-md;
+  }
+
+  .dark .stat-card {
+    @apply bg-gray-800 border-gray-700 shadow-lg shadow-gray-900/20 hover:shadow-xl;
+  }
+
+  /* Table Components */
   .table-container {
-    @apply overflow-x-auto shadow-sm border border-gray-200 rounded-lg;
+    @apply overflow-x-auto shadow-sm border border-gray-200 rounded-lg transition-colors;
+  }
+
+  .dark .table-container {
+    @apply border-gray-700 shadow-lg shadow-gray-900/20;
   }
 
   .table {
     @apply min-w-full divide-y divide-gray-200;
   }
 
+  .dark .table {
+    @apply divide-gray-700;
+  }
+
   .table th {
     @apply px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
   }
 
+  .dark .table th {
+    @apply bg-gray-700 text-gray-400;
+  }
+
   .table td {
-    @apply px-6 py-4 whitespace-nowrap text-sm text-gray-900;
+    @apply px-6 py-4 whitespace-nowrap text-sm text-gray-900 bg-white;
+  }
+
+  .dark .table td {
+    @apply text-gray-300 bg-gray-800;
+  }
+
+  .table tbody tr:hover {
+    @apply bg-gray-50;
+  }
+
+  .dark .table tbody tr:hover {
+    @apply bg-gray-700;
+  }
+
+  /* Modal Components */
+  .modal-backdrop {
+    @apply fixed inset-0 bg-black bg-opacity-50 transition-opacity;
+  }
+
+  .dark .modal-backdrop {
+    @apply bg-opacity-70;
+  }
+
+  /* Status Badge Components */
+  .status-present {
+    @apply bg-green-100 text-green-800;
+  }
+
+  .dark .status-present {
+    @apply bg-green-900/30 text-green-300;
+  }
+
+  .status-late {
+    @apply bg-yellow-100 text-yellow-800;
+  }
+
+  .dark .status-late {
+    @apply bg-yellow-900/30 text-yellow-300;
+  }
+
+  .status-absent {
+    @apply bg-red-100 text-red-800;
+  }
+
+  .dark .status-absent {
+    @apply bg-red-900/30 text-red-300;
+  }
+
+  .status-active {
+    @apply bg-green-100 text-green-800;
+  }
+
+  .dark .status-active {
+    @apply bg-green-900/30 text-green-300;
+  }
+
+  .status-inactive {
+    @apply bg-red-100 text-red-800;
+  }
+
+  .dark .status-inactive {
+    @apply bg-red-900/30 text-red-300;
+  }
+
+  /* Loading Components */
+  .loading-spinner {
+    @apply animate-spin rounded-full border-2 border-gray-200 border-t-blue-600;
+  }
+
+  .dark .loading-spinner {
+    @apply border-gray-700 border-t-blue-400;
+  }
+
+  /* Notification Components */
+  .notification-success {
+    @apply bg-green-100 text-green-800 border-green-200;
+  }
+
+  .dark .notification-success {
+    @apply bg-green-900/30 text-green-300 border-green-700;
+  }
+
+  .notification-error {
+    @apply bg-red-100 text-red-800 border-red-200;
+  }
+
+  .dark .notification-error {
+    @apply bg-red-900/30 text-red-300 border-red-700;
+  }
+
+  .notification-info {
+    @apply bg-blue-100 text-blue-800 border-blue-200;
+  }
+
+  .dark .notification-info {
+    @apply bg-blue-900/30 text-blue-300 border-blue-700;
   }
 }
 
 @layer utilities {
+
+  /* Theme-specific utilities */
   .text-primary {
     @apply text-blue-600;
   }
 
+  .dark .text-primary {
+    @apply text-blue-400;
+  }
+
   .bg-primary {
+    @apply bg-blue-600;
+  }
+
+  .dark .bg-primary {
     @apply bg-blue-600;
   }
 
@@ -75,6 +265,11 @@
     @apply border-blue-600;
   }
 
+  .dark .border-primary {
+    @apply border-blue-400;
+  }
+
+  /* Animation utilities */
   .fade-enter-active,
   .fade-leave-active {
     transition: opacity 0.3s ease;
@@ -83,5 +278,47 @@
   .fade-enter-from,
   .fade-leave-to {
     opacity: 0;
+  }
+
+  .slide-up-enter-active,
+  .slide-up-leave-active {
+    transition: all 0.3s ease;
+  }
+
+  .slide-up-enter-from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+
+  .slide-up-leave-to {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+
+  /* Glass effect utilities */
+  .glass {
+    @apply backdrop-blur-md bg-white/80 border border-white/20;
+  }
+
+  .dark .glass {
+    @apply bg-gray-800/80 border-gray-700/20;
+  }
+
+  /* Gradient utilities */
+  .gradient-primary {
+    @apply bg-gradient-to-r from-blue-600 to-purple-600;
+  }
+
+  .dark .gradient-primary {
+    @apply from-blue-500 to-purple-500;
+  }
+
+  /* Focus utilities for dark mode */
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+  }
+
+  .dark .focus-ring {
+    @apply focus:ring-blue-400 focus:ring-offset-gray-800;
   }
 }

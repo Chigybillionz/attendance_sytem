@@ -150,7 +150,7 @@
           </button>
           
           <div v-if="!canClockIn && !canClockOut" class="text-center">
-            <p class="text-gray-500 mb-4">You have completed attendance for today</p>
+            <p class="text-black mb-4 bg-blue-600">You have completed attendance for today</p>
             <div class="bg-green-50 rounded-lg p-4">
               <p class="text-sm text-green-600">Total Hours: {{ todayAttendance?.total_hours || 0 }}h</p>
             </div>
