@@ -5,11 +5,11 @@
 <template>
   <div class="space-y-6">
     <!-- Welcome Header with Logout -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <div class="bg-green-200 rounded-lg shadow-sm border border-gray-200 p-6">
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-          <p class="text-gray-600 mt-1">Overview of attendance system</p>
+          <h1 class="text-2xl font-bold text-gray-900 ">Admin Dashboard</h1>
+          <p class="text-gray-600 mt-1 bg-green-100">Overview of attendance system</p>
         </div>
         <div class="flex items-center space-x-4">
           <!-- Current Date -->
@@ -93,7 +93,7 @@
     </div>
 
     <!-- Overview Stats -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 bg-green-200">
       <div class="stat-card cursor-pointer hover:shadow-md transition-shadow" @click="showUserManagement = true">
         <div class="flex items-center">
           <div class="p-3 bg-blue-100 rounded-lg">
@@ -154,9 +154,9 @@
 
     <!-- Main Dashboard Content (existing charts and data) -->
     <!-- Charts and Recent Activity -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-7 bg-green-200">
       <!-- Weekly Chart -->
-      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <div class="bg-green-100 rounded-lg shadow-sm border border-gray-200 p-6">
         <h2 class="text-lg font-semibold text-gray-900 mb-4 bg-green-100">Weekly Attendance</h2>
         
         <div v-if="weeklyChart && weeklyChart.length" class="space-y-3">
@@ -215,7 +215,7 @@
     </div>
 
     <!-- Department Stats -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <div class="bg-green-200 rounded-lg shadow-sm border border-gray-200 p-6">
       <h2 class="text-lg font-semibold text-gray-900 mb-4">Department Attendance Today</h2>
       
       <div v-if="departmentStats && departmentStats.length" class="overflow-x-auto">

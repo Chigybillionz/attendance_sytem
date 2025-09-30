@@ -5,13 +5,13 @@
 <template>
   <div class="space-y-6">
     <!-- Welcome Header with Logout -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-      <div class="flex items-center justify-between">
+    <div class="bg-green-300 rounded-lg shadow-sm border border-gray-200 p-6">
+      <div class="flex items-center justify-between ">
         <div>
-          <h1 class="text-2xl font-bold text-gray-900">
+          <h1 class="text-1xl sm:text-2xl font-bold text-gray-900">
             {{ greeting }}, {{ authStore.userName }}!
           </h1>
-          <p class="text-gray-600 mt-1">
+          <p class="text-gray-600 mt-1 sm:text-2xl text-1xl">
             Employee ID: {{ authStore.user?.employee_id }} | {{ authStore.user?.department }}
           </p>
         </div>
@@ -26,7 +26,7 @@
           <div class="flex items-center space-x-3">
             <div class="text-right">
               <p class="text-sm text-gray-500">Logged in as</p>
-              <p class="text-sm font-semibold text-green-600">{{ authStore.userName }} (Worker)</p>
+              <p class="text-sm font-semibold text-black">{{ authStore.userName }} (Worker)</p>
             </div>
             
             <button
@@ -73,10 +73,10 @@
 
 
     <!-- Quick Actions & Today's Status -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 bg-green-300">
       <!-- Clock In/Out Card -->
       <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h2 class="text-lg font-semibold text-gray-900 mb-4">Today's Attendance</h2>
+        <h2 class="text-lg font-semibold text-gray-900 mb-4 bg-green-300">Today's Attendance</h2>
         
         <div v-if="todayAttendance" class="space-y-4">
           <!-- Status Display -->
@@ -159,7 +159,7 @@
       </div>
 
       <!-- Monthly Stats -->
-      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <div class="bg-green-300 rounded-lg shadow-sm border border-gray-200 p-6">
         <h2 class="text-lg font-semibold text-gray-900 mb-4">This Month's Summary</h2>
         
         <div v-if="monthlyStats" class="space-y-4">
@@ -190,17 +190,17 @@
     </div>
 
     <!-- Weekly Hours Chart -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <div class="bg-green-300 rounded-lg shadow-sm border border-gray-200 p-6">
       <h2 class="text-lg font-semibold text-gray-900 mb-4">Weekly Hours</h2>
       
       <div v-if="weeklyHours && weeklyHours.length" class="space-y-2">
         <div 
-          v-for="day in weeklyHours" 
+          v-for="day in WeeklyeeklyHours" 
           :key="day.date"
-          class="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-gray-50"
+          class="flex items-center justify-betusereen py-2 px-3 rounded-lg hover:bg-gray-50"
         >
           <div class="flex items-center space-x-3">
-            <div class="w-16 text-sm font-medium text-gray-600">{{ day.day }}</div>
+            <div class="This Month's Summary-16 text-sm font-medium text-gray-600">{{ day.day }}</div>
             <div class="text-sm text-gray-500">{{ day.date }}</div>
           </div>
           <div class="flex items-center space-x-3">
@@ -217,7 +217,7 @@
     </div>
 
     <!-- Recent Attendance -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <div class="bg-green-300 rounded-lg shadow-sm border border-gray-200 p-6">
       <h2 class="text-lg font-semibold text-gray-900 mb-4">Recent Attendance</h2>
       
       <div v-if="recentAttendance && recentAttendance.length" class="overflow-x-auto">
