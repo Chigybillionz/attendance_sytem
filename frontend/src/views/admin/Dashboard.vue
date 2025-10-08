@@ -5,16 +5,16 @@
 <template>
   <div class="space-y-6">
     <!-- Welcome Header with Logout -->
-    <div class="bg-green-200 rounded-lg shadow-sm border border-gray-200 p-6">
+    <div class="bg-blue-600 rounded-lg shadow-sm border border-gray-200 p-6">
       <div class="flex items-center justify-between">
         <div>
           <h1 class="text-2xl font-bold text-gray-900 ">Admin Dashboard</h1>
-          <p class="text-gray-600 mt-1 bg-green-100">Overview of attendance system</p>
+          <p class="text-gray-600 mt-1 bg-white/100">Overview of attendance system</p>
         </div>
         <div class="flex items-center space-x-4">
           <!-- Current Date -->
           <div class="text-right hidden sm:block">
-            <p class="text-sm text-gray-500">Today's Date</p>
+            <p class="text-sm text-gray-500 bg-white/100">Today's Date</p>
             <p class="text-lg font-semibold text-gray-900">{{ todayDate }}</p>
           </div>
           
@@ -37,7 +37,7 @@
             <!-- User Info and Logout -->
             <div class="flex items-center space-x-3">
               <div class="text-right">
-                <p class="text-sm text-gray-500">Logged in as</p>
+                <p class="text-sm text-white/100">Logged in as</p>
                 <p class="text-sm font-semibold text-blue-600">{{ authStore.userName }} (Admin)</p>
               </div>
               
@@ -93,12 +93,13 @@
     </div>
 
     <!-- Overview Stats -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 bg-green-200">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 bg-blue-600">
       <div class="stat-card cursor-pointer hover:shadow-md transition-shadow" @click="showUserManagement = true">
         <div class="flex items-center">
           <div class="p-3 bg-blue-100 rounded-lg">
             <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" 
+              stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
           </div>
           <div class="ml-4">
@@ -154,9 +155,9 @@
 
     <!-- Main Dashboard Content (existing charts and data) -->
     <!-- Charts and Recent Activity -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-7 bg-green-200">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-7 bg-blue-600">
       <!-- Weekly Chart -->
-      <div class="bg-green-100 rounded-lg shadow-sm border border-gray-200 p-6">
+      <div class="bg-blue-300 rounded-lg shadow-sm border border-gray-200 p-6">
         <h2 class="text-lg font-semibold text-gray-900 mb-4 bg-green-100">Weekly Attendance</h2>
         
         <div v-if="weeklyChart && weeklyChart.length" class="space-y-3">
@@ -166,13 +167,13 @@
             class="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-gray-50"
           >
             <div class="flex items-center space-x-3">
-              <div class="w-16 text-sm font-medium text-gray-600">{{ day.day }}</div>
+              <div class="w-16 text-sm font-medium text-black">{{ day.day }}</div>
               <div class="text-sm text-gray-500">{{ day.date }}</div>
             </div>
             <div class="flex items-center space-x-3">
               <div class="w-32 bg-gray-200 rounded-full h-2">
                 <div 
-                  class="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                  class="bg-green-500 h-2 rounded-full transition-all duration-300"
                   :style="`width: ${Math.min((day.attendance / overview.total_employees) * 100, 100)}%`"
                 ></div>
               </div>
@@ -183,7 +184,7 @@
       </div>
 
       <!-- Recent Attendance -->
-      <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <div class="bg-blue-300 rounded-lg shadow-sm border border-gray-200 p-6">
         <h2 class="text-lg font-semibold text-gray-900 mb-4 bg-green-100">Recent Activity</h2>
         
         <div v-if="recentAttendance && recentAttendance.length" class="space-y-3">
@@ -215,8 +216,8 @@
     </div>
 
     <!-- Department Stats -->
-    <div class="bg-green-200 rounded-lg shadow-sm border border-gray-200 p-6">
-      <h2 class="text-lg font-semibold text-gray-900 mb-4">Department Attendance Today</h2>
+    <div class="bg-blue-300 rounded-lg shadow-sm border border-gray-200 p-6">
+      <h2 class="text-lg font-semibold text-gray-900 mb-4 bg-green-100">Department Attendance Today</h2>
       
       <div v-if="departmentStats && departmentStats.length" class="overflow-x-auto">
         <table class="table">

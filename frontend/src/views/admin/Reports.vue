@@ -6,9 +6,9 @@
 <template>
   <div class="space-y-6">
     <!-- Page Header -->
-    <div class="rounded-lg shadow-sm border border-gray-200 p-6 bg-green-200">
+    <div class="rounded-lg shadow-sm border border-gray-200 p-6 bg-blue-600">
       <h1 class="text-2xl font-bold text-gray-900">Attendance Reports</h1>
-      <p class="text-gray-600 mt-1 bg-green-100">Detailed attendance analysis and reports</p>
+      <p class="text-gray-600 mt-1 bg-green-100 w-fit">Detailed attendance analysis and reports</p>
     </div>
 
     <!-- Filters -->
@@ -62,7 +62,7 @@
     </div>
 
     <!-- Summary Stats -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 bg-blue-300">
       <div class="stat-card">
         <div class="flex items-center">
           <div class="p-3 bg-blue-100 rounded-lg">
@@ -121,9 +121,9 @@
     </div>
 
     <!-- Attendance Records -->
-    <div class="bg-green-200 rounded-lg shadow-sm border border-gray-200">
+    <div class="bg-blue-600 rounded-lg shadow-sm border border-gray-200">
       <div class="p-6 border-b border-gray-200">
-        <h2 class="text-lg font-semibold text-gray-900 bg-green-100">Attendance Records</h2>
+        <h2 class="text-lg font-semibold text-gray-900 bg-green-100 w-fit">Attendance Records</h2>
       </div>
 
       <div v-if="loading" class="p-6 text-center bg-green-200 ">
@@ -148,7 +148,7 @@
             <tr v-for="record in attendanceRecords" :key="record.id">
               <td>
                 <div>
-                  <p class="font-medium text-gray-900">{{ record.user.name }}</p>
+                  <p class="font-medium text-black">{{ record.user.name }}</p>
                   <p class="text-sm text-gray-500">{{ record.user.employee_id }}</p>
                 </div>
               </td>
