@@ -9,6 +9,8 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\DashboardController;
+use App\Http\Controllers\Api\ContactController; // ADD THIS LINE
+
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +31,10 @@ Route::get('/test', function () {
 Route::prefix('auth')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('register', [AuthController::class, 'register']);
+
 });
+// Add this after the auth routes (before protected routes)
+Route::post('contact', [App\Http\Controllers\Api\ContactController::class, 'submitContactForm']);
 
 // Protected routes (authentication required)
 Route::middleware('auth:sanctum')->group(function () {
@@ -38,6 +43,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('auth')->group(function () {
         Route::post('logout', [AuthController::class, 'logout']);
         Route::get('user', [AuthController::class, 'user']);
+      
     });
 
     // Dashboard routes
@@ -77,6 +83,13 @@ Route::middleware('auth:sanctum')->group(function () {
         // For your existing routes compatibility
         Route::get('departments', [UserController::class, 'getDepartments']); // Alias for departments
     });
+      // contact form
+        Route::prefix('contacts')->group(function () {
+        Route::get('/', [App\Http\Controllers\Api\ContactController::class, 'index']);
+        Route::get('{id}', [App\Http\Controllers\Api\ContactController::class, 'show']);
+        Route::patch('{id}/status', [App\Http\Controllers\Api\ContactController::class, 'updateStatus']);
+        Route::delete('{id}', [App\Http\Controllers\Api\ContactController::class, 'destroy']);
+        });
 });
 
 // Fallback route for API - handles 404s
@@ -86,14 +99,21 @@ Route::fallback(function () {
         'available_endpoints' => [
             'POST /api/auth/login' => 'User login',
             'POST /api/auth/register' => 'User registration',
+                                    'POST /api/contact' => 'Submit contact form',
+
             'GET /api/test' => 'Test API connection',
             'GET /api/users' => 'List users (Admin)',
             'POST /api/users' => 'Create user (Admin)',
             'GET /api/users/{id}' => 'Get user details',
             'PUT /api/users/{id}' => 'Update user',
+
             'DELETE /api/users/{id}' => 'Delete user (Admin)',
             'PATCH /api/users/{id}/status' => 'Update user status (Admin)',
-            'POST /api/users/bulk-action' => 'Bulk user actions (Admin)'
+            'POST /api/users/bulk-action' => 'Bulk user actions (Admin)',
+              'GET /api/contacts' => 'List contacts (Admin)',
+            'GET /api/contacts/{id}' => 'View contact (Admin)',
+            'PATCH /api/contacts/{id}/status' => 'Update contact status (Admin)',
+            'DELETE /api/contacts/{id}' => 'Delete contact (Admin)'
         ]
     ], 404);
 });

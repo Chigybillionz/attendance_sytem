@@ -11,22 +11,25 @@
           <p class="text-gray-600 mt-1">Manage system users and their permissions</p>
         </div>
         <div class="flex items-center space-x-3">
-          <button
-            @click="refreshUsers"
-            :disabled="loading"
-            class="btn-secondary"
-          >
+          <button @click="refreshUsers" :disabled="loading" class="btn-secondary">
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+              />
             </svg>
-            {{ loading ? 'Refreshing!!!' : 'Refresh' }}
+            {{ loading ? "Refreshing!!!" : "Refresh" }}
           </button>
-          <button
-            @click="showCreateModal = true"
-            class="btn-primary"
-          >
+          <button @click="showCreateModal = true" class="btn-primary">
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+              />
             </svg>
             Create User..
           </button>
@@ -73,10 +76,8 @@
     <div class="bg-white rounded-lg shadow-sm border border-gray-200">
       <div class="p-6 border-b border-gray-200">
         <div class="flex items-center justify-between">
-          <h3 class="text-lg font-semibold text-gray-900">
-            Users ({{ users.total || 0 }})
-          </h3>
-          
+          <h3 class="text-lg font-semibold text-gray-900">Users ({{ users.total || 0 }})</h3>
+
           <!-- Bulk Actions -->
           <div v-if="selectedUsers.length > 0" class="flex items-center space-x-3">
             <span class="text-sm text-gray-600">{{ selectedUsers.length }} selected</span>
@@ -137,12 +138,7 @@
           <tbody>
             <tr v-for="user in users.data" :key="user.id">
               <td>
-                <input
-                  type="checkbox"
-                  :value="user.id"
-                  v-model="selectedUsers"
-                  class="rounded"
-                />
+                <input type="checkbox" :value="user.id" v-model="selectedUsers" class="rounded" />
               </td>
               <td>
                 <div class="flex items-center space-x-3">
@@ -159,20 +155,28 @@
                 </div>
               </td>
               <td>
-                <span 
+                <span
                   class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
-                  :class="user.role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'"
+                  :class="
+                    user.role === 'admin'
+                      ? 'bg-purple-100 text-purple-800'
+                      : 'bg-blue-100 text-blue-800'
+                  "
                 >
                   {{ capitalize(user.role) }}
                 </span>
               </td>
               <td>
-                <span class="text-gray-900">{{ user.department || 'N/A' }}</span>
+                <span class="text-gray-900">{{ user.department || "N/A" }}</span>
               </td>
               <td>
-                <span 
+                <span
                   class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
-                  :class="user.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
+                  :class="
+                    user.status === 'active'
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-red-100 text-red-800'
+                  "
                 >
                   {{ capitalize(user.status) }}
                 </span>
@@ -208,15 +212,28 @@
 
       <!-- Empty State -->
       <div v-else class="p-8 text-center">
-        <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+        <svg
+          class="w-12 h-12 text-gray-400 mx-auto mb-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+          />
         </svg>
         <p class="text-gray-600">No users found</p>
         <p class="text-gray-500 text-sm mt-1">Try adjusting your search criteria</p>
       </div>
 
       <!-- Pagination -->
-      <div v-if="users.data && users.data.length && users.last_page > 1" class="p-6 border-t border-gray-200">
+      <div
+        v-if="users.data && users.data.length && users.last_page > 1"
+        class="p-6 border-t border-gray-200"
+      >
         <div class="flex items-center justify-between">
           <div class="text-sm text-gray-700">
             Showing {{ users.from || 0 }} to {{ users.to || 0 }} of {{ users.total || 0 }} results
@@ -245,13 +262,21 @@
     </div>
 
     <!-- Create User Modal -->
-    <div v-if="showCreateModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div
+      v-if="showCreateModal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+    >
       <div class="bg-white rounded-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
         <div class="flex justify-between items-center mb-6">
           <h3 class="text-xl font-semibold">Create New User</h3>
           <button @click="closeCreateModal" class="text-gray-500 hover:text-gray-700">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
@@ -267,13 +292,21 @@
     </div>
 
     <!-- Edit User Modal -->
-    <div v-if="showEditModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div
+      v-if="showEditModal"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+    >
       <div class="bg-white rounded-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
         <div class="flex justify-between items-center mb-6">
           <h3 class="text-xl font-semibold">Edit User</h3>
           <button @click="closeEditModal" class="text-gray-500 hover:text-gray-700">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
             </svg>
           </button>
         </div>
@@ -376,19 +409,11 @@
           </div>
 
           <div class="flex space-x-3">
-            <button
-              type="button"
-              @click="closeEditModal"
-              class="flex-1 btn-secondary"
-            >
+            <button type="button" @click="closeEditModal" class="flex-1 btn-secondary">
               Cancel
             </button>
-            <button
-              type="submit"
-              :disabled="updateLoading"
-              class="flex-1 btn-primary"
-            >
-              {{ updateLoading ? 'Updating...' : 'Update User' }}
+            <button type="submit" :disabled="updateLoading" class="flex-1 btn-primary">
+              {{ updateLoading ? "Updating..." : "Update User" }}
             </button>
           </div>
         </form>
@@ -396,14 +421,22 @@
     </div>
 
     <!-- User Details Modal -->
-    <div v-if="showDetailsModal && selectedUserDetails" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div
+      v-if="showDetailsModal && selectedUserDetails"
+      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50"
+    >
       <div class="bg-white rounded-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div class="p-6 border-b border-gray-200">
           <div class="flex justify-between items-center">
             <h3 class="text-xl font-semibold">User Details</h3>
             <button @click="closeDetailsModal" class="text-gray-500 hover:text-gray-700">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
@@ -419,9 +452,13 @@
                 </span>
               </div>
               <div>
-                <h4 class="text-lg font-semibold text-gray-900">{{ selectedUserDetails.user.name }}</h4>
+                <h4 class="text-lg font-semibold text-gray-900">
+                  {{ selectedUserDetails.user.name }}
+                </h4>
                 <p class="text-gray-600">{{ selectedUserDetails.user.email }}</p>
-                <p class="text-sm text-gray-500">Employee ID: {{ selectedUserDetails.user.employee_id }}</p>
+                <p class="text-sm text-gray-500">
+                  Employee ID: {{ selectedUserDetails.user.employee_id }}
+                </p>
               </div>
             </div>
 
@@ -432,20 +469,24 @@
               </div>
               <div>
                 <p class="text-sm font-medium text-gray-500">Status</p>
-                <span 
+                <span
                   class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
-                  :class="selectedUserDetails.user.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
+                  :class="
+                    selectedUserDetails.user.status === 'active'
+                      ? 'bg-green-100 text-green-800'
+                      : 'bg-red-100 text-red-800'
+                  "
                 >
                   {{ capitalize(selectedUserDetails.user.status) }}
                 </span>
               </div>
               <div>
                 <p class="text-sm font-medium text-gray-500">Department</p>
-                <p class="text-gray-900">{{ selectedUserDetails.user.department || 'N/A' }}</p>
+                <p class="text-gray-900">{{ selectedUserDetails.user.department || "N/A" }}</p>
               </div>
               <div>
                 <p class="text-sm font-medium text-gray-500">Phone</p>
-                <p class="text-gray-900">{{ selectedUserDetails.user.phone || 'N/A' }}</p>
+                <p class="text-gray-900">{{ selectedUserDetails.user.phone || "N/A" }}</p>
               </div>
               <div>
                 <p class="text-sm font-medium text-gray-500">Joined</p>
@@ -459,19 +500,27 @@
             <h5 class="font-medium text-gray-900 mb-3">Attendance Statistics</h5>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div class="bg-blue-50 p-3 rounded-lg text-center">
-                <p class="text-2xl font-bold text-blue-600">{{ selectedUserDetails.stats.total_attendance_days }}</p>
+                <p class="text-2xl font-bold text-blue-600">
+                  {{ selectedUserDetails.stats.total_attendance_days }}
+                </p>
                 <p class="text-sm text-blue-700">Total Days</p>
               </div>
               <div class="bg-green-50 p-3 rounded-lg text-center">
-                <p class="text-2xl font-bold text-green-600">{{ selectedUserDetails.stats.present_days }}</p>
+                <p class="text-2xl font-bold text-green-600">
+                  {{ selectedUserDetails.stats.present_days }}
+                </p>
                 <p class="text-sm text-green-700">Present</p>
               </div>
               <div class="bg-yellow-50 p-3 rounded-lg text-center">
-                <p class="text-2xl font-bold text-yellow-600">{{ selectedUserDetails.stats.late_days }}</p>
+                <p class="text-2xl font-bold text-yellow-600">
+                  {{ selectedUserDetails.stats.late_days }}
+                </p>
                 <p class="text-sm text-yellow-700">Late</p>
               </div>
               <div class="bg-red-50 p-3 rounded-lg text-center">
-                <p class="text-2xl font-bold text-red-600">{{ selectedUserDetails.stats.absent_days }}</p>
+                <p class="text-2xl font-bold text-red-600">
+                  {{ selectedUserDetails.stats.absent_days }}
+                </p>
                 <p class="text-sm text-red-700">Absent</p>
               </div>
             </div>
@@ -481,9 +530,14 @@
           <div>
             <h5 class="font-medium text-gray-900 mb-3">Recent Attendance</h5>
             <div class="space-y-2">
-              <div v-if="selectedUserDetails.user.attendances && selectedUserDetails.user.attendances.length">
-                <div 
-                  v-for="attendance in selectedUserDetails.user.attendances.slice(0, 5)" 
+              <div
+                v-if="
+                  selectedUserDetails.user.attendances &&
+                  selectedUserDetails.user.attendances.length
+                "
+              >
+                <div
+                  v-for="attendance in selectedUserDetails.user.attendances.slice(0, 5)"
                   :key="attendance.id"
                   class="flex items-center justify-between py-2 px-3 bg-gray-50 rounded"
                 >
@@ -496,7 +550,7 @@
                       </span>
                     </p>
                   </div>
-                  <span 
+                  <span
                     class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
                     :class="getStatusColor(attendance.status)"
                   >
@@ -512,17 +566,16 @@
 
           <!-- Action Buttons -->
           <div class="mt-6 flex space-x-3">
-            <button
-              @click="editUser(selectedUserDetails.user)"
-              class="btn-primary"
-            >
+            <button @click="editUser(selectedUserDetails.user)" class="btn-primary">
               Edit User
             </button>
             <button
               @click="toggleUserStatus(selectedUserDetails.user)"
-              :class="selectedUserDetails.user.status === 'active' ? 'btn-secondary' : 'btn-primary'"
+              :class="
+                selectedUserDetails.user.status === 'active' ? 'btn-secondary' : 'btn-primary'
+              "
             >
-              {{ selectedUserDetails.user.status === 'active' ? 'Deactivate' : 'Activate' }}
+              {{ selectedUserDetails.user.status === "active" ? "Deactivate" : "Activate" }}
             </button>
             <button
               v-if="selectedUserDetails.user.id !== authStore.user.id"
@@ -539,175 +592,177 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted, watch } from 'vue'
-import { useAuthStore } from '@/stores/auth'
-import { userService } from '@/services/userService'
-import { formatDate, formatTime, getStatusColor, capitalize } from '@/utils/helpers'
-import RegisterForm from '@/components/forms/RegisterForm.vue'
-import { debounce } from 'lodash-es'
+import { ref, reactive, computed, onMounted, watch } from "vue";
+import { useAuthStore } from "@/stores/auth";
+import { userService } from "@/services/userService";
+import { formatDate, formatTime, getStatusColor, capitalize } from "@/utils/helpers";
+import RegisterForm from "@/components/forms/RegisterForm.vue";
+import { debounce } from "lodash-es";
 
-
-const authStore = useAuthStore()
+const authStore = useAuthStore();
 
 // State
-const loading = ref(false)
-const createLoading = ref(false)
-const updateLoading = ref(false)
-const bulkLoading = ref(false)
-const users = ref({})
-const departments = ref([])
-const selectedUsers = ref([])
-const selectedUserDetails = ref(null)
+const loading = ref(false);
+const createLoading = ref(false);
+const updateLoading = ref(false);
+const bulkLoading = ref(false);
+const users = ref({});
+const departments = ref([]);
+const selectedUsers = ref([]);
+const selectedUserDetails = ref(null);
 
 // Modals
-const showCreateModal = ref(false)
-const showEditModal = ref(false)
-const showDetailsModal = ref(false)
+const showCreateModal = ref(false);
+const showEditModal = ref(false);
+const showDetailsModal = ref(false);
 
 // Forms
-const createError = ref('')
-const updateError = ref('')
-const searchTerm = ref('')
-const currentPage = ref(1)
+const createError = ref("");
+const updateError = ref("");
+const searchTerm = ref("");
+const currentPage = ref(1);
 
 // Filters
 const filters = reactive({
-  role: '',
-  status: '',
-  department: ''
-})
+  role: "",
+  status: "",
+  department: "",
+});
 
 // Edit form
 const editForm = reactive({
-  name: '',
-  email: '',
-  employee_id: '',
-  role: 'worker',
-  department: '',
-  phone: '',
-  status: 'active',
-  password: '',
-  password_confirmation: ''
-})
+  name: "",
+  email: "",
+  employee_id: "",
+  role: "worker",
+  department: "",
+  phone: "",
+  status: "active",
+  password: "",
+  password_confirmation: "",
+});
 
-const editingUserId = ref(null)
-const createFormRef = ref(null)
+const editingUserId = ref(null);
+const createFormRef = ref(null);
 
 // Computed
 const allUsersSelected = computed(() => {
-  return users.value.data && users.value.data.length > 0 && 
-         selectedUsers.value.length === users.value.data.length
-})
+  return (
+    users.value.data &&
+    users.value.data.length > 0 &&
+    selectedUsers.value.length === users.value.data.length
+  );
+});
 
 // Methods
 const fetchUsers = async (page = 1) => {
-  loading.value = true
+  loading.value = true;
   try {
     const params = {
       page,
       search: searchTerm.value,
-      ...filters
-    }
+      ...filters,
+    };
 
-    const response = await userService.getUsers(params)
-    users.value = response.data || response
-    currentPage.value = page
-    
+    const response = await userService.getUsers(params);
+    users.value = response.data || response;
+    currentPage.value = page;
+
     // Clear selected users when fetching new data
-    selectedUsers.value = []
+    selectedUsers.value = [];
   } catch (error) {
-    console.error('Failed to fetch users:', error)
-    window.showNotification?.('Failed to load users', 'error')
+    console.error("Failed to fetch users:", error);
+    window.showNotification?.("Failed to load users", "error");
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-}
+};
 
 const refreshUsers = () => {
-  fetchUsers(currentPage.value)
-}
+  fetchUsers(currentPage.value);
+};
 
 const changePage = (page) => {
   if (page >= 1 && page <= (users.value.last_page || 1)) {
-    fetchUsers(page)
+    fetchUsers(page);
   }
-}
+};
 
 // Debounced search
 const debouncedSearch = debounce(() => {
-  fetchUsers(1)
-}, 500)
+  fetchUsers(1);
+}, 500);
 
 // User selection
 const toggleAllUsers = () => {
   if (allUsersSelected.value) {
-    selectedUsers.value = []
+    selectedUsers.value = [];
   } else {
-    selectedUsers.value = users.value.data.map(user => user.id)
+    selectedUsers.value = users.value.data.map((user) => user.id);
   }
-}
+};
 
 // Create user
 const handleCreateUser = async (userData) => {
-  createLoading.value = true
-  createError.value = ''
+  createLoading.value = true;
+  createError.value = "";
 
   try {
     // Add default role if not specified
     const userPayload = {
       ...userData,
-      role: userData.role || 'worker'
-    }
+      role: userData.role || "worker",
+    };
 
-    await userService.createUser(userPayload)
-    
-    window.showNotification?.('User created successfully!', 'success')
-    closeCreateModal()
-    fetchUsers(currentPage.value)
+    await userService.createUser(userPayload);
+
+    window.showNotification?.("User created successfully!", "success");
+    closeCreateModal();
+    fetchUsers(currentPage.value);
   } catch (error) {
-    console.error('Failed to create user:', error)
-    createError.value = error.response?.data?.message || 'Failed to create user'
-    
+    console.error("Failed to create user:", error);
+    createError.value = error.response?.data?.message || "Failed to create user";
+
     if (error.response?.data?.errors) {
-      const errors = Object.values(error.response.data.errors).flat()
-      createError.value = errors.join(', ')
+      const errors = Object.values(error.response.data.errors).flat();
+      createError.value = errors.join(", ");
     }
   } finally {
-    createLoading.value = false
+    createLoading.value = false;
   }
-}
+};
 
 const closeCreateModal = () => {
-  showCreateModal.value = false
-  createError.value = ''
-  createFormRef.value?.clearForm()
-}
+  showCreateModal.value = false;
+  createError.value = "";
+  createFormRef.value?.clearForm();
+};
 
 // Edit user
 const editUser = (user) => {
-  editingUserId.value = user.id
-  editForm.name = user.name
-  editForm.email = user.email
-  editForm.employee_id = user.employee_id
-  editForm.role = user.role
-  editForm.department = user.department || ''
-  editForm.phone = user.phone || ''
-  editForm.status = user.status
-  editForm.password = ''
-  editForm.password_confirmation = ''
-  
-  showEditModal.value = true
-  showDetailsModal.value = false
-}
+  editingUserId.value = user.id;
+  editForm.name = user.name;
+  editForm.email = user.email;
+  editForm.employee_id = user.employee_id;
+  editForm.role = user.role;
+  editForm.department = user.department || "";
+  editForm.phone = user.phone || "";
+  editForm.status = user.status;
+  editForm.password = "";
+  editForm.password_confirmation = "";
+
+  showEditModal.value = true;
+  showDetailsModal.value = false;
+};
 
 const handleUpdateUser = async () => {
   if (editForm.password && editForm.password !== editForm.password_confirmation) {
-    updateError.value = 'Password confirmation does not match'
-    return
+    updateError.value = "Password confirmation does not match";
+    return;
   }
 
-  updateLoading.value = true
-  updateError.value = ''
+  updateLoading.value = true;
+  updateError.value = "";
 
   try {
     const updateData = {
@@ -717,147 +772,150 @@ const handleUpdateUser = async () => {
       role: editForm.role,
       department: editForm.department,
       phone: editForm.phone,
-      status: editForm.status
-    }
+      status: editForm.status,
+    };
 
     // Include password only if provided
     if (editForm.password) {
-      updateData.password = editForm.password
-      updateData.password_confirmation = editForm.password_confirmation
+      updateData.password = editForm.password;
+      updateData.password_confirmation = editForm.password_confirmation;
     }
 
-    await userService.updateUser(editingUserId.value, updateData)
-    
-    window.showNotification?.('User updated successfully!', 'success')
-    closeEditModal()
-    fetchUsers(currentPage.value)
+    await userService.updateUser(editingUserId.value, updateData);
+
+    window.showNotification?.("User updated successfully!", "success");
+    closeEditModal();
+    fetchUsers(currentPage.value);
   } catch (error) {
-    console.error('Failed to update user:', error)
-    updateError.value = error.response?.data?.message || 'Failed to update user'
-    
+    console.error("Failed to update user:", error);
+    updateError.value = error.response?.data?.message || "Failed to update user";
+
     if (error.response?.data?.errors) {
-      const errors = Object.values(error.response.data.errors).flat()
-      updateError.value = errors.join(', ')
+      const errors = Object.values(error.response.data.errors).flat();
+      updateError.value = errors.join(", ");
     }
   } finally {
-    updateLoading.value = false
+    updateLoading.value = false;
   }
-}
+};
 
 const closeEditModal = () => {
-  showEditModal.value = false
-  updateError.value = ''
-  editingUserId.value = null
-}
+  showEditModal.value = false;
+  updateError.value = "";
+  editingUserId.value = null;
+};
 
 // View user details
 const viewUserDetails = async (user) => {
   try {
-    const response = await userService.getUser(user.id)
-    selectedUserDetails.value = response.data || response
-    showDetailsModal.value = true
+    const response = await userService.getUser(user.id);
+    selectedUserDetails.value = response.data || response;
+    showDetailsModal.value = true;
   } catch (error) {
-    console.error('Failed to fetch user details:', error)
-    window.showNotification?.('Failed to load user details', 'error')
+    console.error("Failed to fetch user details:", error);
+    window.showNotification?.("Failed to load user details", "error");
   }
-}
+};
 
 const closeDetailsModal = () => {
-  showDetailsModal.value = false
-  selectedUserDetails.value = null
-}
+  showDetailsModal.value = false;
+  selectedUserDetails.value = null;
+};
 
 // Delete user
 const deleteUser = async (user) => {
   if (!confirm(`Are you sure you want to delete "${user.name}"? This action cannot be undone.`)) {
-    return
+    return;
   }
 
   try {
-    await userService.deleteUser(user.id)
-    window.showNotification?.('User deleted successfully!', 'success')
-    fetchUsers(currentPage.value)
-    closeDetailsModal()
+    await userService.deleteUser(user.id);
+    window.showNotification?.("User deleted successfully!", "success");
+    fetchUsers(currentPage.value);
+    closeDetailsModal();
   } catch (error) {
-    console.error('Failed to delete user:', error)
-    window.showNotification?.(error.response?.data?.message || 'Failed to delete user', 'error')
+    console.error("Failed to delete user:", error);
+    window.showNotification?.(error.response?.data?.message || "Failed to delete user", "error");
   }
-}
+};
 
 // Toggle user status
 const toggleUserStatus = async (user) => {
-  const newStatus = user.status === 'active' ? 'inactive' : 'active'
-  
+  const newStatus = user.status === "active" ? "inactive" : "active";
+
   try {
-    await userService.updateUserStatus(user.id, newStatus)
-    window.showNotification?.(`User ${newStatus === 'active' ? 'activated' : 'deactivated'} successfully!`, 'success')
-    fetchUsers(currentPage.value)
-    
+    await userService.updateUserStatus(user.id, newStatus);
+    window.showNotification?.(
+      `User ${newStatus === "active" ? "activated" : "deactivated"} successfully!`,
+      "success"
+    );
+    fetchUsers(currentPage.value);
+
     // Update details modal if open
     if (selectedUserDetails.value && selectedUserDetails.value.user.id === user.id) {
-      selectedUserDetails.value.user.status = newStatus
+      selectedUserDetails.value.user.status = newStatus;
     }
   } catch (error) {
-    console.error('Failed to update user status:', error)
-    window.showNotification?.(error.response?.data?.message || 'Failed to update user status', 'error')
+    console.error("Failed to update user status:", error);
+    window.showNotification?.(
+      error.response?.data?.message || "Failed to update user status",
+      "error"
+    );
   }
-}
+};
 
 // Bulk actions
 const bulkAction = async (action) => {
-  if (selectedUsers.value.length === 0) return
+  if (selectedUsers.value.length === 0) return;
 
-  let confirmMessage = ''
+  let confirmMessage = "";
   switch (action) {
-    case 'activate':
-      confirmMessage = `Activate ${selectedUsers.value.length} selected users?`
-      break
-    case 'deactivate':
-      confirmMessage = `Deactivate ${selectedUsers.value.length} selected users?`
-      break
-    case 'delete':
-      confirmMessage = `Delete ${selectedUsers.value.length} selected users? This action cannot be undone.`
-      break
+    case "activate":
+      confirmMessage = `Activate ${selectedUsers.value.length} selected users?`;
+      break;
+    case "deactivate":
+      confirmMessage = `Deactivate ${selectedUsers.value.length} selected users?`;
+      break;
+    case "delete":
+      confirmMessage = `Delete ${selectedUsers.value.length} selected users? This action cannot be undone.`;
+      break;
   }
 
-  if (!confirm(confirmMessage)) return
+  if (!confirm(confirmMessage)) return;
 
-  bulkLoading.value = true
+  bulkLoading.value = true;
   try {
-    await userService.bulkAction(action, selectedUsers.value)
-    window.showNotification?.(`Bulk ${action} completed successfully!`, 'success')
-    selectedUsers.value = []
-    fetchUsers(currentPage.value)
+    await userService.bulkAction(action, selectedUsers.value);
+    window.showNotification?.(`Bulk ${action} completed successfully!`, "success");
+    selectedUsers.value = [];
+    fetchUsers(currentPage.value);
   } catch (error) {
-    console.error('Bulk action failed:', error)
-    window.showNotification?.(error.response?.data?.message || 'Bulk action failed', 'error')
+    console.error("Bulk action failed:", error);
+    window.showNotification?.(error.response?.data?.message || "Bulk action failed", "error");
   } finally {
-    bulkLoading.value = false
+    bulkLoading.value = false;
   }
-}
+};
 
 // Load departments
 const loadDepartments = async () => {
   try {
-    const response = await userService.getDepartments()
-    departments.value = response.data || response || []
+    const response = await userService.getDepartments();
+    departments.value = response.data || response || [];
   } catch (error) {
-    console.error('Failed to load departments:', error)
+    console.error("Failed to load departments:", error);
   }
-}
+};
 
 // Watch for filter changes
 watch([() => filters.role, () => filters.status, () => filters.department], () => {
-  fetchUsers(1)
-})
+  fetchUsers(1);
+});
 
 // Initialize
 onMounted(async () => {
-  await Promise.all([
-    fetchUsers(),
-    loadDepartments()
-  ])
-})
+  await Promise.all([fetchUsers(), loadDepartments()]);
+});
 </script>
 
 <style scoped>

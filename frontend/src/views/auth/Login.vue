@@ -13,7 +13,7 @@
           </svg> -->
 <!-- <img src="/infoassure.png" alt="" style="border-radius: 50%;">  -->
 <!-- <div class="mx-auto h-16 w-16 bg-blue-600 rounded-full flex items-center justify-center mb-6"> -->
-<div>  <img src="/infoassure.png" alt="" style="height: 48px; width: 48px; border-radius: 50%; object-fit: cover;">
+<div>  <img src="/image.png" alt="" style="height: 48px; width: 48px; border-radius: 50%; object-fit: cover;">
  </div>
 <!-- </div> -->
 

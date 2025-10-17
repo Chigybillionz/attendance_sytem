@@ -12,7 +12,12 @@
         </div>
         <button @click="showAddModal = true" class="btn-primary">
           <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+            />
           </svg>
           Add Employee
         </button>
@@ -30,7 +35,7 @@
             placeholder="Search by name, email, or ID"
             class="input-field"
             @input="debouncedSearch"
-          >
+          />
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Role</label>
@@ -90,37 +95,39 @@
                 </div>
               </td>
               <td class="font-medium">{{ user.employee_id }}</td>
-              <td>{{ user.department || '-' }}</td>
+              <td>{{ user.department || "-" }}</td>
               <td>
-                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
-                      :class="user.role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'">
+                <span
+                  class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
+                  :class="
+                    user.role === 'admin'
+                      ? 'bg-purple-100 text-purple-800'
+                      : 'bg-blue-100 text-blue-800'
+                  "
+                >
                   {{ user.role }}
                 </span>
               </td>
               <td>
-                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
-                      :class="getStatusColor(user.status)">
+                <span
+                  class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
+                  :class="getStatusColor(user.status)"
+                >
                   {{ user.status }}
                 </span>
               </td>
               <td>
                 <div class="flex space-x-2">
-                  <button
-                    @click="editUser(user)"
-                    class="text-blue-600 hover:text-blue-800 text-sm"
-                  >
+                  <button @click="editUser(user)" class="text-blue-600 hover:text-blue-800 text-sm">
                     Edit
                   </button>
                   <button
                     @click="toggleStatus(user)"
                     class="text-yellow-600 hover:text-yellow-800 text-sm"
                   >
-                    {{ user.status === 'active' ? 'Deactivate' : 'Activate' }}
+                    {{ user.status === "active" ? "Deactivate" : "Activate" }}
                   </button>
-                  <button
-                    @click="deleteUser(user)"
-                    class="text-red-600 hover:text-red-800 text-sm"
-                  >
+                  <button @click="deleteUser(user)" class="text-red-600 hover:text-red-800 text-sm">
                     Delete
                   </button>
                 </div>
@@ -131,8 +138,18 @@
       </div>
 
       <div v-else class="p-6 text-center">
-        <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+        <svg
+          class="w-12 h-12 text-gray-400 mx-auto mb-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+          />
         </svg>
         <p class="text-gray-500">No employees found</p>
       </div>
@@ -141,8 +158,8 @@
       <div v-if="pagination.last_page > 1" class="p-6 border-t border-gray-200">
         <div class="flex items-center justify-between">
           <div class="text-sm text-gray-700">
-            Showing {{ (pagination.current_page - 1) * pagination.per_page + 1 }} to 
-            {{ Math.min(pagination.current_page * pagination.per_page, pagination.total) }} of 
+            Showing {{ (pagination.current_page - 1) * pagination.per_page + 1 }} to
+            {{ Math.min(pagination.current_page * pagination.per_page, pagination.total) }} of
             {{ pagination.total }} results
           </div>
           <div class="flex space-x-2">
@@ -158,7 +175,9 @@
               @click="changePage(pagination.current_page + 1)"
               :disabled="pagination.current_page >= pagination.last_page"
               class="btn-secondary text-sm"
-              :class="{ 'opacity-50 cursor-not-allowed': pagination.current_page >= pagination.last_page }"
+              :class="{
+                'opacity-50 cursor-not-allowed': pagination.current_page >= pagination.last_page,
+              }"
             >
               Next
             </button>
@@ -168,7 +187,11 @@
     </div>
 
     <!-- Add/Edit User Modal -->
-    <Modal :show="showAddModal || showEditModal" @close="closeModal" :title="editingUser ? 'Edit Employee' : 'Add New Employee'">
+    <Modal
+      :show="showAddModal || showEditModal"
+      @close="closeModal"
+      :title="editingUser ? 'Edit Employee' : 'Add New Employee'"
+    >
       <form @submit.prevent="saveUser">
         <div class="space-y-4">
           <div>
@@ -179,7 +202,7 @@
               required
               class="input-field"
               :class="{ 'border-red-300': errors.name }"
-            >
+            />
             <p v-if="errors.name" class="mt-1 text-sm text-red-600">{{ errors.name }}</p>
           </div>
 
@@ -191,7 +214,7 @@
               required
               class="input-field"
               :class="{ 'border-red-300': errors.email }"
-            >
+            />
             <p v-if="errors.email" class="mt-1 text-sm text-red-600">{{ errors.email }}</p>
           </div>
 
@@ -203,26 +226,20 @@
               required
               class="input-field"
               :class="{ 'border-red-300': errors.employee_id }"
-            >
-            <p v-if="errors.employee_id" class="mt-1 text-sm text-red-600">{{ errors.employee_id }}</p>
+            />
+            <p v-if="errors.employee_id" class="mt-1 text-sm text-red-600">
+              {{ errors.employee_id }}
+            </p>
           </div>
 
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Department</label>
-            <input
-              v-model="form.department"
-              type="text"
-              class="input-field"
-            >
+            <input v-model="form.department" type="text" class="input-field" />
           </div>
 
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-            <input
-              v-model="form.phone"
-              type="tel"
-              class="input-field"
-            >
+            <input v-model="form.phone" type="tel" class="input-field" />
           </div>
 
           <div>
@@ -249,7 +266,7 @@
               :required="!editingUser"
               class="input-field"
               :class="{ 'border-red-300': errors.password }"
-            >
+            />
             <p v-if="errors.password" class="mt-1 text-sm text-red-600">{{ errors.password }}</p>
           </div>
         </div>
@@ -261,7 +278,7 @@
         <template #footer>
           <button type="button" @click="closeModal" class="btn-secondary mr-3">Cancel</button>
           <button type="submit" :disabled="modalLoading" class="btn-primary">
-            {{ modalLoading ? 'Saving...' : 'Save Employee' }}
+            {{ modalLoading ? "Saving..." : "Save Employee" }}
           </button>
         </template>
       </form>
@@ -270,186 +287,188 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue'
-import { useUsersStore } from '@/stores/users'
-import { getStatusColor } from '@/utils/helpers'
-import Modal from '@/components/common/Modal.vue'
+import { ref, reactive, computed, onMounted } from "vue";
+import { useUsersStore } from "@/stores/users";
+import { getStatusColor } from "@/utils/helpers";
+import Modal from "@/components/common/Modal.vue";
 
-const usersStore = useUsersStore()
+const usersStore = useUsersStore();
 
-const loading = ref(false)
-const modalLoading = ref(false)
-const showAddModal = ref(false)
-const showEditModal = ref(false)
-const editingUser = ref(null)
-const modalError = ref('')
+const loading = ref(false);
+const modalLoading = ref(false);
+const showAddModal = ref(false);
+const showEditModal = ref(false);
+const editingUser = ref(null);
+const modalError = ref("");
 
 const filters = reactive({
-  search: '',
-  role: '',
-  status: '',
-  department: ''
-})
+  search: "",
+  role: "",
+  status: "",
+  department: "",
+});
 
 const form = reactive({
-  name: '',
-  email: '',
-  employee_id: '',
-  department: '',
-  phone: '',
-  role: 'worker',
-  status: 'active',
-  password: ''
-})
+  name: "",
+  email: "",
+  employee_id: "",
+  department: "",
+  phone: "",
+  role: "worker",
+  status: "active",
+  password: "",
+});
 
 const errors = reactive({
-  name: '',
-  email: '',
-  employee_id: '',
-  password: ''
-})
+  name: "",
+  email: "",
+  employee_id: "",
+  password: "",
+});
 
 // Computed properties
-const users = computed(() => usersStore.users)
-const departments = computed(() => usersStore.departments)
-const pagination = computed(() => usersStore.pagination)
+const users = computed(() => usersStore.users);
+const departments = computed(() => usersStore.departments);
+const pagination = computed(() => usersStore.pagination);
 
 // Debounced search
-let searchTimeout
+let searchTimeout;
 const debouncedSearch = () => {
-  clearTimeout(searchTimeout)
+  clearTimeout(searchTimeout);
   searchTimeout = setTimeout(() => {
-    fetchUsers()
-  }, 500)
-}
+    fetchUsers();
+  }, 500);
+};
 
 const fetchUsers = async () => {
-  loading.value = true
+  loading.value = true;
   try {
-    const params = {}
-    if (filters.search) params.search = filters.search
-    if (filters.role) params.role = filters.role
-    if (filters.status) params.status = filters.status
-    if (filters.department) params.department = filters.department
+    const params = {};
+    if (filters.search) params.search = filters.search;
+    if (filters.role) params.role = filters.role;
+    if (filters.status) params.status = filters.status;
+    if (filters.department) params.department = filters.department;
 
-    await usersStore.fetchUsers(params)
+    await usersStore.fetchUsers(params);
   } catch (error) {
-    console.error('Failed to fetch users:', error)
+    console.error("Failed to fetch users:", error);
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-}
+};
 
 const editUser = (user) => {
-  editingUser.value = user
-  form.name = user.name
-  form.email = user.email
-  form.employee_id = user.employee_id
-  form.department = user.department || ''
-  form.phone = user.phone || ''
-  form.role = user.role
-  form.status = user.status
-  form.password = ''
-  showEditModal.value = true
-}
+  editingUser.value = user;
+  form.name = user.name;
+  form.email = user.email;
+  form.employee_id = user.employee_id;
+  form.department = user.department || "";
+  form.phone = user.phone || "";
+  form.role = user.role;
+  form.status = user.status;
+  form.password = "";
+  showEditModal.value = true;
+};
 
 const saveUser = async () => {
-  clearErrors()
-  if (!validateForm()) return
+  clearErrors();
+  if (!validateForm()) return;
 
-  modalLoading.value = true
+  modalLoading.value = true;
   try {
     if (editingUser.value) {
-      await usersStore.updateUser(editingUser.value.id, form)
+      await usersStore.updateUser(editingUser.value.id, form);
     } else {
       // For new users, use the auth store to register
       // This would need to be implemented
     }
-    
-    closeModal()
-    await fetchUsers()
-    window.showNotification?.(`Employee ${editingUser.value ? 'updated' : 'added'} successfully!`, 'success')
+
+    closeModal();
+    await fetchUsers();
+    window.showNotification?.(
+      `Employee ${editingUser.value ? "updated" : "added"} successfully!`,
+      "success"
+    );
   } catch (error) {
-    modalError.value = error.response?.data?.message || 'Failed to save employee'
+    modalError.value = error.response?.data?.message || "Failed to save employee";
   } finally {
-    modalLoading.value = false
+    modalLoading.value = false;
   }
-}
+};
 
 const toggleStatus = async (user) => {
-  const newStatus = user.status === 'active' ? 'inactive' : 'active'
+  const newStatus = user.status === "active" ? "inactive" : "active";
   try {
-    await usersStore.updateUserStatus(user.id, newStatus)
-    window.showNotification?.('User status updated successfully!', 'success')
+    await usersStore.updateUserStatus(user.id, newStatus);
+    window.showNotification?.("User status updated successfully!", "success");
   } catch (error) {
-    window.showNotification?.('Failed to update user status', 'error')
+    window.showNotification?.("Failed to update user status", "error");
   }
-}
+};
 
 const deleteUser = async (user) => {
   if (!confirm(`Are you sure you want to delete ${user.name}? This action cannot be undone.`)) {
-    return
+    return;
   }
 
   try {
-    await usersStore.deleteUser(user.id)
-    window.showNotification?.('Employee deleted successfully!', 'success')
+    await usersStore.deleteUser(user.id);
+    window.showNotification?.("Employee deleted successfully!", "success");
   } catch (error) {
-    window.showNotification?.('Failed to delete employee', 'error')
+    window.showNotification?.("Failed to delete employee", "error");
   }
-}
+};
 
 const closeModal = () => {
-  showAddModal.value = false
-  showEditModal.value = false
-  editingUser.value = null
-  modalError.value = ''
-  clearErrors()
-  Object.keys(form).forEach(key => {
-    form[key] = key === 'role' ? 'worker' : key === 'status' ? 'active' : ''
-  })
-}
+  showAddModal.value = false;
+  showEditModal.value = false;
+  editingUser.value = null;
+  modalError.value = "";
+  clearErrors();
+  Object.keys(form).forEach((key) => {
+    form[key] = key === "role" ? "worker" : key === "status" ? "active" : "";
+  });
+};
 
 const clearErrors = () => {
-  Object.keys(errors).forEach(key => {
-    errors[key] = ''
-  })
-}
+  Object.keys(errors).forEach((key) => {
+    errors[key] = "";
+  });
+};
 
 const validateForm = () => {
-  let isValid = true
+  let isValid = true;
 
   if (!form.name.trim()) {
-    errors.name = 'Name is required'
-    isValid = false
+    errors.name = "Name is required";
+    isValid = false;
   }
 
   if (!form.email.trim()) {
-    errors.email = 'Email is required'
-    isValid = false
+    errors.email = "Email is required";
+    isValid = false;
   }
 
   if (!form.employee_id.trim()) {
-    errors.employee_id = 'Employee ID is required'
-    isValid = false
+    errors.employee_id = "Employee ID is required";
+    isValid = false;
   }
 
   if (!editingUser.value && !form.password) {
-    errors.password = 'Password is required for new employees'
-    isValid = false
+    errors.password = "Password is required for new employees";
+    isValid = false;
   }
 
-  return isValid
-}
+  return isValid;
+};
 
 const changePage = (page) => {
   // Implementation for pagination
-  fetchUsers()
-}
+  fetchUsers();
+};
 
 onMounted(async () => {
-  await fetchUsers()
-  await usersStore.fetchDepartments()
-})
+  await fetchUsers();
+  await usersStore.fetchDepartments();
+});
 </script>
-

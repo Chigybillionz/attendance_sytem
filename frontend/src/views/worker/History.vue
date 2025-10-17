@@ -4,9 +4,26 @@
 <template>
   <div class="space-y-6">
     <!-- Page Header -->
-    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-      <h1 class="text-2xl font-bold text-gray-900">My Attendance History</h1>
-      <p class="text-gray-600 mt-1">View your attendance records and history</p>
+    <div class="bg-blue-600 rounded-lg shadow-sm border border-gray-200 p-6">
+      <h1 class="text-2xl font-bold text-gray-900">
+        My Attendance History
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="w-5 h-5 mr-2"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <polyline points="12 6 12 12 16 14" />
+          <path d="M4 12 A8 8 0 0 1 12 4" />
+          <polyline points="4 8 4 12 8 12" />
+        </svg>
+      </h1>
+      <p class="text-white/100 mt-1 w-fit">View your attendance records and history</p>
     </div>
 
     <!-- Filters -->
@@ -19,7 +36,7 @@
             type="date"
             class="input-field"
             @change="fetchHistory"
-          >
+          />
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">End Date</label>
@@ -28,7 +45,7 @@
             type="date"
             class="input-field"
             @change="fetchHistory"
-          >
+          />
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Month</label>
@@ -46,7 +63,7 @@
           </select>
         </div>
       </div>
-      
+
       <div class="mt-4 flex justify-end">
         <button @click="clearFilters" class="btn-secondary mr-3">Clear Filters</button>
         <button @click="fetchHistory" class="btn-primary">Apply Filters</button>
@@ -58,8 +75,18 @@
       <div class="stat-card">
         <div class="flex items-center">
           <div class="p-2 bg-blue-100 rounded-lg">
-            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a4 4 0 118 0v4M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            <svg
+              class="w-6 h-6 text-blue-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 7V3a4 4 0 118 0v4M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+              />
             </svg>
           </div>
           <div class="ml-4">
@@ -68,12 +95,22 @@
           </div>
         </div>
       </div>
-      
+
       <div class="stat-card">
         <div class="flex items-center">
           <div class="p-2 bg-green-100 rounded-lg">
-            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <svg
+              class="w-6 h-6 text-green-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
             </svg>
           </div>
           <div class="ml-4">
@@ -82,12 +119,22 @@
           </div>
         </div>
       </div>
-      
+
       <div class="stat-card">
         <div class="flex items-center">
           <div class="p-2 bg-yellow-100 rounded-lg">
-            <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.996-.833-2.464 0L3.732 16c-.77.833.192 2.5 1.732 2.5z" />
+            <svg
+              class="w-6 h-6 text-yellow-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.996-.833-2.464 0L3.732 16c-.77.833.192 2.5 1.732 2.5z"
+              />
             </svg>
           </div>
           <div class="ml-4">
@@ -96,12 +143,22 @@
           </div>
         </div>
       </div>
-      
+
       <div class="stat-card">
         <div class="flex items-center">
           <div class="p-2 bg-purple-100 rounded-lg">
-            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            <svg
+              class="w-6 h-6 text-purple-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+              />
             </svg>
           </div>
           <div class="ml-4">
@@ -117,12 +174,12 @@
       <div class="p-6 border-b border-gray-200">
         <h2 class="text-lg font-semibold text-gray-900">Attendance Records</h2>
       </div>
-      
+
       <div v-if="loading" class="p-6 text-center">
         <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
         <p class="mt-2 text-gray-500">Loading...</p>
       </div>
-      
+
       <div v-else-if="attendanceHistory.length" class="table-container">
         <table class="table">
           <thead>
@@ -142,20 +199,32 @@
               <td>{{ formatTime(record.clock_out_time) }}</td>
               <td>{{ record.total_hours || 0 }}h</td>
               <td>
-                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full" 
-                      :class="getStatusColor(record.status)">
+                <span
+                  class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
+                  :class="getStatusColor(record.status)"
+                >
                   {{ capitalize(record.status) }}
                 </span>
               </td>
-              <td class="text-sm text-gray-500">{{ record.notes || '-' }}</td>
+              <td class="text-sm text-gray-500">{{ record.notes || "-" }}</td>
             </tr>
           </tbody>
         </table>
       </div>
-      
+
       <div v-else class="p-6 text-center">
-        <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+        <svg
+          class="w-12 h-12 text-gray-400 mx-auto mb-4"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+          />
         </svg>
         <p class="text-gray-500">No attendance records found</p>
       </div>
@@ -164,8 +233,8 @@
       <div v-if="pagination.last_page > 1" class="p-6 border-t border-gray-200">
         <div class="flex items-center justify-between">
           <div class="text-sm text-gray-700">
-            Showing {{ (pagination.current_page - 1) * pagination.per_page + 1 }} to 
-            {{ Math.min(pagination.current_page * pagination.per_page, pagination.total) }} of 
+            Showing {{ (pagination.current_page - 1) * pagination.per_page + 1 }} to
+            {{ Math.min(pagination.current_page * pagination.per_page, pagination.total) }} of
             {{ pagination.total }} results
           </div>
           <div class="flex space-x-2">
@@ -181,7 +250,9 @@
               @click="changePage(pagination.current_page + 1)"
               :disabled="pagination.current_page >= pagination.last_page"
               class="btn-secondary text-sm"
-              :class="{ 'opacity-50 cursor-not-allowed': pagination.current_page >= pagination.last_page }"
+              :class="{
+                'opacity-50 cursor-not-allowed': pagination.current_page >= pagination.last_page,
+              }"
             >
               Next
             </button>
@@ -193,79 +264,81 @@
 </template>
 
 <script setup>
-import { ref, computed, reactive, onMounted } from 'vue'
-import { useAttendanceStore } from '@/stores/attendance'
-import { formatDate, formatTime, getStatusColor, capitalize } from '@/utils/helpers'
-import { MONTHS } from '@/utils/constants'
+import { ref, computed, reactive, onMounted } from "vue";
+import { useAttendanceStore } from "@/stores/attendance";
+import { formatDate, formatTime, getStatusColor, capitalize } from "@/utils/helpers";
+import { MONTHS } from "@/utils/constants";
 
-const attendanceStore = useAttendanceStore()
+const attendanceStore = useAttendanceStore();
 
-const loading = ref(false)
-const months = MONTHS
+const loading = ref(false);
+const months = MONTHS;
 
 const filters = reactive({
-  start_date: '',
-  end_date: '',
+  start_date: "",
+  end_date: "",
   month: new Date().getMonth() + 1,
-  year: new Date().getFullYear()
-})
+  year: new Date().getFullYear(),
+});
 
 // Computed properties
-const attendanceHistory = computed(() => attendanceStore.attendanceHistory)
-const pagination = computed(() => attendanceStore.pagination)
+const attendanceHistory = computed(() => attendanceStore.attendanceHistory);
+const pagination = computed(() => attendanceStore.pagination);
 
 const years = computed(() => {
-  const currentYear = new Date().getFullYear()
-  const years = []
+  const currentYear = new Date().getFullYear();
+  const years = [];
   for (let i = currentYear; i >= currentYear - 5; i--) {
-    years.push(i)
+    years.push(i);
   }
-  return years
-})
+  return years;
+});
 
-const totalDays = computed(() => attendanceHistory.value.length)
+const totalDays = computed(() => attendanceHistory.value.length);
 const totalHours = computed(() => {
-  return Math.round(attendanceHistory.value.reduce((sum, record) => sum + (record.total_hours || 0), 0))
-})
+  return Math.round(
+    attendanceHistory.value.reduce((sum, record) => sum + (record.total_hours || 0), 0)
+  );
+});
 const lateDays = computed(() => {
-  return attendanceHistory.value.filter(record => record.status === 'late').length
-})
+  return attendanceHistory.value.filter((record) => record.status === "late").length;
+});
 const averageHours = computed(() => {
-  return totalDays.value > 0 ? Math.round(totalHours.value / totalDays.value * 10) / 10 : 0
-})
+  return totalDays.value > 0 ? Math.round((totalHours.value / totalDays.value) * 10) / 10 : 0;
+});
 
 const fetchHistory = async () => {
-  loading.value = true
+  loading.value = true;
   try {
-    const params = {}
-    if (filters.start_date) params.start_date = filters.start_date
-    if (filters.end_date) params.end_date = filters.end_date
-    if (filters.month) params.month = filters.month
-    if (filters.year) params.year = filters.year
-    
-    await attendanceStore.fetchAttendanceHistory(params)
+    const params = {};
+    if (filters.start_date) params.start_date = filters.start_date;
+    if (filters.end_date) params.end_date = filters.end_date;
+    if (filters.month) params.month = filters.month;
+    if (filters.year) params.year = filters.year;
+
+    await attendanceStore.fetchAttendanceHistory(params);
   } catch (error) {
-    console.error('Failed to fetch attendance history:', error)
+    console.error("Failed to fetch attendance history:", error);
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-}
+};
 
 const clearFilters = () => {
-  filters.start_date = ''
-  filters.end_date = ''
-  filters.month = ''
-  filters.year = new Date().getFullYear()
-  fetchHistory()
-}
+  filters.start_date = "";
+  filters.end_date = "";
+  filters.month = "";
+  filters.year = new Date().getFullYear();
+  fetchHistory();
+};
 
 const changePage = (page) => {
   if (page >= 1 && page <= pagination.value.last_page) {
-    fetchHistory()
+    fetchHistory();
   }
-}
+};
 
 onMounted(() => {
-  fetchHistory()
-})
+  fetchHistory();
+});
 </script>
