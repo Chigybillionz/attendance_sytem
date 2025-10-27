@@ -14,7 +14,7 @@
         <div class="flex items-center space-x-4">
           <!-- Current Date -->
           <div class="text-right hidden sm:block">
-            <p class="text-sm text-gray-500 bg-white/100">Today's Date</p>
+            <p class="text-sm text-white">Today's Date</p>
             <p class="text-lg font-semibold text-gray-900">{{ todayDate }}</p>
           </div>
 
@@ -225,7 +225,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-7 bg-blue-600">
       <!-- Weekly Chart -->
       <div class="bg-blue-300 rounded-lg shadow-sm border border-gray-200 p-6">
-        <h2 class="text-lg font-semibold text-gray-900 mb-4 bg-green-100">Weekly Attendance</h2>
+        <h2 class="text-lg font-semibold text-gray-900 mb-4 bg-blue-100">Weekly Attendance</h2>
 
         <div v-if="weeklyChart && weeklyChart.length" class="space-y-3">
           <div
@@ -255,7 +255,7 @@
 
       <!-- Recent Attendance -->
       <div class="bg-blue-300 rounded-lg shadow-sm border border-gray-200 p-6">
-        <h2 class="text-lg font-semibold text-gray-900 mb-4 bg-green-100">Recent Activity</h2>
+        <h2 class="text-lg font-semibold text-gray-900 mb-4 bg-blue-100">Recent Activity</h2>
 
         <div v-if="recentAttendance && recentAttendance.length" class="space-y-3">
           <div
@@ -289,7 +289,7 @@
 
     <!-- Department Stats -->
     <div class="bg-blue-300 rounded-lg shadow-sm border border-gray-200 p-6">
-      <h2 class="text-lg font-semibold text-gray-900 mb-4 bg-green-100">
+      <h2 class="text-lg font-semibold text-gray-900 mb-4 bg-blue-100">
         Department Attendance Today
       </h2>
 

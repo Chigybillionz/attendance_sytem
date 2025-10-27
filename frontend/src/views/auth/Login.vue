@@ -1,30 +1,28 @@
 <!-- File: frontend/src/views/auth/Login.vue -->
 <!-- Location: frontend/src/views/auth/Login.vue -->
-<!-- ENHANCED FOR EASY TESTING -->
+<!-- ENHANCED WITH DYNAMIC FLOATING ANIMATION -->
 
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8">
+  <div class="min-h-screen flex items-center justify-center bg-blue-600 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <!-- Animated Background Logo - More Dynamic Movement -->
+    <div class="auth-background-logo">
+      <img src="/image.png" alt="InfoAssure Logo" class="floating-logo" />
+    </div>
+
+    <div class="max-w-md w-full space-y-8 relative z-10">
       <!-- Header -->
       <div class="text-center">
         <div class="mx-auto h-16 w-16 bg-blue-600 rounded-full flex items-center justify-center mb-6">
-          <!-- <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg> -->
-<!-- <img src="/infoassure.png" alt="" style="border-radius: 50%;">  -->
-<!-- <div class="mx-auto h-16 w-16 bg-blue-600 rounded-full flex items-center justify-center mb-6"> -->
-<div>  <img src="/image.png" alt="" style="height: 48px; width: 48px; border-radius: 50%; object-fit: cover;">
- </div>
-<!-- </div> -->
-
-
-</div>
-        <h2 class="text-3xl font-bold text-gray-900">Attendance System</h2>
-        <p class="mt-2 text-sm text-gray-600">Sign in to your account</p>
+          <div>
+            <img src="/image.png" alt="" style="height: 48px; width: 48px; border-radius: 50%; object-fit: cover;">
+          </div>
+        </div>
+        <h2 class="text-3xl font-bold text-white">Attendance System</h2>
+        <p class="mt-2 text-sm text-gray-100">Sign in to your account</p>
       </div>
 
       <!-- Login Form -->
-      <form class="mt-8 space-y-6" @submit.prevent="handleLogin">
+      <form class="mt-8 space-y-6 bg-white bg-opacity-90 backdrop-blur-lg rounded-xl p-8 shadow-2xl" @submit.prevent="handleLogin">
         <div class="space-y-4">
           <div>
             <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
@@ -95,7 +93,7 @@
 
       <!-- Quick Login Buttons for Testing -->
       <div class="mt-8 space-y-4">
-        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div class="bg-white bg-opacity-90 backdrop-blur-lg border border-blue-200 rounded-lg p-4 shadow-xl">
           <h3 class="text-sm font-medium text-blue-800 mb-3">Quick Login (Testing)</h3>
           <div class="space-y-2">
             <button
@@ -123,7 +121,7 @@
         </div>
 
         <!-- Demo Credentials Info -->
-        <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+        <div class="bg-white bg-opacity-90 backdrop-blur-lg border border-gray-200 rounded-lg p-4 shadow-xl">
           <h3 class="text-sm font-medium text-gray-800 mb-2">Demo Credentials:</h3>
           <div class="space-y-1 text-xs text-gray-600">
             <p><strong>Admin:</strong> admin@attendance.com / admin123</p>
@@ -246,3 +244,81 @@ const quickLoginWorker = () => {
   handleLogin()
 }
 </script>
+
+<style scoped>
+.auth-background-logo {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 0;
+  pointer-events: none;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 5vh;
+}
+
+.floating-logo {
+  width: 600px;
+  height: 600px;
+  opacity: 0.15;
+  animation: floatTopToBottom 8s ease-in-out infinite;
+  object-fit: contain;
+}
+
+/* Dynamic animation from top to bottom */
+@keyframes floatTopToBottom {
+  0% {
+    transform: translateY(-20vh);
+    opacity: 0.1;
+  }
+  25% {
+    opacity: 0.15;
+  }
+  50% {
+    transform: translateY(40vh);
+    opacity: 0.2;
+  }
+  75% {
+    opacity: 0.15;
+  }
+  100% {
+    transform: translateY(-20vh);
+    opacity: 0.1;
+  }
+}
+
+/* Responsive sizing for mobile */
+@media (max-width: 768px) {
+  .floating-logo {
+    width: 400px;
+    height: 400px;
+    animation: floatTopToBottomMobile 8s ease-in-out infinite;
+  }
+  
+  @keyframes floatTopToBottomMobile {
+    0% {
+      transform: translateY(-10vh);
+      opacity: 0.1;
+    }
+    50% {
+      transform: translateY(30vh);
+      opacity: 0.18;
+    }
+    100% {
+      transform: translateY(-10vh);
+      opacity: 0.1;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .floating-logo {
+    width: 300px;
+    height: 300px;
+  }
+}
+</style>

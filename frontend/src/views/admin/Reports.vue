@@ -8,7 +8,7 @@
     <!-- Page Header -->
     <div class="rounded-lg shadow-sm border border-gray-200 p-6 bg-blue-600">
       <h1 class="text-2xl font-bold text-gray-900">Attendance Reports</h1>
-      <p class="text-gray-600 mt-1 bg-green-100 w-fit">Detailed attendance analysis and reports</p>
+      <p class="text-white mt-1 w-fit">Detailed attendance analysis and reports</p>
     </div>
 
     <!-- Filters -->
@@ -168,9 +168,9 @@
     </div>
 
     <!-- Attendance Records -->
-    <div class="bg-blue-600 rounded-lg shadow-sm border border-gray-200">
+    <div class="bg-blue-100 rounded-lg shadow-sm border border-gray-200">
       <div class="p-6 border-b border-gray-200">
-        <h2 class="text-lg font-semibold text-gray-900 bg-green-100 w-fit">Attendance Records</h2>
+        <h2 class="text-lg font-semibold text-gray-900 w-fit">Attendance Records</h2>
       </div>
 
       <div v-if="loading" class="p-6 text-center bg-green-200">
