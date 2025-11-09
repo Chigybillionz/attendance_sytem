@@ -9,7 +9,6 @@ import router from "./router";
 // Dynamically fetch and set the CSRF token in the meta tag
 import api from "./services/api";
 
-
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     await api.get("/sanctum/csrf-cookie");
@@ -30,9 +29,6 @@ const app = createApp(App);
 
 app.use(createPinia());
 
-
 app.use(router);
 
 app.mount("#app");
-
-

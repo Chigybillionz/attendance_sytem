@@ -24,7 +24,7 @@ class AuthController extends Controller
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
                 'message' => 'The provided credentials are incorrect.',
-            'errors' => ['email' => ['Invalid credentials']]
+                'errors' => ['email' => ['Invalid credentials']]
             ], 422);
         }
 
@@ -34,11 +34,11 @@ class AuthController extends Controller
             ], 403);
         }
 
-    // Delete old tokens for this user
+        // Delete old tokens for this user
         $user->tokens()->delete();
 
-    // Create token (this bypasses CSRF completely)
-    $token = $user->createToken('auth_token', ['*'], now()->addDays(30))->plainTextToken;
+        // Create token with 30 minute expiry (activity tracker handles inactivity)
+        $token = $user->createToken('auth_token', ['*'], now()->addMinutes(30))->plainTextToken;
 
         return response()->json([
             'message' => 'Login successful',
@@ -53,6 +53,7 @@ class AuthController extends Controller
                 'status' => $user->status,
             ],
             'token' => $token,
+            'expires_at' => now()->addMinutes(30)->toIso8601String(),
         ]);
     }
 
@@ -74,13 +75,13 @@ class AuthController extends Controller
             'employee_id' => $request->employee_id,
             'department' => $request->department,
             'phone' => $request->phone,
-        'role' => 'worker', // Default role
+            'role' => 'worker',
             'status' => 'active',
-        'email_verified_at' => now(), // Auto-verify for simplicity
+            'email_verified_at' => now(),
         ]);
 
-    // Create token immediately
-    $token = $user->createToken('auth_token', ['*'], now()->addDays(30))->plainTextToken;
+        // Create token with 5 minute expiry
+        $token = $user->createToken('auth_token', ['*'], now()->addMinutes(5))->plainTextToken;
 
         return response()->json([
             'message' => 'Registration successful',
@@ -93,8 +94,34 @@ class AuthController extends Controller
                 'department' => $user->department,
             ],
             'token' => $token,
+            'expires_at' => now()->addMinutes(5)->toIso8601String(),
         ], 201);
     }
+
+    // NEW: Refresh token endpoint
+    public function refreshToken(Request $request)
+    {
+        $user = $request->user();
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'Unauthenticated'
+            ], 401);
+        }
+
+        // Delete current token
+        $request->user()->currentAccessToken()->delete();
+
+        // Create new token with fresh 5 minute expiry
+        $token = $user->createToken('auth_token', ['*'], now()->addMinutes(5))->plainTextToken;
+
+        return response()->json([
+            'message' => 'Token refreshed successfully',
+            'token' => $token,
+            'expires_at' => now()->addMinutes(5)->toIso8601String(),
+        ]);
+    }
+
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();

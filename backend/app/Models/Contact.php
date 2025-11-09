@@ -20,6 +20,7 @@ class Contact extends Model
     protected $fillable = [
         'name',
         'email',
+        'subject',  // ADD THIS LINE
         'message',
         'status',
         'read_at'

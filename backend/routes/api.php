@@ -9,8 +9,8 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\DashboardController;
-use App\Http\Controllers\Api\ContactController; // ADD THIS LINE
-
+use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Admin\FeedbackController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,10 +31,10 @@ Route::get('/test', function () {
 Route::prefix('auth')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('register', [AuthController::class, 'register']);
-
 });
+
 // Add this after the auth routes (before protected routes)
-Route::post('contact', [App\Http\Controllers\Api\ContactController::class, 'submitContactForm']);
+Route::post('contact', [ContactController::class, 'submitContactForm']);
 
 // Protected routes (authentication required)
 Route::middleware('auth:sanctum')->group(function () {
@@ -43,7 +43,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('auth')->group(function () {
         Route::post('logout', [AuthController::class, 'logout']);
         Route::get('user', [AuthController::class, 'user']);
-      
+        Route::post('refresh-token', [AuthController::class, 'refreshToken']);
     });
 
     // Dashboard routes
@@ -65,6 +65,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('user/{userId}', [AttendanceController::class, 'getUserAttendance']);
     });
 
+    // Admin routes - FEEDBACK MANAGEMENT (MOVED HERE)
+    Route::prefix('admin')->group(function () {
+        Route::get('feedbacks', [FeedbackController::class, 'index']);
+        Route::delete('feedbacks/{id}', [FeedbackController::class, 'destroy']);
+    });
+
     // User management routes - ENHANCED VERSION
     Route::prefix('users')->group(function () {
         // Basic CRUD operations
@@ -83,13 +89,14 @@ Route::middleware('auth:sanctum')->group(function () {
         // For your existing routes compatibility
         Route::get('departments', [UserController::class, 'getDepartments']); // Alias for departments
     });
-      // contact form
-        Route::prefix('contacts')->group(function () {
-        Route::get('/', [App\Http\Controllers\Api\ContactController::class, 'index']);
-        Route::get('{id}', [App\Http\Controllers\Api\ContactController::class, 'show']);
-        Route::patch('{id}/status', [App\Http\Controllers\Api\ContactController::class, 'updateStatus']);
-        Route::delete('{id}', [App\Http\Controllers\Api\ContactController::class, 'destroy']);
-        });
+    
+    // contact form
+    Route::prefix('contacts')->group(function () {
+        Route::get('/', [ContactController::class, 'index']);
+        Route::get('{id}', [ContactController::class, 'show']);
+        Route::patch('{id}/status', [ContactController::class, 'updateStatus']);
+        Route::delete('{id}', [ContactController::class, 'destroy']);
+    });
 });
 
 // Fallback route for API - handles 404s
@@ -99,69 +106,21 @@ Route::fallback(function () {
         'available_endpoints' => [
             'POST /api/auth/login' => 'User login',
             'POST /api/auth/register' => 'User registration',
-                                    'POST /api/contact' => 'Submit contact form',
-
+            'POST /api/contact' => 'Submit contact form',
             'GET /api/test' => 'Test API connection',
+            'GET /api/admin/feedbacks' => 'List feedbacks (Admin)',
+            'DELETE /api/admin/feedbacks/{id}' => 'Delete feedback (Admin)',
             'GET /api/users' => 'List users (Admin)',
             'POST /api/users' => 'Create user (Admin)',
             'GET /api/users/{id}' => 'Get user details',
             'PUT /api/users/{id}' => 'Update user',
-
             'DELETE /api/users/{id}' => 'Delete user (Admin)',
             'PATCH /api/users/{id}/status' => 'Update user status (Admin)',
             'POST /api/users/bulk-action' => 'Bulk user actions (Admin)',
-              'GET /api/contacts' => 'List contacts (Admin)',
+            'GET /api/contacts' => 'List contacts (Admin)',
             'GET /api/contacts/{id}' => 'View contact (Admin)',
             'PATCH /api/contacts/{id}/status' => 'Update contact status (Admin)',
             'DELETE /api/contacts/{id}' => 'Delete contact (Admin)'
         ]
     ], 404);
 });
-
-/*
-AVAILABLE ENDPOINTS SUMMARY:
-
-Authentication:
-- POST /api/auth/login              - User login
-- POST /api/auth/register           - User registration  
-- POST /api/auth/logout             - User logout
-- GET  /api/auth/user               - Get current user
-
-Dashboard:
-- GET  /api/dashboard/admin         - Admin dashboard data
-- GET  /api/dashboard/worker        - Worker dashboard data
-
-Attendance:
-- POST /api/attendance/clock-in     - Clock in
-- POST /api/attendance/clock-out    - Clock out
-- GET  /api/attendance/today        - Today's attendance
-- GET  /api/attendance/history      - Attendance history
-- GET  /api/attendance/all          - All attendance (Admin)
-- GET  /api/attendance/user/{id}    - User attendance (Admin)
-
-User Management (CRUD Operations):
-- GET    /api/users                 - List users with pagination/search/filters (Admin)
-- POST   /api/users                 - Create new user (Admin)
-- GET    /api/users/{id}            - Get user details with statistics
-- PUT    /api/users/{id}            - Update user information
-- DELETE /api/users/{id}            - Delete user (Admin only)
-- PATCH  /api/users/{id}/status     - Update user status (Admin)
-- GET    /api/users/departments     - Get available departments
-- GET    /api/users/stats/overview  - Get user statistics (Admin)
-- POST   /api/users/bulk-action     - Bulk operations on users (Admin)
-
-Query Parameters for GET /api/users:
-- search: Search in name, email, employee_id, department
-- role: Filter by role (admin/worker)  
-- status: Filter by status (active/inactive)
-- department: Filter by department
-- sort_by: Sort field (name, email, employee_id, role, department, status, created_at)
-- sort_order: Sort direction (asc/desc)
-- page: Page number for pagination
-- per_page: Items per page (max 50)
-
-Bulk Action Types:
-- activate: Set users status to active
-- deactivate: Set users status to inactive  
-- delete: Delete users (or deactivate if they have attendance records)
-*/

@@ -97,7 +97,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 bg-600-300">
       <!-- Clock In/Out Card -->
       <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h2 class="text-lg font-semibold text-gray-900 mb-4 bg-blue-100">Today's Attendance</h2>
+        <h2 class="text-lg font-semibold text-gray-900 mb-4 py-4">Today's Attendance</h2>
 
         <div v-if="todayAttendance" class="space-y-4">
           <!-- Status Display -->
@@ -243,7 +243,7 @@
 
       <!-- Monthly Stats -->
       <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h2 class="text-lg font-semibold text-gray-900 mb-4 bg-blue-100">This Month's Summary</h2>
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">This Month's Summary</h2>
 
         <div v-if="monthlyStats" class="space-y-4">
           <div class="grid grid-cols-2 gap-4">
@@ -276,7 +276,7 @@
 
     <!-- Weekly Hours Chart -->
     <div class="bg-blue-100 rounded-lg shadow-sm border border-gray-200 p-6">
-      <h2 class="text-lg font-semibold text-gray-900 mb-4  w-fit">Weekly Hours</h2>
+      <h2 class="text-lg font-semibold text-gray-900 mb-4 w-fit">Weekly Hours</h2>
 
       <div v-if="weeklyHours && weeklyHours.length" class="space-y-2">
         <div

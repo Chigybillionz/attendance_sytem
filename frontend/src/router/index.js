@@ -1,216 +1,227 @@
-
-
-import { createRouter, createWebHistory } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
+import { createRouter, createWebHistory } from "vue-router";
+import { useAuthStore } from "@/stores/auth";
+import Help from "@/views/Help.vue";
+import Feedback from "@/views/admin/Feedback.vue";
 
 // Import views
-const Login = () => import('@/views/auth/Login.vue')
-const Register = () => import('@/views/auth/Register.vue')
-const AdminDashboard = () => import('@/views/admin/Dashboard.vue')
-const AdminUsers = () => import('@/views/admin/Users.vue')
-const AdminReports = () => import('@/views/admin/Reports.vue')
-const WorkerDashboard = () => import('@/views/worker/Dashboard.vue')
-const WorkerAttendance = () => import('@/views/worker/Attendance.vue')
-const WorkerHistory = () => import('@/views/worker/History.vue')
-const Profile = () => import('@/views/Profile.vue')
-const NotFound = () => import('@/views/NotFound.vue')
+const Login = () => import("@/views/auth/Login.vue");
+const Register = () => import("@/views/auth/Register.vue");
+const AdminDashboard = () => import("@/views/admin/Dashboard.vue");
+const AdminUsers = () => import("@/views/admin/Users.vue");
+const AdminReports = () => import("@/views/admin/Reports.vue");
+const WorkerDashboard = () => import("@/views/worker/Dashboard.vue");
+const WorkerAttendance = () => import("@/views/worker/Attendance.vue");
+const WorkerHistory = () => import("@/views/worker/History.vue");
+const Profile = () => import("@/views/Profile.vue");
+const NotFound = () => import("@/views/NotFound.vue");
 
 const routes = [
   {
-    path: '/',
-    redirect: '/dashboard'
+    path: "/",
+    redirect: "/dashboard",
   },
   {
-    path: '/login',
-    name: 'Login',
+    path: "/admin/feedbacks",
+    name: "admin-feedbacks",
+    component: Feedback,
+    meta: { requiresAuth: true, requiresAdmin: true },
+  },
+  {
+    path: "/help",
+    name: "help",
+    component: Help,
+  },
+
+  {
+    path: "/login",
+    name: "Login",
     component: Login,
-    meta: { 
+    meta: {
       requiresGuest: true,
-      title: 'Login',
-      layout: 'auth'
-    }
+      title: "Login",
+      layout: "auth",
+    },
   },
   {
-    path: '/register',
-    name: 'Register',
+    path: "/register",
+    name: "Register",
     component: Register,
-    meta: { 
+    meta: {
       requiresGuest: true,
-      title: 'Register',
-      layout: 'auth'
-    }
+      title: "Register",
+      layout: "auth",
+    },
   },
   {
-    path: '/dashboard',
-    name: 'Dashboard',
+    path: "/dashboard",
+    name: "Dashboard",
     component: () => {
-      const authStore = useAuthStore()
+      const authStore = useAuthStore();
       if (authStore.isAdmin) {
-        return AdminDashboard()
+        return AdminDashboard();
       } else {
-        return WorkerDashboard()
+        return WorkerDashboard();
       }
     },
-    meta: { 
+    meta: {
       requiresAuth: true,
-      title: 'Dashboard'
-    }
+      title: "Dashboard",
+    },
   },
-  
+
   // Admin routes
   {
-    path: '/admin',
-    redirect: '/admin/dashboard',
-    meta: { 
-      requiresAuth: true, 
-      requiresAdmin: true 
-    }
+    path: "/admin",
+    redirect: "/admin/dashboard",
+    meta: {
+      requiresAuth: true,
+      requiresAdmin: true,
+    },
   },
   {
-    path: '/admin/dashboard',
-    name: 'AdminDashboard',
+    path: "/admin/dashboard",
+    name: "AdminDashboard",
     component: AdminDashboard,
-    meta: { 
-      requiresAuth: true, 
+    meta: {
+      requiresAuth: true,
       requiresAdmin: true,
-      title: 'Admin Dashboard'
-    }
+      title: "Admin Dashboard",
+    },
   },
   {
-    path: '/admin/users',
-    name: 'AdminUsers',
+    path: "/admin/users",
+    name: "AdminUsers",
     component: AdminUsers,
-    meta: { 
-      requiresAuth: true, 
+    meta: {
+      requiresAuth: true,
       requiresAdmin: true,
-      title: 'Manage Users'
-    }
+      title: "Manage Users",
+    },
   },
   {
-    path: '/admin/reports',
-    name: 'AdminReports',
+    path: "/admin/reports",
+    name: "AdminReports",
     component: AdminReports,
-    meta: { 
-      requiresAuth: true, 
+    meta: {
+      requiresAuth: true,
       requiresAdmin: true,
-      title: 'Attendance Reports'
-    }
+      title: "Attendance Reports",
+    },
   },
 
   // Worker routes
   {
-    path: '/worker',
-    redirect: '/worker/dashboard',
-    meta: { 
-      requiresAuth: true, 
-      requiresWorker: true 
-    }
+    path: "/worker",
+    redirect: "/worker/dashboard",
+    meta: {
+      requiresAuth: true,
+      requiresWorker: true,
+    },
   },
   {
-    path: '/worker/dashboard',
-    name: 'WorkerDashboard',
+    path: "/worker/dashboard",
+    name: "WorkerDashboard",
     component: WorkerDashboard,
-    meta: { 
-      requiresAuth: true, 
+    meta: {
+      requiresAuth: true,
       requiresWorker: true,
-      title: 'My Dashboard'
-    }
+      title: "My Dashboard",
+    },
   },
   {
-    path: '/worker/attendance',
-    name: 'WorkerAttendance',
+    path: "/worker/attendance",
+    name: "WorkerAttendance",
     component: WorkerAttendance,
-    meta: { 
-      requiresAuth: true, 
+    meta: {
+      requiresAuth: true,
       requiresWorker: true,
-      title: 'Clock In/Out'
-    }
+      title: "Clock In/Out",
+    },
   },
   {
-    path: '/worker/history',
-    name: 'WorkerHistory',
+    path: "/worker/history",
+    name: "WorkerHistory",
     component: WorkerHistory,
-    meta: { 
-      requiresAuth: true, 
+    meta: {
+      requiresAuth: true,
       requiresWorker: true,
-      title: 'My Attendance History'
-    }
+      title: "My Attendance History",
+    },
   },
 
   // Shared routes
   {
-    path: '/profile',
-    name: 'Profile',
+    path: "/profile",
+    name: "Profile",
     component: Profile,
-    meta: { 
+    meta: {
       requiresAuth: true,
-      title: 'My Profile'
-    }
+      title: "My Profile",
+    },
   },
 
   // 404 page
   {
-    path: '/:pathMatch(.*)*',
-    name: 'NotFound',
+    path: "/:pathMatch(.*)*",
+    name: "NotFound",
     component: NotFound,
-    meta: { title: 'Page Not Found' }
-  }
-]
+    meta: { title: "Page Not Found" },
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
-      return savedPosition
+      return savedPosition;
     }
-    return { top: 0 }
-  }
-})
+    return { top: 0 };
+  },
+});
 
 // Navigation guards
 router.beforeEach(async (to, from, next) => {
   // Set page title
-  document.title = to.meta.title ? `${to.meta.title} - Attendance System` : 'Attendance System'
+  document.title = to.meta.title ? `${to.meta.title} - Attendance System` : "Attendance System";
 
   // Initialize auth store
-  const authStore = useAuthStore()
+  const authStore = useAuthStore();
 
   // Check if route requires authentication
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    next({ name: 'Login', query: { redirect: to.fullPath } })
-    return
+    next({ name: "Login", query: { redirect: to.fullPath } });
+    return;
   }
 
   // Check if route requires guest (login/register pages)
   if (to.meta.requiresGuest && authStore.isAuthenticated) {
-    next({ name: 'Dashboard' })
-    return
+    next({ name: "Dashboard" });
+    return;
   }
 
   // Check if route requires admin
   if (to.meta.requiresAdmin && !authStore.isAdmin) {
-    next({ name: 'Dashboard' })
-    return
+    next({ name: "Dashboard" });
+    return;
   }
 
   // Check if route requires worker
   if (to.meta.requiresWorker && !authStore.isWorker) {
-    next({ name: 'Dashboard' })
-    return
+    next({ name: "Dashboard" });
+    return;
   }
 
   // Handle redirect query parameter
-  if (to.name === 'Login' && authStore.isAuthenticated) {
-    const redirect = to.query.redirect
-    if (redirect && typeof redirect === 'string') {
-      next(redirect)
-      return
+  if (to.name === "Login" && authStore.isAuthenticated) {
+    const redirect = to.query.redirect;
+    if (redirect && typeof redirect === "string") {
+      next(redirect);
+      return;
     }
   }
 
-  next()
-})
+  next();
+});
 
-export default router
-
+export default router;
