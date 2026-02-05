@@ -269,18 +269,18 @@
             />
             <p v-if="errors.password" class="mt-1 text-sm text-red-600">{{ errors.password }}</p>
           </div>
+
+          <div v-if="modalError" class="bg-red-50 border border-red-200 rounded-lg p-4">
+            <p class="text-sm text-red-600">{{ modalError }}</p>
+          </div>
         </div>
 
-        <div v-if="modalError" class="mt-4 bg-red-50 border border-red-200 rounded-lg p-4">
-          <p class="text-sm text-red-600">{{ modalError }}</p>
-        </div>
-
-        <template #footer>
-          <button type="button" @click="closeModal" class="btn-secondary mr-3">Cancel</button>
+        <div class="flex justify-end gap-3 mt-6 pt-4 border-t border-gray-200">
+          <button type="button" @click="closeModal" class="btn-secondary">Cancel</button>
           <button type="submit" :disabled="modalLoading" class="btn-primary">
             {{ modalLoading ? "Saving..." : "Save Employee" }}
           </button>
-        </template>
+        </div>
       </form>
     </Modal>
   </div>
