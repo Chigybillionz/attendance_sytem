@@ -24,6 +24,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("Failed to fetch CSRF cookie:", error);
   }
 });
+// listening to the port
+// const PORT = process.env.PORT || 5000;
+// app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+const API = import.meta.env.VITE_API_URL;
 
 const app = createApp(App);
 

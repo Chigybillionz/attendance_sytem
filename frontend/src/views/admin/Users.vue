@@ -1,6 +1,3 @@
-<!-- File: frontend/src/views/admin/Users.vue -->
-<!-- Location: frontend/src/views/admin/Users.vue -->
-
 <template>
   <div class="space-y-6">
     <!-- Page Header -->
@@ -187,101 +184,100 @@
     </div>
 
     <!-- Add/Edit User Modal -->
+    <!-- Add/Edit User Modal -->
     <Modal
       :show="showAddModal || showEditModal"
       @close="closeModal"
       :title="editingUser ? 'Edit Employee' : 'Add New Employee'"
     >
-      <form @submit.prevent="saveUser">
-        <div class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-            <input
-              v-model="form.name"
-              type="text"
-              required
-              class="input-field"
-              :class="{ 'border-red-300': errors.name }"
-            />
-            <p v-if="errors.name" class="mt-1 text-sm text-red-600">{{ errors.name }}</p>
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-            <input
-              v-model="form.email"
-              type="email"
-              required
-              class="input-field"
-              :class="{ 'border-red-300': errors.email }"
-            />
-            <p v-if="errors.email" class="mt-1 text-sm text-red-600">{{ errors.email }}</p>
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Employee ID</label>
-            <input
-              v-model="form.employee_id"
-              type="text"
-              required
-              class="input-field"
-              :class="{ 'border-red-300': errors.employee_id }"
-            />
-            <p v-if="errors.employee_id" class="mt-1 text-sm text-red-600">
-              {{ errors.employee_id }}
-            </p>
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Department</label>
-            <input v-model="form.department" type="text" class="input-field" />
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-            <input v-model="form.phone" type="tel" class="input-field" />
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Role</label>
-            <select v-model="form.role" class="input-field" required>
-              <option value="worker">Worker</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-            <select v-model="form.status" class="input-field" required>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-            </select>
-          </div>
-
-          <div v-if="!editingUser">
-            <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-            <input
-              v-model="form.password"
-              type="password"
-              :required="!editingUser"
-              class="input-field"
-              :class="{ 'border-red-300': errors.password }"
-            />
-            <p v-if="errors.password" class="mt-1 text-sm text-red-600">{{ errors.password }}</p>
-          </div>
+      <form @submit.prevent="saveUser" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+          <input
+            v-model="form.name"
+            type="text"
+            required
+            class="input-field"
+            :class="{ 'border-red-300': errors.name }"
+          />
+          <p v-if="errors.name" class="mt-1 text-sm text-red-600">{{ errors.name }}</p>
         </div>
 
-        <div v-if="modalError" class="mt-4 bg-red-50 border border-red-200 rounded-lg p-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+          <input
+            v-model="form.email"
+            type="email"
+            required
+            class="input-field"
+            :class="{ 'border-red-300': errors.email }"
+          />
+          <p v-if="errors.email" class="mt-1 text-sm text-red-600">{{ errors.email }}</p>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Employee ID</label>
+          <input
+            v-model="form.employee_id"
+            type="text"
+            required
+            class="input-field"
+            :class="{ 'border-red-300': errors.employee_id }"
+          />
+          <p v-if="errors.employee_id" class="mt-1 text-sm text-red-600">
+            {{ errors.employee_id }}
+          </p>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Department</label>
+          <input v-model="form.department" type="text" class="input-field" />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+          <input v-model="form.phone" type="tel" class="input-field" />
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Role</label>
+          <select v-model="form.role" class="input-field" required>
+            <option value="worker">Worker</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+          <select v-model="form.status" class="input-field" required>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+          </select>
+        </div>
+
+        <div v-if="!editingUser">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+          <input
+            v-model="form.password"
+            type="password"
+            :required="!editingUser"
+            class="input-field"
+            :class="{ 'border-red-300': errors.password }"
+          />
+          <p v-if="errors.password" class="mt-1 text-sm text-red-600">{{ errors.password }}</p>
+        </div>
+
+        <div v-if="modalError" class="bg-red-50 border border-red-200 rounded-lg p-4">
           <p class="text-sm text-red-600">{{ modalError }}</p>
         </div>
-
-        <template #footer>
-          <button type="button" @click="closeModal" class="btn-secondary mr-3">Cancel</button>
-          <button type="submit" :disabled="modalLoading" class="btn-primary">
-            {{ modalLoading ? "Saving..." : "Save Employee" }}
-          </button>
-        </template>
       </form>
+
+      <template #footer>
+        <button type="button" @click="closeModal" class="btn-secondary mr-3">Cancel</button>
+        <button @click="saveUser" :disabled="modalLoading" class="btn-primary">
+          {{ modalLoading ? "Saving..." : "Save Employee" }}
+        </button>
+      </template>
     </Modal>
   </div>
 </template>

@@ -86,7 +86,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('stats/overview', [UserController::class, 'getStats']); // Get user statistics (admin only)
         Route::post('bulk-action', [UserController::class, 'bulkAction']); // Bulk operations (admin only)
         
-        // For your existing routes compatibility
+        // For my existing routes compatibility
         Route::get('departments', [UserController::class, 'getDepartments']); // Alias for departments
     });
     

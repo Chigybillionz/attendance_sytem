@@ -149,9 +149,11 @@ const handleSubmit = async () => {
   showSuccess.value = false;
 
   try {
+    // Make sure subject is included in the request
     const response = await api.post("/api/contact", {
       name: form.value.name,
       email: form.value.email,
+      subject: form.value.subject, // This will be: bug, feature, feedback, support, or other
       message: form.value.message,
     });
 

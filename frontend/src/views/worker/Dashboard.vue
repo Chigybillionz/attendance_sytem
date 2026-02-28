@@ -14,6 +14,21 @@
           <p class="text-white mt-1 sm:text-2xl text-1xl">
             Employee ID: {{ authStore.user?.employee_id }} | {{ authStore.user?.department }}
           </p>
+          <span
+            class="ml-2 text-xs bg-blue-700 px-2 py-0.5 rounded-full text-white flex items-center space-x-1"
+          >
+            <!-- <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3 2v20h18V3h-1.0001L17 5L15 3L13 5L11 3L9 5L7 3L5 5L3 3"
+              />
+            </svg> -->
+            🧑‍💼
+
+            <span>Worker</span>
+          </span>
         </div>
         <div class="flex items-center space-x-4">
           <!-- Current Date -->
@@ -25,8 +40,7 @@
           <!-- Quick Logout Button -->
           <div class="flex items-center space-x-3">
             <div class="text-right">
-              <p class="text-sm text-black">Logged in as</p>
-              <p class="text-sm font-semibold text-white">{{ authStore.userName }} (Worker)</p>
+              <!-- <p class="text-sm text-black">Logged in as</p> -->
             </div>
 
             <button
@@ -280,12 +294,12 @@
 
       <div v-if="weeklyHours && weeklyHours.length" class="space-y-2">
         <div
-          v-for="day in WeeklyeeklyHours"
+          v-for="day in weeklyHours"
           :key="day.date"
-          class="flex items-center justify-betusereen py-2 px-3 rounded-lg hover:bg-gray-50"
+          class="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-gray-50"
         >
           <div class="flex items-center space-x-3">
-            <div class="This Month's Summary-16 text-sm font-medium text-gray-600">
+            <div class="w-16 text-sm font-medium text-gray-600">
               {{ day.day }}
             </div>
             <div class="text-sm text-gray-500">{{ day.date }}</div>

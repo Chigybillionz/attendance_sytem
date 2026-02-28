@@ -1,8 +1,3 @@
-!-- ======================================= -->
-
-<!-- File: frontend/src/views/admin/Reports.vue -->
-<!-- Location: frontend/src/views/admin/Reports.vue -->
-
 <template>
   <div class="space-y-6">
     <!-- Page Header -->
@@ -195,8 +190,8 @@
             <tr v-for="record in attendanceRecords" :key="record.id">
               <td>
                 <div>
-                  <p class="font-medium text-black">{{ record.user.name }}</p>
-                  <p class="text-sm text-gray-500">{{ record.user.employee_id }}</p>
+                  <p class="font-medium text-black">{{ record.user?.name || "-" }}</p>
+                  <p class="text-sm text-gray-500">{{ record.user?.employee_id || "-" }}</p>
                 </div>
               </td>
               <td>{{ formatDate(record.date) }}</td>
@@ -278,21 +273,14 @@ const attendanceStore = useAttendanceStore();
 const usersStore = useUsersStore();
 
 const loading = ref(false);
+const filters = reactive({ user_id: "", start_date: "", end_date: "", status: "" });
 
-const filters = reactive({
-  user_id: "",
-  start_date: "",
-  end_date: "",
-  status: "",
-});
-
-// Computed properties
-const attendanceRecords = computed(() => attendanceStore.allAttendance);
-const users = computed(() => usersStore.users);
-const pagination = computed(() => attendanceStore.pagination);
+const attendanceRecords = computed(() => attendanceStore.allAttendance || []);
+const users = computed(() => usersStore.users || []);
+const pagination = computed(() => attendanceStore.pagination || {});
 
 const reportStats = computed(() => {
-  const records = attendanceRecords.value;
+  const records = attendanceRecords.value || [];
   return {
     total: records.length,
     present: records.filter((r) => r.status === "present").length,
@@ -301,10 +289,10 @@ const reportStats = computed(() => {
   };
 });
 
-const fetchReports = async () => {
+const fetchReports = async (extra = {}) => {
   loading.value = true;
   try {
-    const params = {};
+    const params = { ...extra };
     if (filters.user_id) params.user_id = filters.user_id;
     if (filters.start_date) params.start_date = filters.start_date;
     if (filters.end_date) params.end_date = filters.end_date;
@@ -312,14 +300,15 @@ const fetchReports = async () => {
 
     await attendanceStore.fetchAllAttendance(params);
   } catch (error) {
-    console.error("Failed to fetch reports:", error);
+    console.error(error);
   } finally {
     loading.value = false;
   }
 };
 
+const changePage = (page) => fetchReports({ page });
+
 const exportReport = () => {
-  // Simple CSV export
   const headers = [
     "Employee",
     "Employee ID",
@@ -332,16 +321,16 @@ const exportReport = () => {
   ];
   const csvContent = [
     headers.join(","),
-    ...attendanceRecords.value.map((record) =>
+    ...attendanceRecords.value.map((r) =>
       [
-        record.user.name,
-        record.user.employee_id,
-        record.date,
-        record.clock_in_time || "",
-        record.clock_out_time || "",
-        record.total_hours || 0,
-        record.status,
-        record.notes || "",
+        r.user?.name || "",
+        r.user?.employee_id || "",
+        r.date,
+        r.clock_in_time || "",
+        r.clock_out_time || "",
+        r.total_hours || 0,
+        r.status,
+        r.notes || "",
       ].join(",")
     ),
   ].join("\n");
@@ -350,15 +339,11 @@ const exportReport = () => {
   const url = window.URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `attendance-report-${new Date().toISOString().split("T")[0]}.csv`;
+  a.download = `attendance-${new Date().toISOString().split("T")[0]}.csv`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
   window.URL.revokeObjectURL(url);
-};
-
-const changePage = (page) => {
-  fetchReports();
 };
 
 onMounted(async () => {
@@ -366,3 +351,7 @@ onMounted(async () => {
   await usersStore.fetchUsers();
 });
 </script>
+
+<style scoped>
+/* Optional styles */
+</style>

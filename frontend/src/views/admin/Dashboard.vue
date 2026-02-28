@@ -1,86 +1,103 @@
-<!-- File: frontend/src/views/admin/Dashboard.vue -->
-<!-- Location: frontend/src/views/admin/Dashboard.vue -->
-<!-- UPDATED WITH USER MANAGEMENT INTEGRATION -->
-
 <template>
   <div class="space-y-6">
     <!-- Welcome Header with Logout -->
     <div class="bg-blue-600 rounded-lg shadow-sm border border-gray-200 p-6">
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-          <p class="text-gray-600 mt-1 bg-white/100">Overview of attendance system</p>
+          <h1 class="text-1xl sm:text-2xl font-bold text-gray-900">Admin Dashboard</h1>
+          <p class="text-white mt-1 sm:text-base text-sm">Overview of attendance system</p>
         </div>
-        <div class="flex items-center space-x-4">
+        <div class="flex items-center space-x-2 sm:space-x-4">
           <!-- Current Date -->
           <div class="text-right hidden sm:block">
-            <p class="text-sm text-white">Today's Date</p>
-            <p class="text-lg font-semibold text-gray-900">{{ todayDate }}</p>
+            <p class="text-sm text-black">Today's Date</p>
+            <p class="text-lg font-semibold text-white">{{ todayDate }}</p>
           </div>
 
-          <!-- Quick Actions -->
-          <div class="flex items-center space-x-3">
-            <!-- User Management Button -->
+          <!-- User Management Button (Hidden on mobile, shows on tablet+) -->
+          <button
+            @click="showUserManagement = true"
+            class="hidden md:flex items-center px-3 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+          >
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"
+              />
+            </svg>
+            Manage Users
+          </button>
+
+          <!-- User Management Icon Button (Shows only on mobile) -->
+          <button
+            @click="showUserManagement = true"
+            class="md:hidden flex items-center justify-center w-10 h-10 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+            title="Manage Users"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"
+              />
+            </svg>
+          </button>
+
+          <!-- Quick Logout Section -->
+          <div class="flex items-center space-x-2 sm:space-x-3">
+            <div class="text-right hidden sm:block">
+              <p class="text-sm text-black">Logged in as</p>
+              <p class="text-sm font-semibold text-white">{{ authStore.userName }} (Admin)</p>
+            </div>
+
+            <!-- Logout Button - Full text on desktop, icon only on mobile -->
             <button
-              @click="showUserManagement = true"
-              class="flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+              @click="handleLogout"
+              :disabled="loggingOut"
+              class="flex items-center justify-center w-10 h-10 sm:w-auto sm:h-auto sm:px-4 sm:py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50"
+              :title="loggingOut ? 'Signing out..' : 'Switch Account'"
             >
-              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg
+                v-if="!loggingOut"
+                class="w-5 h-5 sm:w-4 sm:h-4 sm:mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"
+                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
                 />
               </svg>
-              <!-- View Details -->
-              Manage Users
-            </button>
-
-            <!-- User Info and Logout -->
-            <div class="flex items-center space-x-3">
-              <div class="text-right">
-                <p class="text-sm text-white/100">Logged in as</p>
-                <p class="text-sm font-semibold text-blue-600">{{ authStore.userName }} (Admin)</p>
-              </div>
-
-              <button
-                @click="handleLogout"
-                :disabled="loggingOut"
-                class="flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:opacity-50"
+              <svg
+                v-else
+                class="animate-spin w-5 h-5 sm:w-4 sm:h-4 sm:mr-2"
+                fill="none"
+                viewBox="0 0 24 24"
               >
-                <svg
-                  v-if="!loggingOut"
-                  class="w-4 h-4 mr-2"
-                  fill="none"
+                <circle
+                  class="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
                   stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                  />
-                </svg>
-                <svg v-else class="animate-spin w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24">
-                  <circle
-                    class="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    stroke-width="4"
-                  ></circle>
-                  <path
-                    class="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-                {{ loggingOut ? "Signing out...." : "Switch Account" }}
-              </button>
-            </div>
+                  stroke-width="4"
+                ></circle>
+                <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+              <span class="hidden sm:inline">
+                {{ loggingOut ? "Signing out.." : "Switch Account" }}
+              </span>
+            </button>
           </div>
         </div>
       </div>
@@ -413,7 +430,7 @@ const quickSwitchToWorker = async () => {
 
   if (
     !confirm(
-      "Switch to worker account for testing?\n\nCredentials:\nEmail: john@attendance.com\nPassword: worker123"
+      "Switch to worker account for testing?\n\nCredentials:\nEmail: okoriechigozie99@gmail.com\nPassword: worker123"
     )
   ) {
     return;
@@ -426,7 +443,7 @@ const quickSwitchToWorker = async () => {
     await authStore.logout();
 
     // Auto-fill worker credentials and redirect to login
-    localStorage.setItem("test_email", "john@attendance.com");
+    localStorage.setItem("test_email", "okoriechigozie99@gmail.com");
     localStorage.setItem("test_password", "worker123");
 
     window.showNotification?.("Switching to worker account...", "info");

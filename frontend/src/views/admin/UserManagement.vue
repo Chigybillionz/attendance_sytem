@@ -342,7 +342,7 @@
               type="text"
               required
               class="input-field"
-              placeholder="Enter employee ID"
+              placeholder="Enter employee ID eg 001 "
             />
           </div>
 
