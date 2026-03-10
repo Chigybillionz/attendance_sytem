@@ -21,7 +21,7 @@
     "pinia": "^3.0.3",
     "vue": "^3.5.18",
     "vue-router": "^4.5.1",
-    "lucide-vue-next": "^0.4xx.x"
+    "lucide-vue-next": "^0.577.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.31.0",
