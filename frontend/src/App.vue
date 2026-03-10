@@ -2,7 +2,7 @@
 import { ref, computed, onMounted } from "vue";
 import { RouterLink, RouterView, useRoute } from "vue-router";
 // import { Home, Info, Menu, X, Mail, MessageSquare, Sun, Moon } from "lucide-vue-next";
-import { User, Mail, Lock } from "lucide-vue-next";
+import { User, Mail, Lock, AlertCircle } from "lucide-vue-next";
 import { useActivityTracker } from "@/composables/useActivityTracker";
 import InactivityWarning from "@/components/InactivityWarning.vue";
 import { useAuthStore } from "@/stores/auth";
