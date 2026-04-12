@@ -1,32 +1,26 @@
 <?php
 
 namespace Database\Seeders;
-
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Attendance;
 use Carbon\Carbon;
-
 class AttendanceSeeder extends Seeder
 {
     public function run(): void
     {
         $workers = User::where('role', 'worker')->get();
-        
         if ($workers->isEmpty()) {
             $this->command->warn('No workers found. Please run AdminSeeder first.');
             return;
         }
-        
         // Generate attendance records for the past 30 days
         for ($i = 30; $i >= 1; $i--) {
             $date = Carbon::now()->subDays($i);
-            
             // Skip weekends
             if ($date->isWeekend()) {
                 continue;
-            }
-            
+            }    
             foreach ($workers as $worker) {
                 // 85% chance worker shows up (realistic attendance)
                 if (rand(1, 100) <= 85) {
@@ -38,10 +32,10 @@ class AttendanceSeeder extends Seeder
         // Create today's attendance for some workers (for testing)
         $today = Carbon::now();
         if (!$today->isWeekend()) {
-            $todayWorkers = $workers->random(3); // 3 random workers for today
-            
+            $todayWorkers = $workers->random(3); 
+            // 3 random workers for today  
             foreach ($todayWorkers as $worker) {
-                $this->createTodayAttendance($worker, $today);
+            $this->createTodayAttendance($worker, $today);
             }
         }
     }
@@ -54,14 +48,13 @@ class AttendanceSeeder extends Seeder
             ->exists();
             
         if ($exists) {
-            return; // Skip if already exists
+            return;
+            // Skip if already exists
         }
-        
         // Random clock in time between 8:00 AM and 9:30 AM
         $clockInHour = rand(8, 9);
         $clockInMinute = $clockInHour == 9 ? rand(0, 30) : rand(0, 59);
         $clockInTime = $date->copy()->setTime($clockInHour, $clockInMinute, 0);
-        
         // Random clock out time between 5:00 PM and 6:30 PM
         $clockOutHour = rand(17, 18);
         $clockOutMinute = $clockOutHour == 18 ? rand(0, 30) : rand(0, 59);
@@ -78,7 +71,6 @@ class AttendanceSeeder extends Seeder
             'notes' => rand(1, 20) == 1 ? 'Had a meeting' : null,
         ]);
     }
-    
     private function createTodayAttendance($worker, $date)
     {
         // Check if attendance already exists

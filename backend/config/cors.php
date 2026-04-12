@@ -5,6 +5,7 @@ return [
     |--------------------------------------------------------------------------
     | Cross-Origin Resource Sharing (CORS) Configuration
     |--------------------------------------------------------------------------
+    tells your Laravel backend which frontend URLs are allowed to make requests to it.
     */
 
     'paths' => ['api/*', 

@@ -1,5 +1,6 @@
-<?php>
-    namespace App\Models;
+
+<?php
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -32,48 +33,6 @@ class Attendance extends Model
         return $this->belongsTo(User::class);
     }
 
-    // Scopes
-    public function scopeForDate($query, $date)
-    {
-        return $query->where('date', $date);
-    }
-
-    public function scopeForUser($query, $userId)
-    {
-        return $query->where('user_id', $userId);
-    }
-
-    public function scopeForMonth($query, $year, $month)
-    {
-        return $query->whereYear('date', $year)
-                    ->whereMonth('date', $month);
-    }
-
-    public function scopePresent($query)
-    {
-        return $query->where('status', 'present');
-    }
-
-    public function scopeLate($query)
-    {
-        return $query->where('status', 'late');
-    }
-
-    // Mutators & Accessors
-    public function setClockInTimeAttribute($value)
-    {
-        if ($value) {
-            $this->attributes['clock_in_time'] = Carbon::parse($value)->format('H:i:s');
-        }
-    }
-
-    public function setClockOutTimeAttribute($value)
-    {
-        if ($value) {
-            $this->attributes['clock_out_time'] = Carbon::parse($value)->format('H:i:s');
-        }
-    }
-
     // Helper methods
     public function calculateTotalHours()
     {
@@ -103,50 +62,7 @@ class Attendance extends Model
             return 'late';
         }
 
-        if ($this->clock_out_time) {
-            $clockOutTime = Carbon::parse($this->clock_out_time);
-            $workEndTime = Carbon::parse('17:00:00'); // 5 PM end time
-            
-            if ($clockOutTime->lt($workEndTime)) {
-                return 'early_departure';
-            }
-        }
-
         return 'present';
-    }
-
-    public function isLate()
-    {
-        return $this->status === 'late';
-    }
-
-    public function isPresent()
-    {
-        return $this->status === 'present';
-    }
-
-    public function hasClockIn()
-    {
-        return !is_null($this->clock_in_time);
-    }
-
-    public function hasClockOut()
-    {
-        return !is_null($this->clock_out_time);
-    }
-
-    public function getFormattedClockInAttribute()
-    {
-        return $this->clock_in_time ? 
-            Carbon::parse($this->clock_in_time)->format('H:i A') : 
-            null;
-    }
-
-    public function getFormattedClockOutAttribute()
-    {
-        return $this->clock_out_time ? 
-            Carbon::parse($this->clock_out_time)->format('H:i A') : 
-            null;
     }
 
     // Boot method to auto-calculate hours and status

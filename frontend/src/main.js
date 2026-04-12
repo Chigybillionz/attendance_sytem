@@ -9,7 +9,6 @@ import router from "./router";
 // Dynamically fetch and set the CSRF token in the meta tag
 import api from "./services/api";
 
-
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     await api.get("/sanctum/csrf-cookie");
@@ -25,14 +24,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("Failed to fetch CSRF cookie:", error);
   }
 });
+// listening to the port
+// const PORT = process.env.PORT || 5000;
+// app.listen(PORT, () => console.log(`Server running on ${PORT}`));
+const API = import.meta.env.VITE_API_URL;
 
 const app = createApp(App);
 
 app.use(createPinia());
 
-
 app.use(router);
 
 app.mount("#app");
-
-

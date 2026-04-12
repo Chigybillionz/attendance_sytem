@@ -1,7 +1,3 @@
-// File: frontend/src/services/api.js
-// Location: frontend/src/services/api.js
-// MAKE SURE YOUR API.JS LOOKS LIKE THIS
-
 import axios from "axios";
 
 const API_URL = "http://localhost:8000";
@@ -23,7 +19,6 @@ if (!csrfToken) {
 //   },
 // });
 
-
 const api = axios.create({
   baseURL: "http://localhost:8000",
   withCredentials: true,
@@ -33,20 +28,6 @@ const api = axios.create({
     "X-Requested-With": "XMLHttpRequest",
   },
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Request interceptor to add auth token
 api.interceptors.request.use(

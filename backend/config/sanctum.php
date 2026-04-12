@@ -1,8 +1,7 @@
 <?php
-// File: backend/config/sanctum.php
-// Location: backend/config/sanctum.php
-// REFACTORED AND FIXED VERSION
-
+// This file configures Laravel Sanctum to
+//  allow your frontend to securely communicate with your
+//  Laravel backend using cookies for authentication.
 use Laravel\Sanctum\Sanctum;
 
 return [
@@ -16,6 +15,7 @@ return [
     | authentication cookies. Typically, these should include your local
     | and production domains which access your API via a frontend SPA.
     |
+    spa is single page application
     */
     
     // 'stateful'=> ['*'],

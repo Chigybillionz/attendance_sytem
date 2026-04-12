@@ -1,21 +1,25 @@
-
-
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8">
-      <!-- Header -->
+  <div class="min-h-screen flex items-center justify-center bg-[#0051ff] py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    
+    <div class="auth-background-logo">
+      <img src="/image.png" alt="Company Logo" class="floating-logo-vertical" />
+    </div>
+
+    <div class="max-w-md w-full space-y-8 relative z-10">
       <div class="text-center">
         <div class="mx-auto h-16 w-16 bg-blue-600 rounded-full flex items-center justify-center mb-6">
-          <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <!-- <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-          </svg>
+          </svg> -->
+          <div>
+            <img src="/image.png" alt="" style="height: 48px; width: 48px; border-radius: 50%; object-fit: cover;">
+          </div>
         </div>
         <h2 class="text-3xl font-bold text-gray-900">Create Account</h2>
-        <p class="mt-2 text-sm text-gray-600">Join the attendance system</p>
+        <p class="mt-2 text-sm text-white">Join the attendance system</p>
       </div>
 
-      <!-- Registration Form -->
-      <form class="mt-8 space-y-6" @submit.prevent="handleRegister">
+      <form class="mt-8 space-y-6 bg-white p-10 rounded-xl shadow-lg" @submit.prevent="handleRegister">
         <div class="space-y-4">
           <div>
             <label for="name" class="block text-sm font-medium text-gray-700 mb-1">
@@ -124,12 +128,10 @@
           </div>
         </div>
 
-        <!-- Error Message -->
         <div v-if="authStore.error" class="bg-red-50 border border-red-200 rounded-lg p-4">
           <p class="text-sm text-red-600">{{ authStore.error }}</p>
         </div>
 
-        <!-- Submit Button -->
         <button
           type="submit"
           :disabled="loading"
@@ -147,7 +149,6 @@
           </span>
         </button>
 
-        <!-- Login Link -->
         <div class="text-center">
           <p class="text-sm text-gray-600">
             Already have an account?
@@ -256,3 +257,91 @@ const handleRegister = async () => {
   }
 }
 </script>
+
+<style scoped>
+/*
+  MODIFIED: Centered the logo horizontally for vertical movement
+*/
+.auth-background-logo {
+  position: fixed;
+  top: 0;
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Correct horizontal centering */
+  z-index: 0;
+  pointer-events: none;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: flex-start; /* Start at the top */
+  justify-content: center;
+  padding-top: 5vh;
+}
+
+/*
+  MODIFIED: Changed class name to floating-logo-vertical
+  MODIFIED: Applied the new vertical animation
+*/
+.floating-logo-vertical {
+  width: 600px;
+  height: 600px;
+  opacity: 0.15;
+  animation: floatTopToBottom 8s ease-in-out infinite;
+  object-fit: contain;
+}
+
+/* |--------------------------------------------------------------------------
+| Vertical Floating Animation (Up and Down)
+|--------------------------------------------------------------------------
+*/
+@keyframes floatTopToBottom {
+  0% {
+    transform: translateY(-20vh); /* Starts off-screen to the top */
+    opacity: 0.1;
+  }
+  25% {
+    opacity: 0.15;
+  }
+  50% {
+    transform: translateY(40vh); /* Moves down towards the bottom */
+    opacity: 0.2;
+  }
+  75% {
+    opacity: 0.15;
+  }
+  100% {
+    transform: translateY(-20vh); /* Returns to the top */
+    opacity: 0.1;
+  }
+}
+
+/* Responsive sizing for mobile */
+@media (max-width: 768px) {
+  .floating-logo-vertical {
+    width: 400px;
+    height: 400px;
+    animation: floatTopToBottomMobile 8s ease-in-out infinite;
+  }
+  
+  @keyframes floatTopToBottomMobile {
+    0% {
+      transform: translateY(-10vh);
+      opacity: 0.1;
+    }
+    50% {
+      transform: translateY(30vh);
+      opacity: 0.18;
+    }
+    100% {
+      transform: translateY(-10vh);
+      opacity: 0.1;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .floating-logo-vertical {
+    width: 300px;
+    height: 300px;
+  }
+}
+</style>
