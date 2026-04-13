@@ -72,10 +72,14 @@ DB_USERNAME        = your-database-user
 DB_PASSWORD        = your-database-password
 APP_KEY            = your-app-key
 APP_ENV            = production
-VITE_API_URL       = https://<your-project>.vercel.app/api
+VITE_API_URL       = https://attendance-sytem-9bee-git-master-chigybillionzs-projects.vercel.app/api
 ```
 
-⚠️ **Replace `<your-project>`** with your actual Vercel project name (you'll see it after first deployment).
+For this deployment, use:
+
+```
+https://attendance-sytem-9bee-git-master-chigybillionzs-projects.vercel.app
+```
 
 #### **Step 4: Deploy**
 
@@ -86,13 +90,13 @@ Click the **"Deploy"** button and wait 2-3 minutes.
 After deployment, you'll get a URL like:
 
 ```
-https://attendance-system-xyz.vercel.app
+https://attendance-sytem-9bee-git-master-chigybillionzs-projects.vercel.app
 ```
 
 Update the environment variable:
 
 ```
-VITE_API_URL = https://attendance-system-xyz.vercel.app/api
+VITE_API_URL = https://attendance-sytem-9bee-git-master-chigybillionzs-projects.vercel.app/api
 ```
 
 Vercel will auto-redeploy!
@@ -146,7 +150,7 @@ Deployed & Live! 🎉
 ### Test Frontend
 
 ```
-https://your-vercel-domain.vercel.app
+https://attendance-sytem-9bee-git-master-chigybillionzs-projects.vercel.app
 ```
 
 Should show your attendance system login page.
@@ -155,10 +159,10 @@ Should show your attendance system login page.
 
 ```bash
 # Test health endpoint
-curl https://your-vercel-domain.vercel.app/api/health
+curl https://attendance-sytem-9bee-git-master-chigybillionzs-projects.vercel.app/api/health
 
 # Test login
-curl -X POST https://your-vercel-domain.vercel.app/api/login \
+curl -X POST https://attendance-sytem-9bee-git-master-chigybillionzs-projects.vercel.app/api/login \
   -H "Content-Type: application/json" \
   -d '{"email":"admin@example.com","password":"password"}'
 ```

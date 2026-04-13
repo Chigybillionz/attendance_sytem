@@ -169,10 +169,11 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
 
 const router = useRouter();
+const route = useRoute();
 const authStore = useAuthStore();
 
 const loading = ref(false);
@@ -249,12 +250,14 @@ const handleLogin = async () => {
     // Show success message
     window.showNotification?.(`Welcome ${authStore.userName}!`, "success");
 
-    // Redirect based on role
-    if (authStore.isAdmin) {
-      router.push("/admin/dashboard");
-    } else {
-      router.push("/worker/dashboard");
-    }
+    const redirectPath =
+      typeof route.query.redirect === "string" && route.query.redirect.startsWith("/")
+        ? route.query.redirect
+        : authStore.isAdmin
+          ? "/admin/dashboard"
+          : "/worker/dashboard";
+
+    await router.push(redirectPath);
   } catch (error) {
     console.error("Login failed:", error);
     // Error is handled by the auth store

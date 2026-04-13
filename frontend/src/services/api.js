@@ -1,7 +1,28 @@
 import axios from "axios";
 
-const rawApiUrl = import.meta.env.VITE_API_URL || "http://localhost:8000";
-const API_URL = rawApiUrl.replace(/\/$/, "").replace(/\/api$/, "");
+const resolveApiUrl = () => {
+  const configuredApiUrl = import.meta.env.VITE_API_URL;
+  if (configuredApiUrl) {
+    return configuredApiUrl.replace(/\/$/, "").replace(/\/api$/, "");
+  }
+
+  if (typeof window !== "undefined") {
+    const { origin, hostname } = window.location;
+
+    // Keep local development pointed at the Laravel dev server.
+    if (hostname === "localhost" || hostname === "127.0.0.1") {
+      return "http://localhost:8000";
+    }
+
+    // In deployed environments, use the current site origin so API calls
+    // follow the same Vercel domain instead of falling back to localhost.
+    return origin.replace(/\/$/, "");
+  }
+
+  return "http://localhost:8000";
+};
+
+const API_URL = resolveApiUrl();
 
 // Fetch CSRF token from meta tag
 const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
