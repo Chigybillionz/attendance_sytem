@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8000";
+const rawApiUrl = import.meta.env.VITE_API_URL || "http://localhost:8000";
+const API_URL = rawApiUrl.replace(/\/$/, "").replace(/\/api$/, "");
 
 // Fetch CSRF token from meta tag
 const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
@@ -20,7 +21,7 @@ if (!csrfToken) {
 // });
 
 const api = axios.create({
-  baseURL: "http://localhost:8000",
+  baseURL: API_URL,
   withCredentials: true,
   headers: {
     Accept: "application/json",
