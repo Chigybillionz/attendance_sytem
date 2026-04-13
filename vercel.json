@@ -1,11 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
-  "framework": "vite",
-  "buildCommand": "npm ci && npm run build",
+  "buildCommand": "cd frontend && npm ci && npm run build",
   "outputDirectory": "frontend/dist",
   "public": false,
-  "env": ["VITE_API_URL"],
   "functions": {
     "api/**/*.php": {
       "runtime": "php@8.4"
@@ -14,11 +12,11 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/backend/public/index.php"
+      "destination": "/api/index.php"
     },
     {
       "source": "/(.*)",
-      "destination": "/frontend/dist/index.html"
+      "destination": "/index.html"
     }
   ]
 }
