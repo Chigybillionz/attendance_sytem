@@ -48,12 +48,12 @@ After the initial setup, go to your project settings:
 
 ```
 DB_CONNECTION         = pgsql
-DB_HOST              = db.kwmyunvwjfdrvrfibezh.supabase.co
+DB_HOST              = your-supabase-host.supabase.co
 DB_PORT              = 5432
-DB_DATABASE          = postgres
-DB_USERNAME          = postgres
-DB_PASSWORD          = Youngchapel@2024
-APP_KEY              = base64:zI/7ezkCdtqG1G/GB80djq0aH1eNecuMwSlu/7ArOYg=
+DB_DATABASE          = your-database-name
+DB_USERNAME          = your-database-user
+DB_PASSWORD          = your-database-password
+APP_KEY              = your-app-key
 APP_ENV              = production
 APP_DEBUG            = false
 VITE_API_URL         = https://your-vercel-domain.vercel.app/api
@@ -282,13 +282,13 @@ attendance_sytem/
 
 | Variable        | Value                                 | Notes                |
 | --------------- | ------------------------------------- | -------------------- |
-| `DB_CONNECTION` | `pgsql`                               | PostgrSQL (Supabase) |
-| `DB_HOST`       | `db.kwmyunvwjfdrvrfibezh.supabase.co` | Supabase host        |
+| `DB_CONNECTION` | `pgsql`                               | PostgreSQL driver    |
+| `DB_HOST`       | `your-supabase-host.supabase.co`      | Supabase host        |
 | `DB_PORT`       | `5432`                                | PostgreSQL port      |
-| `DB_DATABASE`   | `postgres`                            | Database name        |
-| `DB_USERNAME`   | `postgres`                            | Database user        |
-| `DB_PASSWORD`   | `Youngchapel@2024`                    | ⚠️ Keep secure!      |
-| `APP_KEY`       | `base64:zI/7...`                      | Application key      |
+| `DB_DATABASE`   | `your-database-name`                  | Database name        |
+| `DB_USERNAME`   | `your-database-user`                  | Database user        |
+| `DB_PASSWORD`   | `your-database-password`              | Keep secure          |
+| `APP_KEY`       | `your-app-key`                        | Application key      |
 | `APP_ENV`       | `production`                          | Environment          |
 | `VITE_API_URL`  | `https://your-domain.vercel.app/api`  | Frontend API URL     |
 

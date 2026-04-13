@@ -7,7 +7,7 @@
 - ✅ Supabase project created: `attendance-system`
 - ✅ PostgreSQL database configured
 - ✅ Connection credentials verified:
-  - **Host**: `db.kwmyunvwjfdrvrfibezh.supabase.co`
+  - **Host**: `your-supabase-host.supabase.co`
   - **Port**: `5432`
   - **Database**: `postgres`
   - **User**: `postgres`
@@ -68,16 +68,16 @@ When deploying, set these environment variables:
 ```bash
 # Database (Supabase)
 DB_CONNECTION=pgsql
-DB_HOST=db.kwmyunvwjfdrvrfibezh.supabase.co
+DB_HOST=your-supabase-host.supabase.co
 DB_PORT=5432
-DB_DATABASE=postgres
-DB_USERNAME=postgres
-DB_PASSWORD=Youngchapel@2024
+DB_DATABASE=your-database-name
+DB_USERNAME=your-database-user
+DB_PASSWORD=your-database-password
 
 # App Configuration
 APP_NAME=Laravel
 APP_ENV=production
-APP_KEY=base64:zI/7ezkCdtqG1G/GB80djq0aH1eNecuMwSlu/7ArOYg=
+APP_KEY=your-app-key
 APP_DEBUG=false
 APP_URL=https://your-domain.com
 

@@ -27,12 +27,12 @@ In the "Environment Variables" section, add these 9 variables:
 
 ```
 DB_CONNECTION      = pgsql
-DB_HOST            = db.kwmyunvwjfdrvrfibezh.supabase.co
+DB_HOST            = your-supabase-host.supabase.co
 DB_PORT            = 5432
-DB_DATABASE        = postgres
-DB_USERNAME        = postgres
-DB_PASSWORD        = Youngchapel@2024
-APP_KEY            = base64:zI/7ezkCdtqG1G/GB80djq0aH1eNecuMwSlu/7ArOYg=
+DB_DATABASE        = your-database-name
+DB_USERNAME        = your-database-user
+DB_PASSWORD        = your-database-password
+APP_KEY            = your-app-key
 APP_ENV            = production
 VITE_API_URL       = https://your-vercel-project.vercel.app/api
 ```

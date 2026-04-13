@@ -3,6 +3,7 @@
 ## 🚀 Quick Start (5 Minutes)
 
 ### Step 1: Create Render Account
+
 1. Go to https://render.com
 2. Sign up (use GitHub account - easier!)
 3. Click **"New +"** → **"Web Service"**
@@ -10,6 +11,7 @@
 ---
 
 ### Step 2: Connect Your GitHub Repository
+
 1. Click **"Connect account"** to authorize GitHub
 2. Search for: `attendance_sytem`
 3. Select the repository
@@ -20,16 +22,19 @@
 ### Step 3: Configure the Backend Service
 
 **Name:**
+
 ```
 attendance-backend
 ```
 
-**Environment:** 
+**Environment:**
+
 ```
 Docker
 ```
 
 **Root Directory:** (Click "Specify root directory")
+
 ```
 backend
 ```
@@ -37,6 +42,7 @@ backend
 **Build Command:** (Keep default or leave empty)
 
 **Start Command:**
+
 ```
 composer install && php artisan migrate && php artisan serve --host=0.0.0.0 --port=10000
 ```
@@ -49,16 +55,16 @@ Click **"Add Environment Variable"** and add each one:
 
 ```
 DB_CONNECTION      = pgsql
-DB_HOST            = db.kwmyunvwjfdrvrfibezh.supabase.co
+DB_HOST            = your-supabase-host.supabase.co
 DB_PORT            = 5432
-DB_DATABASE        = postgres
-DB_USERNAME        = postgres
-DB_PASSWORD        = Youngchapel@2024
-APP_KEY            = base64:zI/7ezkCdtqG1G/GB80djq0aH1eNecuMwSlu/7ArOYg=
+DB_DATABASE        = your-database-name
+DB_USERNAME        = your-database-user
+DB_PASSWORD        = your-database-password
+APP_KEY            = your-app-key
 APP_ENV            = production
 APP_DEBUG          = false
 APP_URL            = https://your-render-backend.onrender.com
-CORS_ALLOWED_ORIGINS = https://attendance-sytem-9bee-jygapfstx-chigybillionzs-projects.vercel.app
+CORS_ALLOWED_ORIGINS = https://your-frontend-domain.vercel.app
 ```
 
 ⚠️ Replace `https://your-render-backend.onrender.com` with your actual Render URL (you'll get it after deployment)
@@ -78,6 +84,7 @@ CORS_ALLOWED_ORIGINS = https://attendance-sytem-9bee-jygapfstx-chigybillionzs-pr
 ### Get Your Backend URL
 
 Your backend will be available at:
+
 ```
 https://attendance-backend-xxx.onrender.com/api
 ```
@@ -129,21 +136,25 @@ curl -X POST https://your-render-backend.onrender.com/api/login \
 ## Troubleshooting
 
 ### Error: "Failed to connect to database"
-- Check all DB_* environment variables are correct
+
+- Check all DB\_\* environment variables are correct
 - Verify Supabase database is running
 - Check port 5432 is accessible
 
 ### Error: "Module not found"
+
 - Build failed during Composer install
 - Render shows logs - check what's missing
 - Usually means `composer.json` is missing required packages
 
 ### Deployment stuck
+
 - Check Render logs: Dashboard → Service → Logs
 - Look for error messages
 - Might need to rebuild
 
 ### API returns 404
+
 - Make sure routes are properly configured in Laravel
 - Check `backend/routes/api.php` exists
 - Verify build command ran successfully
@@ -153,14 +164,17 @@ curl -X POST https://your-render-backend.onrender.com/api/login \
 ## Monitor Your Backend
 
 **View Logs:**
+
 - Render Dashboard → Service → **Logs** tab
 - Shows real-time activity
 
 **View Metrics:**
+
 - Render Dashboard → Service → **Metrics** tab
 - CPU, Memory, Response time
 
 **Restart Backend:**
+
 - Manual redeploy: Dashboard → **Redeploy** button
 - Auto redeploy on git push: Already enabled!
 
