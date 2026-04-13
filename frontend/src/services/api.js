@@ -7,43 +7,23 @@ const resolveApiUrl = () => {
   }
 
   if (typeof window !== "undefined") {
-    const { origin, hostname } = window.location;
+    const { origin } = window.location;
 
-    // Keep local development pointed at the Laravel dev server.
-    if (hostname === "localhost" || hostname === "127.0.0.1") {
-      return "http://localhost:8000";
-    }
-
-    // In deployed environments, use the current site origin so API calls
-    // follow the same Vercel domain instead of falling back to localhost.
+    // Use the current origin by default so local Vite proxying and deployed
+    // same-origin API routing both work without extra environment variables.
     return origin.replace(/\/$/, "");
   }
 
-  return "http://localhost:8000";
+  return "";
 };
 
 const API_URL = resolveApiUrl();
 
-// Fetch CSRF token from meta tag
-const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
-if (!csrfToken) {
-  console.error("CSRF token not found in meta tag.");
-}
-
-// const api = axios.create({
-//   baseURL: "http://localhost:8000",
-//   withCredentials: true,
-//   headers: {
-//     "Content-Type": "application/json",
-//     Accept: "application/json",
-//     "X-Requested-With": "XMLHttpRequest",
-//     "X-CSRF-TOKEN": csrfToken, // Ensure this is added
-//   },
-// });
-
 const api = axios.create({
   baseURL: API_URL,
   withCredentials: true,
+  xsrfCookieName: "XSRF-TOKEN",
+  xsrfHeaderName: "X-XSRF-TOKEN",
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",

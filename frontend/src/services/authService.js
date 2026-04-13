@@ -1,13 +1,19 @@
 // frontend/src/services/authService.js
 import api from "./api";
 
+const ensureCsrfCookie = async () => {
+  await api.get("/sanctum/csrf-cookie");
+};
+
 export const authService = {
   async login(credentials) {
+    await ensureCsrfCookie();
     const response = await api.post("/api/auth/login", credentials);
     return response.data;
   },
 
   async register(userData) {
+    await ensureCsrfCookie();
     const response = await api.post("/api/auth/register", userData);
     return response.data;
   },
