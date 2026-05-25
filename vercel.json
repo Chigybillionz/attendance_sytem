@@ -15,6 +15,10 @@
       "destination": "/api/index.php"
     },
     {
+      "source": "/sanctum/(.*)",
+      "destination": "/api/index.php"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
