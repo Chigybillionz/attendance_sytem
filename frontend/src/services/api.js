@@ -1,6 +1,14 @@
 import axios from "axios";
 
 const resolveApiUrl = () => {
+  if (typeof window !== "undefined") {
+    const { hostname, origin } = window.location;
+    // On Vercel deployments, always use same-origin routing to eliminate CORS issues completely
+    if (hostname.endsWith(".vercel.app")) {
+      return origin.replace(/\/$/, "");
+    }
+  }
+
   const configuredApiUrl = import.meta.env.VITE_API_URL;
   if (configuredApiUrl) {
     return configuredApiUrl.replace(/\/$/, "").replace(/\/api$/, "");
