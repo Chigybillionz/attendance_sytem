@@ -2,7 +2,11 @@
 import api from "./api";
 
 const ensureCsrfCookie = async () => {
-  await api.get("/sanctum/csrf-cookie");
+  try {
+    await api.get("/sanctum/csrf-cookie");
+  } catch (e) {
+    // Ignore CSRF cookie errors for pure token-based authentication
+  }
 };
 
 export const authService = {
