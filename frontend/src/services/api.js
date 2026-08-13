@@ -7,8 +7,18 @@ const resolveApiUrl = () => {
     url = window.location.origin;
   }
 
-  // Remove trailing slashes and trailing /api (handles /api, /api/, /api/api, etc.)
-  return url.replace(/\/+$/, "").replace(/\/api\/*$/i, "").replace(/\/+$/, "");
+  if (url) {
+    try {
+      if (!url.startsWith("http://") && !url.startsWith("https://")) {
+        url = "https://" + url;
+      }
+      return new URL(url).origin;
+    } catch (e) {
+      console.warn("Invalid VITE_API_URL format:", url);
+    }
+  }
+
+  return "";
 };
 
 const API_URL = resolveApiUrl();
