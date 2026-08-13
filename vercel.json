@@ -3,7 +3,6 @@
   "version": 2,
   "buildCommand": "cd frontend && npm ci && npm run build && cd .. && rm -rf frontend/node_modules",
   "outputDirectory": "frontend/dist",
-  "public": false,
   "functions": {
     "api/**/*.php": {
       "runtime": "vercel-php@0.7.4"
