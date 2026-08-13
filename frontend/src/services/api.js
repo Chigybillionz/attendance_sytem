@@ -1,16 +1,14 @@
 import axios from "axios";
 
 const resolveApiUrl = () => {
-  const configuredApiUrl = import.meta.env.VITE_API_URL;
-  if (configuredApiUrl) {
-    return configuredApiUrl.replace(/\/$/, "").replace(/\/api$/, "");
+  let url = import.meta.env.VITE_API_URL || "";
+
+  if (!url && typeof window !== "undefined") {
+    url = window.location.origin;
   }
 
-  if (typeof window !== "undefined") {
-    return window.location.origin.replace(/\/$/, "");
-  }
-
-  return "";
+  // Remove trailing slashes and trailing /api (handles /api, /api/, /api/api, etc.)
+  return url.replace(/\/+$/, "").replace(/\/api\/*$/i, "").replace(/\/+$/, "");
 };
 
 const API_URL = resolveApiUrl();

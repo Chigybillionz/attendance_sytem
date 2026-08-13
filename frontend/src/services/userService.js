@@ -11,8 +11,7 @@ export const userService = {
     try {
       await api.get("/sanctum/csrf-cookie");
     } catch (error) {
-      console.error("Failed to get CSRF token:", error);
-      throw error;
+      console.warn("CSRF cookie check skipped:", error.message);
     }
   },
 
