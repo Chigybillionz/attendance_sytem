@@ -27,54 +27,6 @@ Route::get('/test', function () {
     ]);
 });
 
-// Temporary test route to debug user details database query exception
-Route::get('/test-user/{id}', function ($id) {
-    try {
-        $user = \App\Models\User::findOrFail($id);
-        $stats = [
-            'total_attendance_days' => $user->attendances()->count(),
-            'present_days' => $user->attendances()->where('status', 'present')->count(),
-            'late_days' => $user->attendances()->where('status', 'late')->count(),
-            'absent_days' => $user->attendances()->where('status', 'absent')->count(),
-            'this_month_attendance' => $user->attendances()
-                ->whereMonth('date', now()->month)
-                ->whereYear('date', now()->year)
-                ->count(),
-            'today_attendance' => $user->getTodayAttendance()
-        ];
-        return response()->json([
-            'success' => true,
-            'user' => $user,
-            'stats' => $stats
-        ]);
-    } catch (\Throwable $e) {
-        return response()->json([
-            'success' => false,
-            'error_class' => get_class($e),
-            'message' => $e->getMessage(),
-            'file' => $e->getFile(),
-            'line' => $e->getLine(),
-            'trace' => collect($e->getTrace())->take(10)
-        ], 500);
-    }
-});
-
-// Diagnostic route to list database tables and structure
-Route::get('/db-test', function () {
-    try {
-        $tables = Illuminate\Support\Facades\DB::select("SELECT tablename FROM pg_catalog.pg_tables WHERE schemaname = 'public'");
-        return response()->json([
-            'success' => true,
-            'tables' => $tables,
-            'connection' => config('database.default')
-        ]);
-    } catch (\Throwable $e) {
-        return response()->json([
-            'success' => false,
-            'message' => $e->getMessage()
-        ], 500);
-    }
-});
 
 // Public routes (no authentication required)
 Route::prefix('auth')->group(function () {
