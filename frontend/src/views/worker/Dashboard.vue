@@ -231,7 +231,7 @@
             Clock Out
           </button>
 
-          <div v-if="!canClockIn && !canClockOut" class="text-center">
+          <div v-if="!canClockIn && !canClockOut && todayAttendance && todayAttendance.clock_out_time" class="text-center">
             <p
               class="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-md"
               role="alert"
@@ -252,6 +252,21 @@
                 Total Hours: {{ todayAttendance?.total_hours || 0 }}h
               </p>
             </div>
+          </div>
+
+          <!-- Fallback: if dashboard failed to load, show error + Clock In button -->
+          <div v-if="dashboardError && !canClockIn && !canClockOut" class="text-center">
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-3">
+              <p class="text-sm text-yellow-700">⚠️ Could not load dashboard data. You can still try to clock in.</p>
+            </div>
+            <button
+              @click="clockIn"
+              :disabled="loading"
+              class="w-full btn-primary"
+              :class="{ 'opacity-50 cursor-not-allowed': loading }"
+            >
+              Clock In
+            </button>
           </div>
         </div>
       </div>
@@ -388,8 +403,20 @@ const todayAttendance = computed(() => dashboardStore.workerTodayAttendance);
 const monthlyStats = computed(() => dashboardStore.workerMonthlyStats);
 const weeklyHours = computed(() => dashboardStore.workerWeeklyHours);
 const recentAttendance = computed(() => dashboardStore.workerDashboard?.recent_attendance);
-const canClockIn = computed(() => dashboardStore.canClockIn);
+
+// canClockIn: show Clock In when dashboard loaded and no clock-in done, OR when dashboard failed to load (fallback)
+const canClockIn = computed(() => {
+  // If dashboard loaded successfully, use backend value
+  if (dashboardStore.workerDashboard) {
+    return dashboardStore.canClockIn;
+  }
+  // If dashboard failed to load but user is authenticated, allow clock in as fallback
+  return dashboardStore.error ? true : false;
+});
+
 const canClockOut = computed(() => dashboardStore.canClockOut);
+const dashboardLoaded = computed(() => !!dashboardStore.workerDashboard);
+const dashboardError = computed(() => dashboardStore.error);
 
 // Handle logout
 const handleLogout = async () => {
