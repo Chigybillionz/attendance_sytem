@@ -81,20 +81,18 @@ export const useAuthStore = defineStore("auth", {
     async logout() {
       this.loading = true;
 
-      try {
-          await authService.logout();
-      } catch (error) {
-        console.error("Logout error:", error);
-      } finally {
-        this.user = null;
-        this.token = null;
-        this.error = null;
-        this.loading = false;
+      // Clear local state and localStorage immediately to ensure instant UI transition
+      this.user = null;
+      this.token = null;
+      this.error = null;
+      this.loading = false;
+      localStorage.removeItem("user");
+      localStorage.removeItem("auth_token");
 
-        // Clear localStorage
-        localStorage.removeItem("user");
-        localStorage.removeItem("auth_token");
-      }
+      // Send logout request to backend in the background without awaiting it
+      authService.logout().catch((error) => {
+        console.warn("Background backend logout failed:", error);
+      });
     },
 
     async fetchUser() {
