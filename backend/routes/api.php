@@ -29,22 +29,34 @@ Route::get('/test', function () {
 
 // Temporary test route to debug user details database query exception
 Route::get('/test-user/{id}', function ($id) {
-    $user = \App\Models\User::findOrFail($id);
-    $stats = [
-        'total_attendance_days' => $user->attendances()->count(),
-        'present_days' => $user->attendances()->where('status', 'present')->count(),
-        'late_days' => $user->attendances()->where('status', 'late')->count(),
-        'absent_days' => $user->attendances()->where('status', 'absent')->count(),
-        'this_month_attendance' => $user->attendances()
-            ->whereMonth('date', now()->month)
-            ->whereYear('date', now()->year)
-            ->count(),
-        'today_attendance' => $user->getTodayAttendance()
-    ];
-    return response()->json([
-        'user' => $user,
-        'stats' => $stats
-    ]);
+    try {
+        $user = \App\Models\User::findOrFail($id);
+        $stats = [
+            'total_attendance_days' => $user->attendances()->count(),
+            'present_days' => $user->attendances()->where('status', 'present')->count(),
+            'late_days' => $user->attendances()->where('status', 'late')->count(),
+            'absent_days' => $user->attendances()->where('status', 'absent')->count(),
+            'this_month_attendance' => $user->attendances()
+                ->whereMonth('date', now()->month)
+                ->whereYear('date', now()->year)
+                ->count(),
+            'today_attendance' => $user->getTodayAttendance()
+        ];
+        return response()->json([
+            'success' => true,
+            'user' => $user,
+            'stats' => $stats
+        ]);
+    } catch (\Throwable $e) {
+        return response()->json([
+            'success' => false,
+            'error_class' => get_class($e),
+            'message' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'trace' => collect($e->getTrace())->take(10)
+        ], 500);
+    }
 });
 
 // Public routes (no authentication required)
