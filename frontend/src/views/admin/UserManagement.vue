@@ -448,16 +448,16 @@
             <div class="flex items-center space-x-4 mb-4">
               <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
                 <span class="text-blue-600 font-bold text-xl">
-                  {{ selectedUserDetails.user.name.charAt(0).toUpperCase() }}
+                  {{ selectedUserDetails.user?.name ? selectedUserDetails.user.name.charAt(0).toUpperCase() : '' }}
                 </span>
               </div>
               <div>
                 <h4 class="text-lg font-semibold text-gray-900">
-                  {{ selectedUserDetails.user.name }}
+                  {{ selectedUserDetails.user?.name }}
                 </h4>
-                <p class="text-gray-600">{{ selectedUserDetails.user.email }}</p>
+                <p class="text-gray-600">{{ selectedUserDetails.user?.email }}</p>
                 <p class="text-sm text-gray-500">
-                  Employee ID: {{ selectedUserDetails.user.employee_id }}
+                  Employee ID: {{ selectedUserDetails.user?.employee_id }}
                 </p>
               </div>
             </div>
@@ -465,32 +465,32 @@
             <div class="grid grid-cols-2 gap-4">
               <div>
                 <p class="text-sm font-medium text-gray-500">Role</p>
-                <p class="text-gray-900">{{ capitalize(selectedUserDetails.user.role) }}</p>
+                <p class="text-gray-900">{{ capitalize(selectedUserDetails.user?.role || '') }}</p>
               </div>
               <div>
                 <p class="text-sm font-medium text-gray-500">Status</p>
                 <span
                   class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
                   :class="
-                    selectedUserDetails.user.status === 'active'
+                    selectedUserDetails.user?.status === 'active'
                       ? 'bg-green-100 text-green-800'
                       : 'bg-red-100 text-red-800'
                   "
                 >
-                  {{ capitalize(selectedUserDetails.user.status) }}
+                  {{ capitalize(selectedUserDetails.user?.status || '') }}
                 </span>
               </div>
               <div>
                 <p class="text-sm font-medium text-gray-500">Department</p>
-                <p class="text-gray-900">{{ selectedUserDetails.user.department || "N/A" }}</p>
+                <p class="text-gray-900">{{ selectedUserDetails.user?.department || "N/A" }}</p>
               </div>
               <div>
                 <p class="text-sm font-medium text-gray-500">Phone</p>
-                <p class="text-gray-900">{{ selectedUserDetails.user.phone || "N/A" }}</p>
+                <p class="text-gray-900">{{ selectedUserDetails.user?.phone || "N/A" }}</p>
               </div>
               <div>
                 <p class="text-sm font-medium text-gray-500">Joined</p>
-                <p class="text-gray-900">{{ formatDate(selectedUserDetails.user.created_at) }}</p>
+                <p class="text-gray-900">{{ formatDate(selectedUserDetails.user?.created_at) }}</p>
               </div>
             </div>
           </div>
@@ -501,25 +501,25 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div class="bg-blue-50 p-3 rounded-lg text-center">
                 <p class="text-2xl font-bold text-blue-600">
-                  {{ selectedUserDetails.stats.total_attendance_days }}
+                  {{ selectedUserDetails.stats?.total_attendance_days || 0 }}
                 </p>
                 <p class="text-sm text-blue-700">Total Days</p>
               </div>
               <div class="bg-green-50 p-3 rounded-lg text-center">
                 <p class="text-2xl font-bold text-green-600">
-                  {{ selectedUserDetails.stats.present_days }}
+                  {{ selectedUserDetails.stats?.present_days || 0 }}
                 </p>
                 <p class="text-sm text-green-700">Present</p>
               </div>
               <div class="bg-yellow-50 p-3 rounded-lg text-center">
                 <p class="text-2xl font-bold text-yellow-600">
-                  {{ selectedUserDetails.stats.late_days }}
+                  {{ selectedUserDetails.stats?.late_days || 0 }}
                 </p>
                 <p class="text-sm text-yellow-700">Late</p>
               </div>
               <div class="bg-red-50 p-3 rounded-lg text-center">
                 <p class="text-2xl font-bold text-red-600">
-                  {{ selectedUserDetails.stats.absent_days }}
+                  {{ selectedUserDetails.stats?.absent_days || 0 }}
                 </p>
                 <p class="text-sm text-red-700">Absent</p>
               </div>
@@ -532,7 +532,7 @@
             <div class="space-y-2">
               <div
                 v-if="
-                  selectedUserDetails.user.attendances &&
+                  selectedUserDetails.user?.attendances &&
                   selectedUserDetails.user.attendances.length
                 "
               >
@@ -572,13 +572,13 @@
             <button
               @click="toggleUserStatus(selectedUserDetails.user)"
               :class="
-                selectedUserDetails.user.status === 'active' ? 'btn-secondary' : 'btn-primary'
+                selectedUserDetails.user?.status === 'active' ? 'btn-secondary' : 'btn-primary'
               "
             >
-              {{ selectedUserDetails.user.status === "active" ? "Deactivate" : "Activate" }}
+              {{ selectedUserDetails.user?.status === "active" ? "Deactivate" : "Activate" }}
             </button>
             <button
-              v-if="selectedUserDetails.user.id !== authStore.user.id"
+              v-if="selectedUserDetails.user?.id !== authStore.user?.id"
               @click="deleteUser(selectedUserDetails.user)"
               class="text-red-600 hover:text-red-800 font-medium"
             >

@@ -172,6 +172,13 @@
 
         <!-- Clock In/Out Buttons -->
         <div class="mt-6 space-y-3">
+          <!-- Loading state -->
+          <div v-if="!dashboardReady && !dashboardFailed" class="text-center py-4">
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+            <p class="text-gray-500 text-sm mt-2">Loading attendance data...</p>
+          </div>
+
+          <!-- Clock In Button -->
           <button
             v-if="canClockIn"
             @click="clockIn"
@@ -188,18 +195,14 @@
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <!-- Clock circle with opening at right -->
               <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c2.5 0 4.8-.9 6.6-2.4" />
-
-              <!-- Clock hands -->
               <path d="M12 6v6l3 3" />
-
-              <!-- Arrow pointing out (top right) -->
               <path d="M21 3l-6 6m0 0h6m-6 0V3" />
             </svg>
-            Clock In
+            {{ loading ? 'Clocking In...' : 'Clock In' }}
           </button>
 
+          <!-- Clock Out Button -->
           <button
             v-if="canClockOut"
             @click="clockOut"
@@ -207,9 +210,6 @@
             class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
             :class="{ 'opacity-50 cursor-not-allowed': loading }"
           >
-            <!-- <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg> -->
             <svg
               class="w-5 h-5 mr-2"
               fill="none"
@@ -219,19 +219,15 @@
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <!-- Clock circle with opening at right -->
               <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c2.5 0 4.8-.9 6.6-2.4" />
-
-              <!-- Clock hands -->
               <path d="M12 6v6l3 3" />
-
-              <!-- Arrow pointing out (top right) -->
               <path d="M15 3h6m0 0v6m0-6l-7 7" />
             </svg>
-            Clock Out
+            {{ loading ? 'Clocking Out...' : 'Clock Out' }}
           </button>
 
-          <div v-if="!canClockIn && !canClockOut && todayAttendance && todayAttendance.clock_out_time" class="text-center">
+          <!-- Completed: ONLY when proven -->
+          <div v-if="isCompleted" class="text-center">
             <p
               class="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-md"
               role="alert"
@@ -254,19 +250,11 @@
             </div>
           </div>
 
-          <!-- Fallback: if dashboard failed to load, show error + Clock In button -->
-          <div v-if="dashboardError && !canClockIn && !canClockOut" class="text-center">
-            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-3">
-              <p class="text-sm text-yellow-700">⚠️ Could not load dashboard data. You can still try to clock in.</p>
+          <!-- Error notice -->
+          <div v-if="dashboardFailed && !dashboardStore.workerDashboard" class="text-center">
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-1">
+              <p class="text-sm text-yellow-700">⚠️ Could not load dashboard data from server. You can still try to clock in.</p>
             </div>
-            <button
-              @click="clockIn"
-              :disabled="loading"
-              class="w-full btn-primary"
-              :class="{ 'opacity-50 cursor-not-allowed': loading }"
-            >
-              Clock In
-            </button>
           </div>
         </div>
       </div>
@@ -395,6 +383,8 @@ const dashboardStore = useDashboardStore();
 const loading = ref(false);
 const loggingOut = ref(false);
 const switchingAccount = ref(false);
+const dashboardReady = ref(false);
+const dashboardFailed = ref(false);
 
 // Computed properties
 const greeting = computed(() => getGreeting());
@@ -404,19 +394,30 @@ const monthlyStats = computed(() => dashboardStore.workerMonthlyStats);
 const weeklyHours = computed(() => dashboardStore.workerWeeklyHours);
 const recentAttendance = computed(() => dashboardStore.workerDashboard?.recent_attendance);
 
-// canClockIn: show Clock In when dashboard loaded and no clock-in done, OR when dashboard failed to load (fallback)
+// Simple clock in/out logic:
+// - Show Clock In: if no todayAttendance, or todayAttendance exists but no clock_in_time, or dashboard failed
+// - Show Clock Out: if todayAttendance exists with clock_in but no clock_out
+// - Show Completed: ONLY if todayAttendance has BOTH clock_in AND clock_out
 const canClockIn = computed(() => {
-  // If dashboard loaded successfully, use backend value
-  if (dashboardStore.workerDashboard) {
-    return dashboardStore.canClockIn;
-  }
-  // If dashboard failed to load but user is authenticated, allow clock in as fallback
-  return dashboardStore.error ? true : false;
+  // If dashboard failed to load, always allow clock in attempt
+  if (dashboardFailed.value && !dashboardStore.workerDashboard) return true;
+  // If dashboard hasn't loaded yet, don't show anything (loading state handles it)
+  if (!dashboardReady.value) return false;
+  // If dashboard loaded, check the data
+  if (!todayAttendance.value) return true; // No record = can clock in
+  if (!todayAttendance.value.clock_in_time) return true; // No clock in = can clock in
+  return false;
 });
 
-const canClockOut = computed(() => dashboardStore.canClockOut);
-const dashboardLoaded = computed(() => !!dashboardStore.workerDashboard);
-const dashboardError = computed(() => dashboardStore.error);
+const canClockOut = computed(() => {
+  if (!todayAttendance.value) return false;
+  return todayAttendance.value.clock_in_time && !todayAttendance.value.clock_out_time;
+});
+
+const isCompleted = computed(() => {
+  if (!todayAttendance.value) return false;
+  return todayAttendance.value.clock_in_time && todayAttendance.value.clock_out_time;
+});
 
 // Handle logout
 const handleLogout = async () => {
@@ -479,10 +480,13 @@ const clockIn = async () => {
   loading.value = true;
   try {
     await attendanceStore.clockIn();
-    await dashboardStore.fetchWorkerDashboard();
+    // Try refreshing dashboard, but don't fail if it doesn't work
+    try { await dashboardStore.fetchWorkerDashboard(); } catch (e) { /* ignore */ }
+    dashboardReady.value = true;
+    dashboardFailed.value = false;
     window.showNotification?.("Clocked in successfully!", "success");
   } catch (error) {
-    window.showNotification?.("Failed to clock in", "error");
+    window.showNotification?.("Failed to clock in. Please check your connection.", "error");
   } finally {
     loading.value = false;
   }
@@ -492,16 +496,26 @@ const clockOut = async () => {
   loading.value = true;
   try {
     await attendanceStore.clockOut();
-    await dashboardStore.fetchWorkerDashboard();
+    // Try refreshing dashboard, but don't fail if it doesn't work
+    try { await dashboardStore.fetchWorkerDashboard(); } catch (e) { /* ignore */ }
+    dashboardReady.value = true;
     window.showNotification?.("Clocked out successfully!", "success");
   } catch (error) {
-    window.showNotification?.("Failed to clock out", "error");
+    window.showNotification?.("Failed to clock out. Please check your connection.", "error");
   } finally {
     loading.value = false;
   }
 };
 
 onMounted(async () => {
-  await dashboardStore.fetchWorkerDashboard();
+  try {
+    await dashboardStore.fetchWorkerDashboard();
+    dashboardReady.value = true;
+  } catch (error) {
+    console.error("Dashboard load failed:", error);
+    dashboardFailed.value = true;
+    dashboardReady.value = true; // Mark ready so UI isn't stuck on loading
+  }
 });
 </script>
+
