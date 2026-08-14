@@ -55,14 +55,16 @@ const routes = [
   {
     path: "/dashboard",
     name: "Dashboard",
-    component: () => {
+    beforeEnter: (to, from, next) => {
       const authStore = useAuthStore();
       if (authStore.isAdmin) {
-        return AdminDashboard();
+        next({ path: "/admin/dashboard" });
       } else {
-        return WorkerDashboard();
+        next({ path: "/worker/dashboard" });
       }
     },
+    // Fallback component (should never actually render due to beforeEnter redirect)
+    component: WorkerDashboard,
     meta: {
       requiresAuth: true,
       title: "Dashboard",
