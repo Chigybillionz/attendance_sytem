@@ -59,6 +59,23 @@ Route::get('/test-user/{id}', function ($id) {
     }
 });
 
+// Diagnostic route to list database tables and structure
+Route::get('/db-test', function () {
+    try {
+        $tables = Illuminate\Support\Facades\DB::select("SELECT tablename FROM pg_catalog.pg_tables WHERE schemaname = 'public'");
+        return response()->json([
+            'success' => true,
+            'tables' => $tables,
+            'connection' => config('database.default')
+        ]);
+    } catch (\Throwable $e) {
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage()
+        ], 500);
+    }
+});
+
 // Public routes (no authentication required)
 Route::prefix('auth')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
