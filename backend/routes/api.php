@@ -27,6 +27,26 @@ Route::get('/test', function () {
     ]);
 });
 
+// Temporary test route to debug user details database query exception
+Route::get('/test-user/{id}', function ($id) {
+    $user = \App\Models\User::findOrFail($id);
+    $stats = [
+        'total_attendance_days' => $user->attendances()->count(),
+        'present_days' => $user->attendances()->where('status', 'present')->count(),
+        'late_days' => $user->attendances()->where('status', 'late')->count(),
+        'absent_days' => $user->attendances()->where('status', 'absent')->count(),
+        'this_month_attendance' => $user->attendances()
+            ->whereMonth('date', now()->month)
+            ->whereYear('date', now()->year)
+            ->count(),
+        'today_attendance' => $user->getTodayAttendance()
+    ];
+    return response()->json([
+        'user' => $user,
+        'stats' => $stats
+    ]);
+});
+
 // Public routes (no authentication required)
 Route::prefix('auth')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
