@@ -21,7 +21,9 @@ class DashboardController extends Controller
         $currentYear = Carbon::now()->year;
 
         // Basic counts
+        $totalRegisteredUsers = User::count();
         $totalEmployees = User::workers()->count();
+        $totalAdmins = User::admins()->count();
         $activeEmployees = User::workers()->active()->count();
         $totalDepartments = User::distinct()->whereNotNull('department')->count('department');
 
@@ -86,7 +88,9 @@ class DashboardController extends Controller
 
         return response()->json([
             'overview' => [
+                'total_registered_users' => $totalRegisteredUsers,
                 'total_employees' => $totalEmployees,
+                'total_admins' => $totalAdmins,
                 'active_employees' => $activeEmployees,
                 'total_departments' => $totalDepartments,
                 'today_attendance' => $todayAttendance,
@@ -170,6 +174,7 @@ class DashboardController extends Controller
             'weekly_hours' => $weeklyHours,
             'can_clock_in' => !$todayAttendance || !$todayAttendance->clock_in_time,
             'can_clock_out' => $todayAttendance && $todayAttendance->clock_in_time && !$todayAttendance->clock_out_time,
+            'is_new_user' => !$todayAttendance,
         ]);
     }
 }

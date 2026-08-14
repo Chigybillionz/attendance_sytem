@@ -140,7 +140,36 @@
     </div>
 
     <!-- Overview Stats -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 bg-blue-600">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 bg-blue-600">
+      <!-- NEW: Total Registered Users card -->
+      <div
+        class="stat-card cursor-pointer hover:shadow-md transition-shadow"
+        @click="showUserManagement = true"
+      >
+        <div class="flex items-center">
+          <div class="p-3 bg-indigo-100 rounded-lg">
+            <svg
+              class="w-8 h-8 text-indigo-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+              />
+            </svg>
+          </div>
+          <div class="ml-4">
+            <p class="text-sm text-gray-600">Total Registered Users</p>
+            <p class="text-2xl font-bold text-gray-900">{{ overview.total_registered_users || 0 }}</p>
+            <p class="text-xs text-indigo-600 font-medium mt-1">Click to manage →</p>
+          </div>
+        </div>
+      </div>
+
       <div
         class="stat-card cursor-pointer hover:shadow-md transition-shadow"
         @click="showUserManagement = true"
@@ -162,7 +191,7 @@
             </svg>
           </div>
           <div class="ml-4">
-            <p class="text-sm text-gray-600">Total Employees</p>
+            <p class="text-sm text-gray-600">Active Workers</p>
             <p class="text-2xl font-bold text-gray-900">{{ overview.total_employees || 0 }}</p>
             <p class="text-xs text-blue-600 font-medium mt-1">Click to manage →</p>
           </div>

@@ -154,7 +154,7 @@
 
         <div v-else class="text-center py-8">
           <svg
-            class="w-12 h-12 text-gray-400 mx-auto mb-4"
+            class="w-12 h-12 text-blue-400 mx-auto mb-4"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -166,7 +166,8 @@
               d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          <p class="text-gray-500 mb-4">No attendance record for today</p>
+          <p class="text-gray-700 font-medium mb-2">No attendance record for today</p>
+          <p class="text-gray-500 text-sm mb-4">Click "Clock In" below to start your work day!</p>
         </div>
 
         <!-- Clock In/Out Buttons -->

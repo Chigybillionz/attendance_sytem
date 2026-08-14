@@ -21,13 +21,29 @@ export const useDashboardStore = defineStore("dashboard", {
     departmentStats: (state) => state.adminDashboard?.department_stats || [],
     recentAttendance: (state) => state.adminDashboard?.recent_attendance || [],
 
+    // Admin extra getters
+    totalRegisteredUsers: (state) => state.adminDashboard?.overview?.total_registered_users || 0,
+    totalAdmins: (state) => state.adminDashboard?.overview?.total_admins || 0,
+
     // Worker dashboard getters
     workerTodayAttendance: (state) => state.workerDashboard?.today_attendance,
     workerMonthlyStats: (state) => state.workerDashboard?.monthly_stats,
     workerWeeklyHours: (state) => state.workerDashboard?.weekly_hours || [],
     workerRecentAttendance: (state) => state.workerDashboard?.recent_attendance || [],
-    canClockIn: (state) => state.workerDashboard?.can_clock_in || false,
-    canClockOut: (state) => state.workerDashboard?.can_clock_out || false,
+    // canClockIn: true when dashboard loaded and either backend says true OR no attendance record exists yet (new user)
+    canClockIn: (state) => {
+      if (!state.workerDashboard) return false;
+      // If the backend explicitly set can_clock_in, use it; otherwise default true for new users
+      if (state.workerDashboard.can_clock_in === true) return true;
+      if (state.workerDashboard.can_clock_in === false) return false;
+      // Fallback: if no today_attendance record, user can clock in
+      return !state.workerDashboard.today_attendance;
+    },
+    canClockOut: (state) => {
+      if (!state.workerDashboard) return false;
+      return state.workerDashboard.can_clock_out || false;
+    },
+    isNewUser: (state) => state.workerDashboard?.is_new_user || false,
 
     // Attendance summary
     attendanceSummary: (state) => state.adminDashboard?.attendance_summary || {},

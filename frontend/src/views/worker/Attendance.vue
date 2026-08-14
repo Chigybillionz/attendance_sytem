@@ -29,6 +29,12 @@
             <span class="text-sm font-medium capitalize">{{ todayAttendance.status }}</span>
           </div>
         </div>
+        <div v-else class="mb-8">
+          <div class="inline-flex items-center space-x-2 bg-blue-50 rounded-full px-4 py-2">
+            <div class="w-3 h-3 rounded-full bg-blue-400 animate-pulse"></div>
+            <span class="text-sm font-medium text-blue-700">Ready to Clock In</span>
+          </div>
+        </div>
 
         <!-- Action Buttons -->
         <div class="flex justify-center space-x-4">

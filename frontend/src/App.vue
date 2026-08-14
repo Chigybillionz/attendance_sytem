@@ -2,7 +2,7 @@
 import { ref, computed, onMounted } from "vue";
 import { RouterLink, RouterView, useRoute } from "vue-router";
 // import { Home, Info, Menu, X, Mail, MessageSquare, Sun, Moon } from "lucide-vue-next";
-import { Home, Info, Menu, X, Mail, MessageSquare, Sun, Moon } from "lucide-vue-next";
+import { Home, Info, Menu, X, Mail, MessageSquare, Sun, Moon, Clock, CalendarDays, User, LayoutDashboard, Users, FileBarChart } from "lucide-vue-next";
 import { useActivityTracker } from "@/composables/useActivityTracker";
 import InactivityWarning from "@/components/InactivityWarning.vue";
 import { useAuthStore } from "@/stores/auth";
@@ -25,6 +25,16 @@ const shouldShowNavigation = computed(() => {
 // Check if user is admin
 const isAdmin = computed(() => {
   return authStore.user?.role === "admin" || authStore.user?.is_admin === true;
+});
+
+// Check if user is worker
+const isWorker = computed(() => {
+  return authStore.user?.role === "worker";
+});
+
+// Check if user is authenticated
+const isAuthenticated = computed(() => {
+  return authStore.isAuthenticated;
 });
 
 const toggleSidebar = () => {
@@ -120,6 +130,7 @@ onMounted(() => {
           <h2 class="text-2xl font-bold mb-8 text-blue-100 dark:text-gray-200">Dashboard</h2>
 
           <div class="space-y-2">
+            <!-- Shared: Home -->
             <RouterLink
               to="/"
               @click="closeSidebar"
@@ -129,34 +140,99 @@ onMounted(() => {
               <span class="font-medium">Home</span>
             </RouterLink>
 
-            <RouterLink
-              to="/about"
-              @click="closeSidebar"
-              class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-blue-700 dark:hover:bg-gray-700 hover:translate-x-1"
-            >
-              <Info :size="20" />
-              <span class="font-medium">About</span>
-            </RouterLink>
+            <!-- ========== WORKER NAVIGATION ========== -->
+            <template v-if="isAuthenticated && isWorker">
+              <p class="text-xs uppercase tracking-wider text-blue-300 dark:text-gray-400 px-4 pt-4 pb-1">Worker Menu</p>
 
-            <RouterLink
-              to="/help"
-              @click="closeSidebar"
-              class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-blue-700 dark:hover:bg-gray-700 hover:translate-x-1"
-            >
-              <Mail :size="20" />
-              <span class="font-medium">Need Help?</span>
-            </RouterLink>
+              <RouterLink
+                to="/worker/dashboard"
+                @click="closeSidebar"
+                class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-blue-700 dark:hover:bg-gray-700 hover:translate-x-1"
+              >
+                <LayoutDashboard :size="20" />
+                <span class="font-medium">My Dashboard</span>
+              </RouterLink>
 
-            <!-- Admin Only: View Feedbacks -->
-            <RouterLink
-              v-if="isAdmin"
-              to="/admin/feedbacks"
-              @click="closeSidebar"
-              class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-blue-700 dark:hover:bg-gray-700 hover:translate-x-1 border-t border-blue-500 dark:border-gray-600 mt-4 pt-4"
-            >
-              <MessageSquare :size="20" />
-              <span class="font-medium">View Feedbacks</span>
-            </RouterLink>
+              <RouterLink
+                to="/worker/attendance"
+                @click="closeSidebar"
+                class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-blue-700 dark:hover:bg-gray-700 hover:translate-x-1"
+              >
+                <Clock :size="20" />
+                <span class="font-medium">Clock In / Clock Out</span>
+              </RouterLink>
+
+              <RouterLink
+                to="/worker/history"
+                @click="closeSidebar"
+                class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-blue-700 dark:hover:bg-gray-700 hover:translate-x-1"
+              >
+                <CalendarDays :size="20" />
+                <span class="font-medium">My History</span>
+              </RouterLink>
+
+              <RouterLink
+                to="/profile"
+                @click="closeSidebar"
+                class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-blue-700 dark:hover:bg-gray-700 hover:translate-x-1"
+              >
+                <User :size="20" />
+                <span class="font-medium">My Profile</span>
+              </RouterLink>
+            </template>
+
+            <!-- ========== ADMIN NAVIGATION ========== -->
+            <template v-if="isAuthenticated && isAdmin">
+              <p class="text-xs uppercase tracking-wider text-blue-300 dark:text-gray-400 px-4 pt-4 pb-1">Admin Menu</p>
+
+              <RouterLink
+                to="/admin/dashboard"
+                @click="closeSidebar"
+                class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-blue-700 dark:hover:bg-gray-700 hover:translate-x-1"
+              >
+                <LayoutDashboard :size="20" />
+                <span class="font-medium">Admin Dashboard</span>
+              </RouterLink>
+
+              <RouterLink
+                to="/admin/users"
+                @click="closeSidebar"
+                class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-blue-700 dark:hover:bg-gray-700 hover:translate-x-1"
+              >
+                <Users :size="20" />
+                <span class="font-medium">Manage Users</span>
+              </RouterLink>
+
+              <RouterLink
+                to="/admin/reports"
+                @click="closeSidebar"
+                class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-blue-700 dark:hover:bg-gray-700 hover:translate-x-1"
+              >
+                <FileBarChart :size="20" />
+                <span class="font-medium">Attendance Reports</span>
+              </RouterLink>
+
+              <RouterLink
+                to="/admin/feedbacks"
+                @click="closeSidebar"
+                class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-blue-700 dark:hover:bg-gray-700 hover:translate-x-1"
+              >
+                <MessageSquare :size="20" />
+                <span class="font-medium">View Feedbacks</span>
+              </RouterLink>
+            </template>
+
+            <!-- ========== SHARED LINKS ========== -->
+            <div class="border-t border-blue-500 dark:border-gray-600 mt-4 pt-4">
+              <RouterLink
+                to="/help"
+                @click="closeSidebar"
+                class="flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 hover:bg-blue-700 dark:hover:bg-gray-700 hover:translate-x-1"
+              >
+                <Mail :size="20" />
+                <span class="font-medium">Need Help?</span>
+              </RouterLink>
+            </div>
           </div>
         </div>
       </nav>
