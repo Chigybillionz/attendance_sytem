@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Attendance System</title>
+    <script type="text/javascript">
+        // Single Page Apps for GitHub Pages
+        // MIT License
+        // https://github.com/rafgostafa/spa-github-pages
+        // This script takes the current url and converts the path and query
+        // string into just a query string, and then redirects the browser
+        // to the new url with only a query string and hash fragment,
+        // e.g. https://example.com/one/two?a=3 becomes
+        // https://example.com/?/one/two&a=3
+        // Note: this 404.html will be served for every path that does not match
+        // a real file, but thanks to this script, the client will eventually see
+        // what is intended.
+        (function (l) {
+            if (l.search[1] === '/') {
+                var decoded = l.search.slice(1).split('&').map(function (s) {
+                    return s.replace(/~and~/g, '&')
+                }).join('?');
+                window.history.replaceState(null, null,
+                    l.pathname.slice(0, -1) + decoded + l.hash
+                );
+            }
+        }(window.location))
+    </script>
+</head>
+
+<body>
+</body>
+
+</html>
