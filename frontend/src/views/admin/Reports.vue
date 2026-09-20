@@ -275,17 +275,23 @@ const usersStore = useUsersStore();
 const loading = ref(false);
 const filters = reactive({ user_id: "", start_date: "", end_date: "", status: "" });
 
-const attendanceRecords = computed(() => attendanceStore.allAttendance || []);
-const users = computed(() => usersStore.users || []);
+const attendanceRecords = computed(() => {
+  const records = attendanceStore.allAttendance;
+  return Array.isArray(records) ? records : [];
+});
+const users = computed(() => {
+  const u = usersStore.users;
+  return Array.isArray(u) ? u : [];
+});
 const pagination = computed(() => attendanceStore.pagination || {});
 
 const reportStats = computed(() => {
-  const records = attendanceRecords.value || [];
+  const records = attendanceRecords.value;
   return {
     total: records.length,
     present: records.filter((r) => r.status === "present").length,
     late: records.filter((r) => r.status === "late").length,
-    total_hours: records.reduce((sum, r) => sum + (r.total_hours || 0), 0),
+    total_hours: records.reduce((sum, r) => sum + (parseFloat(r.total_hours) || 0), 0),
   };
 });
 

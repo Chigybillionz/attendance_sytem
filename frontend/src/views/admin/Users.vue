@@ -323,9 +323,15 @@ const errors = reactive({
 });
 
 // Computed properties
-const users = computed(() => usersStore.users);
-const departments = computed(() => usersStore.departments);
-const pagination = computed(() => usersStore.pagination);
+const users = computed(() => {
+  const u = usersStore.users;
+  return Array.isArray(u) ? u : [];
+});
+const departments = computed(() => {
+  const d = usersStore.departments;
+  return Array.isArray(d) ? d : [];
+});
+const pagination = computed(() => usersStore.pagination || {});
 
 // Debounced search
 let searchTimeout;

@@ -109,11 +109,31 @@ export const useAttendanceStore = defineStore("attendance", {
       this.loading = true;
       try {
         const response = await attendanceService.getAllAttendance(params);
-        this.allAttendance = response.data || response;
+        let records = [];
+        let pagData = {};
+
+        if (Array.isArray(response)) {
+          records = response;
+        } else if (response && Array.isArray(response.data)) {
+          records = response.data;
+          pagData = response;
+        } else if (response?.data && Array.isArray(response.data.data)) {
+          records = response.data.data;
+          pagData = response.data;
+        }
+
+        this.allAttendance = records;
+        this.pagination = {
+          current_page: pagData.current_page || 1,
+          last_page: pagData.last_page || 1,
+          per_page: pagData.per_page || 15,
+          total: pagData.total !== undefined ? pagData.total : records.length,
+        };
         return response;
       } catch (error) {
         console.error("Failed to fetch all attendance:", error);
         this.error = error.response?.data?.message || "Failed to fetch all attendance";
+        this.allAttendance = [];
         throw error;
       } finally {
         this.loading = false;
