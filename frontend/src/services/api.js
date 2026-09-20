@@ -25,6 +25,7 @@ const API_URL = resolveApiUrl();
 
 const api = axios.create({
   baseURL: API_URL,
+  timeout: 30000,
   withCredentials: true,
   xsrfCookieName: "XSRF-TOKEN",
   xsrfHeaderName: "X-XSRF-TOKEN",
