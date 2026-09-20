@@ -39,8 +39,8 @@ class Attendance extends Model
             $clockIn = Carbon::parse($this->clock_in_time);
             $clockOut = Carbon::parse($this->clock_out_time);
             
-            $totalMinutes = $clockOut->diffInMinutes($clockIn);
-            $this->total_hours = round($totalMinutes / 60, 2);
+            $totalMinutes = abs($clockOut->diffInMinutes($clockIn));
+            $this->total_hours = max(0, round($totalMinutes / 60, 2));
             
             return $this->total_hours;
         }
