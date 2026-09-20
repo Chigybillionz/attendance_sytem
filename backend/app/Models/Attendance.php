@@ -55,7 +55,7 @@ class Attendance extends Model
         }
 
         $clockInTime = Carbon::parse($this->clock_in_time);
-        $workStartTime = Carbon::parse('09:00:00'); // 9 AM start time
+        $workStartTime = Carbon::parse($clockInTime->toDateString() . ' 09:00:00'); // 9 AM start time
         
         if ($clockInTime->gt($workStartTime)) {
             return 'late';

@@ -27,7 +27,7 @@ class AttendanceController extends Controller
                 ], 400);
             }
             
-            $clockInTime = Carbon::now()->format('H:i:s');
+            $clockInTime = Carbon::now();
             
             if ($existingAttendance) {
                 // Update existing record
@@ -80,7 +80,7 @@ class AttendanceController extends Controller
             }
             
             $attendance->update([
-                'clock_out_time' => Carbon::now()->format('H:i:s')
+                'clock_out_time' => Carbon::now()
             ]);
             
             return response()->json([

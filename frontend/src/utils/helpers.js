@@ -11,7 +11,20 @@ export const formatDate = (date) => {
 // Format time for display
 export const formatTime = (time) => {
   if (!time) return "-";
-  return new Date(`2000-01-01 ${time}`).toLocaleTimeString("en-US", {
+  const str = String(time);
+  const dateObj = str.includes("T") || str.includes("-")
+    ? new Date(str)
+    : new Date(`2000-01-01 ${str}`);
+
+  if (isNaN(dateObj.getTime())) {
+    const directDate = new Date(str);
+    if (!isNaN(directDate.getTime())) {
+      return directDate.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" });
+    }
+    return str;
+  }
+
+  return dateObj.toLocaleTimeString("en-US", {
     hour: "2-digit",
     minute: "2-digit",
   });

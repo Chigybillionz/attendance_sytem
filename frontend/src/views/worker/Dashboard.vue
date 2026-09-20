@@ -389,7 +389,7 @@ const dashboardFailed = ref(false);
 // Computed properties
 const greeting = computed(() => getGreeting());
 const todayDate = computed(() => formatDate(new Date()));
-const todayAttendance = computed(() => dashboardStore.workerTodayAttendance);
+const todayAttendance = computed(() => dashboardStore.workerTodayAttendance || attendanceStore.todayAttendance);
 const monthlyStats = computed(() => dashboardStore.workerMonthlyStats);
 const weeklyHours = computed(() => dashboardStore.workerWeeklyHours);
 const recentAttendance = computed(() => dashboardStore.workerDashboard?.recent_attendance);
@@ -399,8 +399,8 @@ const recentAttendance = computed(() => dashboardStore.workerDashboard?.recent_a
 // - Show Clock Out: if todayAttendance exists with clock_in but no clock_out
 // - Show Completed: ONLY if todayAttendance has BOTH clock_in AND clock_out
 const canClockIn = computed(() => {
-  // If dashboard failed to load, always allow clock in attempt
-  if (dashboardFailed.value && !dashboardStore.workerDashboard) return true;
+  // If dashboard failed to load, allow clock in attempt
+  if (dashboardFailed.value && !dashboardStore.workerDashboard && !attendanceStore.todayAttendance) return true;
   // If dashboard hasn't loaded yet, don't show anything (loading state handles it)
   if (!dashboardReady.value) return false;
   // If dashboard loaded, check the data
@@ -411,12 +411,12 @@ const canClockIn = computed(() => {
 
 const canClockOut = computed(() => {
   if (!todayAttendance.value) return false;
-  return todayAttendance.value.clock_in_time && !todayAttendance.value.clock_out_time;
+  return !!todayAttendance.value.clock_in_time && !todayAttendance.value.clock_out_time;
 });
 
 const isCompleted = computed(() => {
   if (!todayAttendance.value) return false;
-  return todayAttendance.value.clock_in_time && todayAttendance.value.clock_out_time;
+  return !!todayAttendance.value.clock_in_time && !!todayAttendance.value.clock_out_time;
 });
 
 // Handle logout
