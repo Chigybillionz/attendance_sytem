@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Contact; // ADD THIS LINE
+use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
@@ -15,6 +15,7 @@ class ContactController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
+            'subject' => 'required|string|in:bug,feature,feedback,support,other', // Validate subject values
             'message' => 'required|string|max:2000',
         ]);
 
@@ -29,29 +30,24 @@ class ContactController extends Controller
         try {
             $data = $validator->validated();
             
-            // Log the submission
-            \Log::info('Contact form submission:', $data);
+            // Log the submission to see what's being saved
+            \Log::info('Contact form submission:', [
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'subject' => $data['subject'], // Should be: bug, feature, feedback, support, or other
+                'message' => $data['message']
+            ]);
             
-            // Save to database - THIS WAS MISSING
+            // Save to database with subject
             $contact = Contact::create([
                 'name' => $data['name'],
                 'email' => $data['email'],
+                'subject' => $data['subject'], // Store lowercase value
                 'message' => $data['message'],
                 'status' => 'new'
             ]);
             
-            // Optional: Send email to ane@attendance.com
-            // Uncomment when you're ready to send emails
-            /*
-            Mail::raw(
-                "Name: {$data['name']}\nEmail: {$data['email']}\n\nMessage:\n{$data['message']}",
-                function ($message) use ($data) {
-                    $message->to('ane@attendance.com')
-                            ->subject('New Contact Form Submission')
-                            ->replyTo($data['email'], $data['name']);
-                }
-            );
-            */
+            \Log::info('Contact saved with ID: ' . $contact->id . ' and subject: ' . $contact->subject);
             
             return response()->json([
                 'success' => true,
@@ -60,6 +56,7 @@ class ContactController extends Controller
 
         } catch (\Exception $e) {
             \Log::error('Contact form error: ' . $e->getMessage());
+            \Log::error('Stack trace: ' . $e->getTraceAsString());
             
             return response()->json([
                 'success' => false,

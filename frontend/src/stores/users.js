@@ -17,14 +17,15 @@ export const useUsersStore = defineStore("users", {
   }),
 
   getters: {
-    activeUsers: (state) => state.users.filter((user) => user.status === "active"),
-    inactiveUsers: (state) => state.users.filter((user) => user.status === "inactive"),
-    workerUsers: (state) => state.users.filter((user) => user.role === "worker"),
-    adminUsers: (state) => state.users.filter((user) => user.role === "admin"),
-    totalUsers: (state) => state.users.length,
+    activeUsers: (state) => (Array.isArray(state.users) ? state.users.filter((user) => user.status === "active") : []),
+    inactiveUsers: (state) => (Array.isArray(state.users) ? state.users.filter((user) => user.status === "inactive") : []),
+    workerUsers: (state) => (Array.isArray(state.users) ? state.users.filter((user) => user.role === "worker") : []),
+    adminUsers: (state) => (Array.isArray(state.users) ? state.users.filter((user) => user.role === "admin") : []),
+    totalUsers: (state) => (Array.isArray(state.users) ? state.users.length : 0),
 
     // Get users by department
     usersByDepartment: (state) => {
+      if (!Array.isArray(state.users)) return {};
       return state.users.reduce((acc, user) => {
         const dept = user.department || "No Department";
         if (!acc[dept]) {
@@ -36,13 +37,16 @@ export const useUsersStore = defineStore("users", {
     },
 
     // Get user statistics
-    userStats: (state) => ({
-      total: state.users.length,
-      active: state.users.filter((user) => user.status === "active").length,
-      inactive: state.users.filter((user) => user.status === "inactive").length,
-      admins: state.users.filter((user) => user.role === "admin").length,
-      workers: state.users.filter((user) => user.role === "worker").length,
-    }),
+    userStats: (state) => {
+      const list = Array.isArray(state.users) ? state.users : [];
+      return {
+        total: list.length,
+        active: list.filter((user) => user.status === "active").length,
+        inactive: list.filter((user) => user.status === "inactive").length,
+        admins: list.filter((user) => user.role === "admin").length,
+        workers: list.filter((user) => user.role === "worker").length,
+      };
+    },
   },
 
   actions: {
@@ -52,18 +56,35 @@ export const useUsersStore = defineStore("users", {
 
       try {
         const response = await userService.getUsers(params);
-        this.users = response.data;
+        let userList = [];
+        let pagData = {};
+
+        if (Array.isArray(response)) {
+          userList = response;
+        } else if (response && Array.isArray(response.data)) {
+          userList = response.data;
+          pagData = response;
+        } else if (response?.data && Array.isArray(response.data.data)) {
+          userList = response.data.data;
+          pagData = response.data;
+        } else if (response?.users && Array.isArray(response.users)) {
+          userList = response.users;
+          pagData = response;
+        }
+
+        this.users = userList;
         this.pagination = {
-          current_page: response.current_page,
-          last_page: response.last_page,
-          per_page: response.per_page,
-          total: response.total,
+          current_page: pagData.current_page || 1,
+          last_page: pagData.last_page || 1,
+          per_page: pagData.per_page || 15,
+          total: pagData.total !== undefined ? pagData.total : userList.length,
         };
 
         return response;
       } catch (error) {
         console.error("Failed to fetch users:", error);
         this.error = error.response?.data?.message || "Failed to fetch users";
+        this.users = [];
         throw error;
       } finally {
         this.loading = false;
@@ -188,12 +209,17 @@ export const useUsersStore = defineStore("users", {
     async fetchDepartments() {
       try {
         const response = await userService.getDepartments();
-        this.departments = response.departments || [];
+        const deptList = Array.isArray(response?.data)
+          ? response.data
+          : (Array.isArray(response?.departments)
+            ? response.departments
+            : (Array.isArray(response) ? response : []));
+        this.departments = deptList;
 
         return response;
       } catch (error) {
         console.error("Failed to fetch departments:", error);
-        // Don't set error for departments as it's not critical
+        this.departments = [];
       }
     },
 

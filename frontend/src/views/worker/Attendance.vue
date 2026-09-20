@@ -29,6 +29,12 @@
             <span class="text-sm font-medium capitalize">{{ todayAttendance.status }}</span>
           </div>
         </div>
+        <div v-else class="mb-8">
+          <div class="inline-flex items-center space-x-2 bg-blue-50 rounded-full px-4 py-2">
+            <div class="w-3 h-3 rounded-full bg-blue-400 animate-pulse"></div>
+            <span class="text-sm font-medium text-blue-700">Ready to Clock In</span>
+          </div>
+        </div>
 
         <!-- Action Buttons -->
         <div class="flex justify-center space-x-4">
@@ -68,13 +74,28 @@
             Clock Out
           </button>
 
-          <div v-if="!canClockIn && !canClockOut" class="text-center">
+          <div v-if="!canClockIn && !canClockOut && todayAttendance && todayAttendance.clock_out_time" class="text-center">
             <p class="text-gray-500 mb-4">You have completed attendance for today</p>
             <div class="bg-blue-50 rounded-lg p-4">
               <p class="text-sm text-blue-600">
                 Total Hours: {{ todayAttendance?.total_hours || 0 }}h
               </p>
             </div>
+          </div>
+
+          <!-- Fallback: if dashboard failed to load, show error + Clock In button -->
+          <div v-if="dashboardError && !canClockIn && !canClockOut" class="text-center">
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-3">
+              <p class="text-sm text-yellow-700">⚠️ Could not load attendance data. You can still try to clock in.</p>
+            </div>
+            <button
+              @click="clockIn"
+              :disabled="loading"
+              class="bg-green-600 hover:bg-green-700 text-white font-semibold py-4 px-8 rounded-lg text-lg transition-colors"
+              :class="{ 'opacity-50 cursor-not-allowed': loading }"
+            >
+              Clock In
+            </button>
           </div>
         </div>
       </div>
@@ -163,8 +184,17 @@ let timeInterval;
 // Computed properties
 const todayDate = computed(() => formatDate(new Date()));
 const todayAttendance = computed(() => dashboardStore.workerTodayAttendance);
-const canClockIn = computed(() => dashboardStore.canClockIn);
+
+// canClockIn: show Clock In when dashboard loaded and no clock-in done, OR when dashboard failed to load (fallback)
+const canClockIn = computed(() => {
+  if (dashboardStore.workerDashboard) {
+    return dashboardStore.canClockIn;
+  }
+  return dashboardStore.error ? true : false;
+});
+
 const canClockOut = computed(() => dashboardStore.canClockOut);
+const dashboardError = computed(() => dashboardStore.error);
 
 const updateTime = () => {
   currentTime.value = new Date().toLocaleTimeString("en-US", {

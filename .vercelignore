@@ -1,0 +1,46 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Laravel
+bootstrap/cache/
+storage/
+public/hot
+public/storage
+database/database.sqlite
+database/database.sqlite-shm
+database/database.sqlite-wal
+
+# Frontend build artifacts
+frontend/.nuxt/
+frontend/dist/
+frontend/build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git
+.gitignore
+
+# CI/CD
+.github/
+
+# Other
+composer.lock
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*

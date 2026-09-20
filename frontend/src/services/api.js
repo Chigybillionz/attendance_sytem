@@ -1,52 +1,40 @@
-// File: frontend/src/services/api.js
-// Location: frontend/src/services/api.js
-// MAKE SURE YOUR API.JS LOOKS LIKE THIS
-
 import axios from "axios";
 
-const API_URL = "http://localhost:8000";
+const resolveApiUrl = () => {
+  let url = import.meta.env.VITE_API_URL || "";
 
-// Fetch CSRF token from meta tag
-const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content");
-if (!csrfToken) {
-  console.error("CSRF token not found in meta tag.");
-}
+  if (!url && typeof window !== "undefined") {
+    url = window.location.origin;
+  }
 
-// const api = axios.create({
-//   baseURL: "http://localhost:8000",
-//   withCredentials: true,
-//   headers: {
-//     "Content-Type": "application/json",
-//     Accept: "application/json",
-//     "X-Requested-With": "XMLHttpRequest",
-//     "X-CSRF-TOKEN": csrfToken, // Ensure this is added
-//   },
-// });
+  if (url) {
+    try {
+      if (!url.startsWith("http://") && !url.startsWith("https://")) {
+        url = "https://" + url;
+      }
+      return new URL(url).origin;
+    } catch (e) {
+      console.warn("Invalid VITE_API_URL format:", url);
+    }
+  }
 
+  return "";
+};
+
+const API_URL = resolveApiUrl();
 
 const api = axios.create({
-  baseURL: "http://localhost:8000",
+  baseURL: API_URL,
+  timeout: 30000,
   withCredentials: true,
+  xsrfCookieName: "XSRF-TOKEN",
+  xsrfHeaderName: "X-XSRF-TOKEN",
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
     "X-Requested-With": "XMLHttpRequest",
   },
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Request interceptor to add auth token
 api.interceptors.request.use(

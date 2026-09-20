@@ -14,6 +14,21 @@
           <p class="text-white mt-1 sm:text-2xl text-1xl">
             Employee ID: {{ authStore.user?.employee_id }} | {{ authStore.user?.department }}
           </p>
+          <span
+            class="ml-2 text-xs bg-blue-700 px-2 py-0.5 rounded-full text-white flex items-center space-x-1"
+          >
+            <!-- <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M3 2v20h18V3h-1.0001L17 5L15 3L13 5L11 3L9 5L7 3L5 5L3 3"
+              />
+            </svg> -->
+            🧑‍💼
+
+            <span>Worker</span>
+          </span>
         </div>
         <div class="flex items-center space-x-4">
           <!-- Current Date -->
@@ -25,8 +40,7 @@
           <!-- Quick Logout Button -->
           <div class="flex items-center space-x-3">
             <div class="text-right">
-              <p class="text-sm text-black">Logged in as</p>
-              <p class="text-sm font-semibold text-white">{{ authStore.userName }} (Worker)</p>
+              <!-- <p class="text-sm text-black">Logged in as</p> -->
             </div>
 
             <button
@@ -97,7 +111,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 bg-600-300">
       <!-- Clock In/Out Card -->
       <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h2 class="text-lg font-semibold text-gray-900 mb-4 bg-blue-100">Today's Attendance</h2>
+        <h2 class="text-lg font-semibold text-gray-900 mb-4 py-4">Today's Attendance</h2>
 
         <div v-if="todayAttendance" class="space-y-4">
           <!-- Status Display -->
@@ -140,7 +154,7 @@
 
         <div v-else class="text-center py-8">
           <svg
-            class="w-12 h-12 text-gray-400 mx-auto mb-4"
+            class="w-12 h-12 text-blue-400 mx-auto mb-4"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -152,11 +166,19 @@
               d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          <p class="text-gray-500 mb-4">No attendance record for today</p>
+          <p class="text-gray-700 font-medium mb-2">No attendance record for today</p>
+          <p class="text-gray-500 text-sm mb-4">Click "Clock In" below to start your work day!</p>
         </div>
 
         <!-- Clock In/Out Buttons -->
         <div class="mt-6 space-y-3">
+          <!-- Loading state -->
+          <div v-if="!dashboardReady && !dashboardFailed" class="text-center py-4">
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+            <p class="text-gray-500 text-sm mt-2">Loading attendance data...</p>
+          </div>
+
+          <!-- Clock In Button -->
           <button
             v-if="canClockIn"
             @click="clockIn"
@@ -173,18 +195,14 @@
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <!-- Clock circle with opening at right -->
               <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c2.5 0 4.8-.9 6.6-2.4" />
-
-              <!-- Clock hands -->
               <path d="M12 6v6l3 3" />
-
-              <!-- Arrow pointing out (top right) -->
               <path d="M21 3l-6 6m0 0h6m-6 0V3" />
             </svg>
-            Clock In
+            {{ loading ? 'Clocking In...' : 'Clock In' }}
           </button>
 
+          <!-- Clock Out Button -->
           <button
             v-if="canClockOut"
             @click="clockOut"
@@ -192,9 +210,6 @@
             class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
             :class="{ 'opacity-50 cursor-not-allowed': loading }"
           >
-            <!-- <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg> -->
             <svg
               class="w-5 h-5 mr-2"
               fill="none"
@@ -204,19 +219,15 @@
               stroke-linecap="round"
               stroke-linejoin="round"
             >
-              <!-- Clock circle with opening at right -->
               <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c2.5 0 4.8-.9 6.6-2.4" />
-
-              <!-- Clock hands -->
               <path d="M12 6v6l3 3" />
-
-              <!-- Arrow pointing out (top right) -->
               <path d="M15 3h6m0 0v6m0-6l-7 7" />
             </svg>
-            Clock Out
+            {{ loading ? 'Clocking Out...' : 'Clock Out' }}
           </button>
 
-          <div v-if="!canClockIn && !canClockOut" class="text-center">
+          <!-- Completed: ONLY when proven -->
+          <div v-if="isCompleted" class="text-center">
             <p
               class="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-md"
               role="alert"
@@ -238,12 +249,19 @@
               </p>
             </div>
           </div>
+
+          <!-- Error notice -->
+          <div v-if="dashboardFailed && !dashboardStore.workerDashboard" class="text-center">
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-1">
+              <p class="text-sm text-yellow-700">⚠️ Could not load dashboard data from server. You can still try to clock in.</p>
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- Monthly Stats -->
       <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h2 class="text-lg font-semibold text-gray-900 mb-4 bg-blue-100">This Month's Summary</h2>
+        <h2 class="text-lg font-semibold text-gray-900 mb-4">This Month's Summary</h2>
 
         <div v-if="monthlyStats" class="space-y-4">
           <div class="grid grid-cols-2 gap-4">
@@ -276,16 +294,16 @@
 
     <!-- Weekly Hours Chart -->
     <div class="bg-blue-100 rounded-lg shadow-sm border border-gray-200 p-6">
-      <h2 class="text-lg font-semibold text-gray-900 mb-4  w-fit">Weekly Hours</h2>
+      <h2 class="text-lg font-semibold text-gray-900 mb-4 w-fit">Weekly Hours</h2>
 
       <div v-if="weeklyHours && weeklyHours.length" class="space-y-2">
         <div
-          v-for="day in WeeklyeeklyHours"
+          v-for="day in weeklyHours"
           :key="day.date"
-          class="flex items-center justify-betusereen py-2 px-3 rounded-lg hover:bg-gray-50"
+          class="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-gray-50"
         >
           <div class="flex items-center space-x-3">
-            <div class="This Month's Summary-16 text-sm font-medium text-gray-600">
+            <div class="w-16 text-sm font-medium text-gray-600">
               {{ day.day }}
             </div>
             <div class="text-sm text-gray-500">{{ day.date }}</div>
@@ -365,16 +383,41 @@ const dashboardStore = useDashboardStore();
 const loading = ref(false);
 const loggingOut = ref(false);
 const switchingAccount = ref(false);
+const dashboardReady = ref(false);
+const dashboardFailed = ref(false);
 
 // Computed properties
 const greeting = computed(() => getGreeting());
 const todayDate = computed(() => formatDate(new Date()));
-const todayAttendance = computed(() => dashboardStore.workerTodayAttendance);
+const todayAttendance = computed(() => dashboardStore.workerTodayAttendance || attendanceStore.todayAttendance);
 const monthlyStats = computed(() => dashboardStore.workerMonthlyStats);
 const weeklyHours = computed(() => dashboardStore.workerWeeklyHours);
 const recentAttendance = computed(() => dashboardStore.workerDashboard?.recent_attendance);
-const canClockIn = computed(() => dashboardStore.canClockIn);
-const canClockOut = computed(() => dashboardStore.canClockOut);
+
+// Simple clock in/out logic:
+// - Show Clock In: if no todayAttendance, or todayAttendance exists but no clock_in_time, or dashboard failed
+// - Show Clock Out: if todayAttendance exists with clock_in but no clock_out
+// - Show Completed: ONLY if todayAttendance has BOTH clock_in AND clock_out
+const canClockIn = computed(() => {
+  // If dashboard failed to load, allow clock in attempt
+  if (dashboardFailed.value && !dashboardStore.workerDashboard && !attendanceStore.todayAttendance) return true;
+  // If dashboard hasn't loaded yet, don't show anything (loading state handles it)
+  if (!dashboardReady.value) return false;
+  // If dashboard loaded, check the data
+  if (!todayAttendance.value) return true; // No record = can clock in
+  if (!todayAttendance.value.clock_in_time) return true; // No clock in = can clock in
+  return false;
+});
+
+const canClockOut = computed(() => {
+  if (!todayAttendance.value) return false;
+  return !!todayAttendance.value.clock_in_time && !todayAttendance.value.clock_out_time;
+});
+
+const isCompleted = computed(() => {
+  if (!todayAttendance.value) return false;
+  return !!todayAttendance.value.clock_in_time && !!todayAttendance.value.clock_out_time;
+});
 
 // Handle logout
 const handleLogout = async () => {
@@ -437,10 +480,13 @@ const clockIn = async () => {
   loading.value = true;
   try {
     await attendanceStore.clockIn();
-    await dashboardStore.fetchWorkerDashboard();
+    // Try refreshing dashboard, but don't fail if it doesn't work
+    try { await dashboardStore.fetchWorkerDashboard(); } catch (e) { /* ignore */ }
+    dashboardReady.value = true;
+    dashboardFailed.value = false;
     window.showNotification?.("Clocked in successfully!", "success");
   } catch (error) {
-    window.showNotification?.("Failed to clock in", "error");
+    window.showNotification?.("Failed to clock in. Please check your connection.", "error");
   } finally {
     loading.value = false;
   }
@@ -450,16 +496,26 @@ const clockOut = async () => {
   loading.value = true;
   try {
     await attendanceStore.clockOut();
-    await dashboardStore.fetchWorkerDashboard();
+    // Try refreshing dashboard, but don't fail if it doesn't work
+    try { await dashboardStore.fetchWorkerDashboard(); } catch (e) { /* ignore */ }
+    dashboardReady.value = true;
     window.showNotification?.("Clocked out successfully!", "success");
   } catch (error) {
-    window.showNotification?.("Failed to clock out", "error");
+    window.showNotification?.("Failed to clock out. Please check your connection.", "error");
   } finally {
     loading.value = false;
   }
 };
 
 onMounted(async () => {
-  await dashboardStore.fetchWorkerDashboard();
+  try {
+    await dashboardStore.fetchWorkerDashboard();
+    dashboardReady.value = true;
+  } catch (error) {
+    console.error("Dashboard load failed:", error);
+    dashboardFailed.value = true;
+    dashboardReady.value = true; // Mark ready so UI isn't stuck on loading
+  }
 });
 </script>
+

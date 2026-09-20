@@ -2,12 +2,25 @@ import { defineStore } from "pinia";
 import { authService } from "@/services/authService";
 
 export const useAuthStore = defineStore("auth", {
-  state: () => ({
-    user: JSON.parse(localStorage.getItem("user")) || null,
-    token: localStorage.getItem("auth_token") || null,
-    loading: false,
-    error: null,
-  }),
+  state: () => {
+    let user = null;
+    try {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser && storedUser !== "undefined") {
+        user = JSON.parse(storedUser);
+      }
+    } catch (e) {
+      console.error("Failed to parse user from localStorage", e);
+      localStorage.removeItem("user");
+    }
+
+    return {
+      user,
+      token: localStorage.getItem("auth_token") || null,
+      loading: false,
+      error: null,
+    };
+  },
 
   getters: {
     isAuthenticated: (state) => !!state.token && !!state.user,
@@ -68,20 +81,18 @@ export const useAuthStore = defineStore("auth", {
     async logout() {
       this.loading = true;
 
-      try {
-          await authService.logout();
-      } catch (error) {
-        console.error("Logout error:", error);
-      } finally {
-        this.user = null;
-        this.token = null;
-        this.error = null;
-        this.loading = false;
+      // Clear local state and localStorage immediately to ensure instant UI transition
+      this.user = null;
+      this.token = null;
+      this.error = null;
+      this.loading = false;
+      localStorage.removeItem("user");
+      localStorage.removeItem("auth_token");
 
-        // Clear localStorage
-        localStorage.removeItem("user");
-        localStorage.removeItem("auth_token");
-      }
+      // Send logout request to backend in the background without awaiting it
+      authService.logout().catch((error) => {
+        console.warn("Background backend logout failed:", error);
+      });
     },
 
     async fetchUser() {
